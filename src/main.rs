@@ -29,30 +29,29 @@ const PIECE_J: Tetronomino = Tetronomino {
 fn main() {
     //initialise game_board
     let mut game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT] = [[0; BOARD_WIDTH]; BOARD_HEIGHT];
-    game_board = setup_board(game_board);
+    setup_board(&mut game_board);
     //initialise holding area
     let holding_board: [[usize; HOLDING_SIZE]; HOLDING_SIZE] = [[0; HOLDING_SIZE]; HOLDING_SIZE];
-    game_board = generate_piece(PIECE_J.template[0], game_board, SPAWN_X, SPAWN_Y);
-    print_game_board(game_board);
-    print_holding_board(holding_board);
+    //generate first piece on board
+    generate_piece(PIECE_J.template[0], &mut game_board, SPAWN_X, SPAWN_Y);
+    //debugging to test results
+    print_game_board(&game_board);
+    print_holding_board(&holding_board);
 }
 
-fn setup_board(
-    mut game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT]
-) -> [[usize; BOARD_WIDTH]; BOARD_HEIGHT] {
+fn setup_board(game_board: &mut [[usize; BOARD_WIDTH]; BOARD_HEIGHT]) {
     //create floor for game_board
     for k in 0..BOARD_WIDTH {
         game_board[0][k] = 2;
     }
-    return game_board;
 }
 
 fn generate_piece(
     template: [[usize; HOLDING_SIZE]; HOLDING_SIZE],
-    mut game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT],
+    game_board: &mut [[usize; BOARD_WIDTH]; BOARD_HEIGHT],
     position_x: usize,
     position_y: usize,
-) -> [[usize; BOARD_WIDTH]; BOARD_HEIGHT] {
+) {
     for y in 0..HOLDING_SIZE {
         for x in 0..HOLDING_SIZE {
             let cell_value: usize = template[y][x];
@@ -63,10 +62,9 @@ fn generate_piece(
             }
         }
     }
-    return game_board;
 }
 
-fn print_game_board(game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT]) {
+fn print_game_board(game_board: &[[usize; BOARD_WIDTH]; BOARD_HEIGHT]) {
     println!("",);
     for k in (0..BOARD_HEIGHT).rev() {
         if k < 10 {
@@ -81,7 +79,7 @@ fn print_game_board(game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT]) {
     println!("");
 }
 
-fn print_holding_board(holding_board: [[usize; HOLDING_SIZE]; HOLDING_SIZE]) {
+fn print_holding_board(holding_board: &[[usize; HOLDING_SIZE]; HOLDING_SIZE]) {
     println!("",);
     for k in (0..HOLDING_SIZE).rev() {
         if k < 10 {
