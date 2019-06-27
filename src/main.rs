@@ -40,7 +40,7 @@ const PIECE_J: Tetronomino = Tetronomino {
 fn main() {
     //initialise game_board
     let mut game_board = GameBoard {
-        game_board: [[0; BOARD_WIDTH]; BOARD_HEIGHT]
+        game_board: [[0; BOARD_WIDTH]; BOARD_HEIGHT],
     };
     setup_board(&mut game_board);
     //initialise holding area
@@ -58,7 +58,8 @@ fn main() {
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-
+    rotate_piece(&mut rotation_state, PIECE_J, &mut game_board);
+    print_game_board(&game_board);
 }
 
 fn setup_board(game_board: &mut GameBoard) {
@@ -86,7 +87,39 @@ fn generate_piece(
     }
 }
 
-fn rotate_piece(rotation_state: &mut usize, tetronomino: Tetronomino, game_board: &mut GameBoard) {
+fn rotate_piece(
+    rotation_state: &mut usize,
+    tetronomino: Tetronomino,
+    game_board: &mut GameBoard,
+) {
+    let mut initial_rotation: usize = 0;
+    match rotation_state {
+        &mut 0 => initial_rotation = 0,
+        &mut 1 => initial_rotation = 1,
+        &mut 2 => initial_rotation = 2,
+        &mut 3 => initial_rotation = 3,
+        &mut _ => (),
+    }
+    let current_anchor = tetronomino.anchor[initial_rotation];
+    let mut anchor_position_x: usize;
+    let mut anchor_position_y: usize;
+    let mut removal_count: usize = 0;
+    'main_loop: for y in (0..BOARD_HEIGHT).rev() {
+        for x in 0..BOARD_WIDTH {
+            let element = game_board.game_board[y][x];
+            if element == 4 {
+                anchor_position_x = x;
+                anchor_position_y = y;
+            }
+            if element == 4 || element == 1 {
+                game_board.game_board[y][x] = 0;
+                removal_count = removal_count + 1;
+            }
+            if removal_count == 4 {
+                break 'main_loop;
+            }
+        }
+    }
 
 }
 
