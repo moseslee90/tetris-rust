@@ -124,6 +124,19 @@ fn rotate_piece(
     game_variables.rotation_state = game_variables.rotation_state + 1;
     print!("rotation_state {}", game_variables.rotation_state);
 
+    let next_template: [[usize; HOLDING_SIZE]; HOLDING_SIZE] =
+        tetronomino.template[game_variables.rotation_state];
+    //print next_template from corner_position of template that was just cleared.
+
+    for y in 0..HOLDING_SIZE {
+        for x in 0..HOLDING_SIZE {
+            if next_template[y][x] == 1 || next_template[y][x] == 4 {
+                //in future, add collision handling code here
+                game_board.game_board[corner_position_y + y][corner_position_x + x] =
+                    next_template[y][x];
+            }
+        }
+    }
 }
 
 fn print_game_board(game_board: &GameBoard) {
