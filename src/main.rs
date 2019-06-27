@@ -38,6 +38,7 @@ const PIECE_J: Tetronomino = Tetronomino {
 };
 struct GameVariables {
     rotation_state: usize,
+    current_piece: Tetronomino,
 }
 
 fn main() {
@@ -51,10 +52,11 @@ fn main() {
     //declare initial rotation state
     let mut game_variables = GameVariables {
         rotation_state: 0usize,
+        current_piece: PIECE_J,
     };
     //generate first piece on board
     generate_piece(
-        PIECE_J.template[game_variables.rotation_state],
+        game_variables.current_piece.template[game_variables.rotation_state],
         &mut game_board,
         SPAWN_X,
         SPAWN_Y,
@@ -63,7 +65,7 @@ fn main() {
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-    rotate_piece(&mut game_variables, PIECE_J, &mut game_board);
+    rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
 }
 
@@ -94,9 +96,9 @@ fn generate_piece(
 
 fn rotate_piece(
     game_variables: &mut GameVariables,
-    tetronomino: Tetronomino,
     game_board: &mut GameBoard,
 ) {
+    let tetronomino = &game_variables.current_piece;
     let current_anchor = tetronomino.anchor[game_variables.rotation_state];
     let mut anchor_position_x: usize = 0;
     let mut anchor_position_y: usize = 0;
@@ -122,7 +124,6 @@ fn rotate_piece(
     let corner_position_y: usize = anchor_position_y - current_anchor[0];
     let corner_position_x: usize = anchor_position_x - current_anchor[1];
     game_variables.rotation_state = game_variables.rotation_state + 1;
-    print!("rotation_state {}", game_variables.rotation_state);
 
     let next_template: [[usize; HOLDING_SIZE]; HOLDING_SIZE] =
         tetronomino.template[game_variables.rotation_state];
