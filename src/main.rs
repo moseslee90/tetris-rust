@@ -1,3 +1,5 @@
+use rand::Rng;
+
 const BOARD_HEIGHT: usize = 21;
 const BOARD_WIDTH: usize = 10;
 const HOLDING_SIZE: usize = 4;
@@ -39,6 +41,7 @@ const PIECE_J: Tetronomino = Tetronomino {
 struct GameVariables {
     rotation_state: usize,
     current_piece: Tetronomino,
+    piece_location: [usize; 2],
 }
 
 fn main() {
@@ -53,8 +56,10 @@ fn main() {
     let mut game_variables = GameVariables {
         rotation_state: 0usize,
         current_piece: PIECE_J,
+        piece_location: [0, 0],
     };
     //generate first piece on board
+    random_tetronomino(&mut game_variables);
     generate_piece(
         game_variables.current_piece.template[game_variables.rotation_state],
         &mut game_board,
@@ -92,6 +97,25 @@ fn generate_piece(
             }
         }
     }
+}
+
+// game_variables.current_piece = PIECE_L;
+// game_variables.piece_location = [
+//     PIECE_L.anchor[0][0] + SPAWN_Y,
+//     PIECE_L.anchor[0][1] + SPAWN_X,
+// ];
+
+fn random_tetronomino(game_variables: &mut GameVariables) {
+    let random_number = rand::thread_rng().gen_range(1, 3);
+    let spawned_piece: Tetronomino = match random_number {
+        1 => PIECE_L, //choose L piece
+        2 => PIECE_J, //choose J piece
+        _ => PIECE_L,
+    };
+    let location_y = spawned_piece.anchor[0][0] + SPAWN_Y;
+    let location_x = spawned_piece.anchor[0][1] + SPAWN_X;
+    game_variables.current_piece = spawned_piece;
+    game_variables.piece_location = [location_y, location_x];
 }
 
 fn rotate_piece(
