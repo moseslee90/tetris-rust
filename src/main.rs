@@ -2,10 +2,23 @@ const BOARD_HEIGHT: usize = 21;
 const BOARD_WIDTH: usize = 10;
 const HOLDING_SIZE: usize = 4;
 
+//Tetronominoes
+struct Tetronomino {
+    template: [[[usize; HOLDING_SIZE]; HOLDING_SIZE]; HOLDING_SIZE],
+}
+const pieceL: Tetronomino = Tetronomino {
+    template: [
+        [[0, 4, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
+        [[0, 4, 0, 0], [0, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[0, 0, 4, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+        [[1, 1, 4, 0], [0, 0, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    ],
+};
+
 fn main() {
     //initialise game_board
-    let game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT] = [[0; BOARD_WIDTH]; BOARD_HEIGHT];
-    let game_board = setup_board(game_board);
+    let mut game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT] = [[0; BOARD_WIDTH]; BOARD_HEIGHT];
+    game_board = setup_board(game_board);
     //initialise holding area
     let holding_board: [[usize; HOLDING_SIZE]; HOLDING_SIZE] = [[0; HOLDING_SIZE]; HOLDING_SIZE];
     print_game_board(game_board);
@@ -20,6 +33,14 @@ fn setup_board(
         game_board[0][k] = 2;
     }
     return game_board;
+}
+
+fn generate_piece(
+    template: &[[usize; HOLDING_SIZE]; HOLDING_SIZE],
+    position_x: usize,
+    position_y: usize,
+) {
+
 }
 
 fn print_game_board(game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT]) {
