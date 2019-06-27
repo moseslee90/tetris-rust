@@ -20,10 +20,13 @@ fn setup_board(
 
 fn print_game_board(game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT]) {
     for k in (0..BOARD_HEIGHT).rev() {
+        if k < 10 {
+            print!(" ");
+        }
         println!("{} {:?}", k, game_board[k]);
     }
-    print!("   ",);
-    for k in (0..BOARD_WIDTH) {
+    print!("    ",);
+    for k in 0..BOARD_WIDTH {
         print!("{}, ", k);
     }
     println!("");
