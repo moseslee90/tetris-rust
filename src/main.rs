@@ -36,6 +36,9 @@ const PIECE_J: Tetronomino = Tetronomino {
     ],
     anchor: [[0, 1], [0, 1], [0, 1], [0, 2]],
 };
+struct GameVariables {
+    rotation_state: usize,
+}
 
 fn main() {
     //initialise game_board
@@ -46,19 +49,21 @@ fn main() {
     //initialise holding area
     let holding_board: [[usize; HOLDING_SIZE]; HOLDING_SIZE] = [[0; HOLDING_SIZE]; HOLDING_SIZE];
     //declare initial rotation state
-    let mut rotation_state: usize = 0;
+    let mut game_variables = GameVariables {
+        rotation_state: 0usize,
+    };
     //generate first piece on board
     generate_piece(
-        PIECE_J.template[rotation_state],
+        PIECE_J.template[game_variables.rotation_state],
         &mut game_board,
         SPAWN_X,
         SPAWN_Y,
     );
-    println!("{}", rotation_state);
+    println!("{}", game_variables.rotation_state);
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-    rotate_piece(&mut rotation_state, PIECE_J, &mut game_board);
+    rotate_piece(&mut game_variables, PIECE_J, &mut game_board);
     print_game_board(&game_board);
 }
 
@@ -88,22 +93,15 @@ fn generate_piece(
 }
 
 fn rotate_piece(
-    rotation_state: &mut usize,
+    game_variables: &mut GameVariables,
     tetronomino: Tetronomino,
     game_board: &mut GameBoard,
 ) {
-    let mut initial_rotation: usize = 0;
-    match rotation_state {
-        &mut 0 => initial_rotation = 0,
-        &mut 1 => initial_rotation = 1,
-        &mut 2 => initial_rotation = 2,
-        &mut 3 => initial_rotation = 3,
-        &mut _ => (),
-    }
-    let current_anchor = tetronomino.anchor[initial_rotation];
-    let mut anchor_position_x: usize;
-    let mut anchor_position_y: usize;
+    let current_anchor = tetronomino.anchor[game_variables.rotation_state];
+    let mut anchor_position_x: usize = 0;
+    let mut anchor_position_y: usize = 0;
     let mut removal_count: usize = 0;
+    //get reference of anchor and remove original piece
     'main_loop: for y in (0..BOARD_HEIGHT).rev() {
         for x in 0..BOARD_WIDTH {
             let element = game_board.game_board[y][x];
@@ -120,6 +118,11 @@ fn rotate_piece(
             }
         }
     }
+    //replace piece with next rotation
+    let corner_position_y: usize = anchor_position_y - current_anchor[0];
+    let corner_position_x: usize = anchor_position_x - current_anchor[1];
+    game_variables.rotation_state = game_variables.rotation_state + 1;
+    print!("rotation_state {}", game_variables.rotation_state);
 
 }
 
