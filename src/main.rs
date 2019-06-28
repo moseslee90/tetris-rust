@@ -66,13 +66,7 @@ fn main() {
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-    move_right(&mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    move_right(&mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    move_right(&mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    move_right(&mut game_variables, &mut game_board);
+    move_left(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
     rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
@@ -209,6 +203,24 @@ fn move_right(
     if no_collision(proposed_variables, game_board) {
         remove_piece(game_variables, game_board);
         game_variables.piece_location[1] = game_variables.piece_location[1] + 1;
+        //update game_variables
+        generate_piece(game_variables, game_board);
+    }
+}
+fn move_left(
+    game_variables: &mut GameVariables,
+    game_board: &mut GameBoard,
+) {
+    let mut proposed_location = game_variables.piece_location;
+    proposed_location[1] = proposed_location[1] - 1;
+    let proposed_variables = GameVariables {
+        rotation_state: game_variables.rotation_state,
+        current_piece: game_variables.current_piece,
+        piece_location: proposed_location,
+    };
+    if no_collision(proposed_variables, game_board) {
+        remove_piece(game_variables, game_board);
+        game_variables.piece_location = proposed_location;
         //update game_variables
         generate_piece(game_variables, game_board);
     }
