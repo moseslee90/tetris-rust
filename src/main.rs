@@ -85,13 +85,39 @@ fn main() {
     print_holding_board(&holding_board);
     move_piece(DOWN, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
-    move_piece(LEFT, &mut game_variables, &mut game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
-    move_piece(RIGHT, &mut game_variables, &mut game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
-    move_piece(RIGHT, &mut game_variables, &mut game_board);
+    // rotate_piece(&mut game_variables, &mut game_board);
+    // print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
-    rotate_piece(&mut game_variables, &mut game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
 }
 
@@ -190,7 +216,7 @@ fn rotate_piece(
         piece_location: proposed_location,
     };
 
-    if no_collision(proposed_variables, game_board) {
+    if no_collision(&proposed_variables, game_board) {
         //remove current piece in present rotation from game_board
         change_piece(REMOVE_PIECE, game_variables, game_board);
         //update game variables to current state
@@ -224,18 +250,52 @@ fn move_piece(
         current_piece: game_variables.current_piece,
         piece_location: proposed_location,
     };
-    if no_collision(proposed_variables, game_board) {
+    if direction == DOWN && is_floor(&proposed_variables, &game_board) {
+        //is floor, turn piece into fixed
+        change_piece(FLOOR_FOUND, &game_variables, game_board);
+
+    } else if no_collision(&proposed_variables, game_board) {
         //remove piece before moved state
         change_piece(REMOVE_PIECE, game_variables, game_board);
         //update game_variables
         game_variables.piece_location = proposed_location;
         //generate piece in new moved state
         change_piece(GENERATE_PIECE, game_variables, game_board);
+    };
+}
+
+fn is_floor(
+    game_variables: &GameVariables,
+    game_board: &GameBoard,
+) -> bool {
+    let current_piece = game_variables.current_piece.template;
+    let location = game_variables.piece_location;
+    let rotation_state = game_variables.rotation_state;
+
+    //check if anchor is adjacent to floor
+    if game_board.game_board[location[0]][location[1]] == 2 {
+        return true;
     }
+    //check 3 pixels
+    //find correct template base on rotation_state
+    let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+    //pixels located from 1 to 3 of array
+    for i in 1..4 {
+        let location_y: i8 = location[0] as i8;
+        let location_x: i8 = location[1] as i8;
+        let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
+        let pixel_absolute_pos_x: usize = (current_template[i][1] + location_x) as usize;
+
+        if game_board.game_board[pixel_absolute_pos_y][pixel_absolute_pos_x] == 2 {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 fn no_collision(
-    game_variables: GameVariables,
+    game_variables: &GameVariables,
     game_board: &GameBoard,
 ) -> bool {
     //check out of bounds
