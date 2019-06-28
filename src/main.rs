@@ -71,7 +71,7 @@ fn main() {
     };
 
     //generate first piece on board
-    random_tetronomino(&mut game_variables);
+    spawn_tetronomino(&mut game_variables);
     generate_piece(&game_variables, &mut game_board);
     println!("{}", game_variables.rotation_state);
     //debugging to test results
@@ -146,7 +146,7 @@ fn remove_piece(
     }
 }
 
-fn random_tetronomino(game_variables: &mut GameVariables) {
+fn spawn_tetronomino(game_variables: &mut GameVariables) {
     let random_number = rand::thread_rng().gen_range(1, 4);
     let spawned_piece: &Tetronomino = match random_number {
         1 => &PIECE_L, //choose L piece
@@ -205,7 +205,7 @@ fn rotate_piece(
 fn move_piece(
     direction: &str,
     game_variables: &mut GameVariables,
-    game_board: &mut GameBoard
+    game_board: &mut GameBoard,
 ) {
     let mut proposed_location = game_variables.piece_location;
     match direction {
