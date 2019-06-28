@@ -4,7 +4,7 @@ const BOARD_HEIGHT: usize = 21;
 const BOARD_WIDTH: usize = 10;
 const HOLDING_SIZE: usize = 4;
 
-const SPAWN_X: usize = 3;
+const SPAWN_X: usize = 4;
 const SPAWN_Y: usize = 17;
 //game_board
 struct GameBoard {
@@ -29,10 +29,10 @@ const PIECE_L: Tetronomino = Tetronomino {
 
 const PIECE_J: Tetronomino = Tetronomino {
     template: [
-        [[1, 0], [0, 1], [1, 0], [2, 0]],
-        [[1, 1], [-1, 0], [0, 1], [0, 2]],
-        [[-2, 0], [0, -1], [-1, 0], [-2, 0]],
-        [[0, -1], [1, 0], [0, -1], [0, -2]],
+        [[0, -1], [0, -1], [1, 0], [2, 0]],
+        [[2, 0], [1, 0], [0, 1], [0, 2]],
+        [[-1, 0], [0, 1], [-1, 0], [-2, 0]],
+        [[-1, 0], [-1, 0], [0, -1], [0, -2]],
     ],
 };
 
@@ -57,16 +57,10 @@ fn main() {
         current_piece: PIECE_J,
         piece_location: [0, 0],
     };
-    let array = [1,2];
-    
+
     //generate first piece on board
     random_tetronomino(&mut game_variables);
-    // generate_piece(
-    //     game_variables.current_piece.template[game_variables.rotation_state],
-    //     &mut game_board,
-    //     SPAWN_X,
-    //     SPAWN_Y,
-    // );
+    generate_piece(&game_variables, &mut game_board);
     println!("{}", game_variables.rotation_state);
     //debugging to test results
     print_game_board(&game_board);
@@ -86,7 +80,7 @@ fn setup_board(game_board: &mut GameBoard) {
 //assume collision is already handled
 fn generate_piece(
     game_variables: &GameVariables,
-    game_board: &mut GameBoard
+    game_board: &mut GameBoard,
 ) {
     let current_piece = game_variables.current_piece.template;
     let location = game_variables.piece_location;
@@ -119,55 +113,55 @@ fn random_tetronomino(game_variables: &mut GameVariables) {
     game_variables.piece_location = [SPAWN_Y, SPAWN_X];
 }
 
-fn rotate_piece(
-    game_variables: &mut GameVariables,
-    game_board: &mut GameBoard,
-) {
-    let tetronomino = &game_variables.current_piece;
-    let current_anchor = tetronomino.anchor[game_variables.rotation_state];
-    let mut anchor_position_x: usize = 0;
-    let mut anchor_position_y: usize = 0;
-    let mut removal_count: usize = 0;
-    //get reference of anchor and remove original piece
-    'main_loop: for y in (0..BOARD_HEIGHT).rev() {
-        for x in 0..BOARD_WIDTH {
-            let element = game_board.game_board[y][x];
-            if element == 4 {
-                anchor_position_x = x;
-                anchor_position_y = y;
-            }
-            if element == 4 || element == 1 {
-                game_board.game_board[y][x] = 0;
-                removal_count = removal_count + 1;
-            }
-            if removal_count == 4 {
-                break 'main_loop;
-            }
-        }
-    }
-    //replace piece with next rotation
-    let corner_position_y: usize = anchor_position_y - current_anchor[0];
-    let corner_position_x: usize = anchor_position_x - current_anchor[1];
-    game_variables.rotation_state = game_variables.rotation_state + 1;
+// fn rotate_piece(
+//     game_variables: &mut GameVariables,
+//     game_board: &mut GameBoard,
+// ) {
+//     let tetronomino = &game_variables.current_piece;
+//     let current_anchor = tetronomino.anchor[game_variables.rotation_state];
+//     let mut anchor_position_x: usize = 0;
+//     let mut anchor_position_y: usize = 0;
+//     let mut removal_count: usize = 0;
+//     //get reference of anchor and remove original piece
+//     'main_loop: for y in (0..BOARD_HEIGHT).rev() {
+//         for x in 0..BOARD_WIDTH {
+//             let element = game_board.game_board[y][x];
+//             if element == 4 {
+//                 anchor_position_x = x;
+//                 anchor_position_y = y;
+//             }
+//             if element == 4 || element == 1 {
+//                 game_board.game_board[y][x] = 0;
+//                 removal_count = removal_count + 1;
+//             }
+//             if removal_count == 4 {
+//                 break 'main_loop;
+//             }
+//         }
+//     }
+//     //replace piece with next rotation
+//     let corner_position_y: usize = anchor_position_y - current_anchor[0];
+//     let corner_position_x: usize = anchor_position_x - current_anchor[1];
+//     game_variables.rotation_state = game_variables.rotation_state + 1;
 
-    let next_template: [[usize; HOLDING_SIZE]; HOLDING_SIZE] =
-        tetronomino.template[game_variables.rotation_state];
-    //print next_template from corner_position of template that was just cleared.
-    let mut addition_count: usize = 0;
-    'add_piece_loop: for y in 0..HOLDING_SIZE {
-        for x in 0..HOLDING_SIZE {
-            if next_template[y][x] == 1 || next_template[y][x] == 4 {
-                //in future, add collision handling code here
-                game_board.game_board[corner_position_y + y][corner_position_x + x] =
-                    next_template[y][x];
-                addition_count = addition_count + 1;
-            }
-            if addition_count == 4 {
-                break 'add_piece_loop;
-            }
-        }
-    }
-}
+//     let next_template: [[usize; HOLDING_SIZE]; HOLDING_SIZE] =
+//         tetronomino.template[game_variables.rotation_state];
+//     //print next_template from corner_position of template that was just cleared.
+//     let mut addition_count: usize = 0;
+//     'add_piece_loop: for y in 0..HOLDING_SIZE {
+//         for x in 0..HOLDING_SIZE {
+//             if next_template[y][x] == 1 || next_template[y][x] == 4 {
+//                 //in future, add collision handling code here
+//                 game_board.game_board[corner_position_y + y][corner_position_x + x] =
+//                     next_template[y][x];
+//                 addition_count = addition_count + 1;
+//             }
+//             if addition_count == 4 {
+//                 break 'add_piece_loop;
+//             }
+//         }
+//     }
+// }
 
 fn move_right() {
     for y in (0..BOARD_HEIGHT).rev() {
