@@ -70,6 +70,12 @@ fn main() {
     print_game_board(&game_board);
     move_right(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
+    move_right(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_right(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_right(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
 }
 
 fn setup_board(game_board: &mut GameBoard) {
@@ -185,10 +191,46 @@ fn move_right(
     game_variables: &mut GameVariables,
     game_board: &mut GameBoard,
 ) {
-    remove_piece(game_variables, game_board);
-    //update game_variables
     game_variables.piece_location[1] = game_variables.piece_location[1] + 1;
-    generate_piece(game_variables, game_board);
+    if is_collision(game_variables, game_board) {
+        game_variables.piece_location[1] = game_variables.piece_location[1] - 1;
+    } else {
+        game_variables.piece_location[1] = game_variables.piece_location[1] - 1;
+        remove_piece(game_variables, game_board);
+        game_variables.piece_location[1] = game_variables.piece_location[1] + 1;
+        //update game_variables
+        generate_piece(game_variables, game_board);
+    }
+}
+
+fn is_collision(
+    game_variables: &GameVariables,
+    game_board: &GameBoard,
+) -> bool {
+    //check out of bounds
+    let current_piece = game_variables.current_piece.template;
+    let location = game_variables.piece_location;
+    let rotation_state = game_variables.rotation_state;
+
+    //check anchor location
+    if location[0] >= BOARD_HEIGHT || location[1] >= BOARD_WIDTH {
+        return true;
+    }
+    //print 3 pixels
+    //find correct template base on rotation_state
+    let current_template: [[isize; 2]; 4] = current_piece[rotation_state];
+    //pixels located from 1 to 3 of array
+    for i in 1..4 {
+        let location_y: isize = location[0] as isize;
+        let location_x: isize = location[1] as isize;
+        let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
+        let pixel_absolute_pos_x: usize = (current_template[i][1] + location_x) as usize;
+
+        if pixel_absolute_pos_y >= BOARD_HEIGHT || pixel_absolute_pos_x >= BOARD_WIDTH {
+            return true;
+        }
+    }
+    return false;
 }
 
 fn print_game_board(game_board: &GameBoard) {
