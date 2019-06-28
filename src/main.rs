@@ -170,15 +170,13 @@ fn rotate_piece(
     let anchor_position_x_start: isize = game_variables.piece_location[1] as isize;
     //get current rotation state
     let rotation_state_start: usize = game_variables.rotation_state;
-    //remove current piece in present rotation from game_board
     //find relative coordinates of next anchor position after rotation
     let anchor_next_y: isize = tetronomino.template[rotation_state_start][0][0];
     let anchor_next_x: isize = tetronomino.template[rotation_state_start][0][1];
     //find absolute coordinates of next anchor position after rotation on game_board
     let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
-
     let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
-
+    //create proposed_location to test in no_collision
     let proposed_location: [usize; 2] = [anchor_position_y_end, anchor_position_x_end];
 
     let rotation_state_end: usize = if (rotation_state_start + 1) > 3 {
@@ -194,14 +192,11 @@ fn rotate_piece(
     };
 
     if no_collision(proposed_variables, game_board) {
+        //remove current piece in present rotation from game_board
         remove_piece(game_variables, game_board);
         //update game variables to current state
         game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
-        game_variables.rotation_state = if (game_variables.rotation_state + 1) > 3 {
-            0
-        } else {
-            game_variables.rotation_state + 1
-        };
+        game_variables.rotation_state = rotation_state_end;
         //replace piece with next rotation
         generate_piece(game_variables, game_board);
     }
@@ -251,7 +246,7 @@ fn no_collision(
     if location[0] >= BOARD_HEIGHT || location[1] >= BOARD_WIDTH {
         return false;
     }
-    //print 3 pixels
+    //check 3 pixels
     //find correct template base on rotation_state
     let current_template: [[isize; 2]; 4] = current_piece[rotation_state];
     //pixels located from 1 to 3 of array
