@@ -65,8 +65,8 @@ fn main() {
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-    // rotate_piece(&mut game_variables, &mut game_board);
-    // print_game_board(&game_board);
+    rotate_piece(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
 }
 
 fn setup_board(game_board: &mut GameBoard) {
@@ -102,6 +102,13 @@ fn generate_piece(
     }
 }
 
+fn remove_piece(
+    game_variables: &GameVariables,
+    game_board: &mut GameBoard,
+) {
+
+}
+
 fn random_tetronomino(game_variables: &mut GameVariables) {
     let random_number = rand::thread_rng().gen_range(1, 3);
     let spawned_piece: Tetronomino = match random_number {
@@ -113,55 +120,33 @@ fn random_tetronomino(game_variables: &mut GameVariables) {
     game_variables.piece_location = [SPAWN_Y, SPAWN_X];
 }
 
-// fn rotate_piece(
-//     game_variables: &mut GameVariables,
-//     game_board: &mut GameBoard,
-// ) {
-//     let tetronomino = &game_variables.current_piece;
-//     let current_anchor = tetronomino.anchor[game_variables.rotation_state];
-//     let mut anchor_position_x: usize = 0;
-//     let mut anchor_position_y: usize = 0;
-//     let mut removal_count: usize = 0;
-//     //get reference of anchor and remove original piece
-//     'main_loop: for y in (0..BOARD_HEIGHT).rev() {
-//         for x in 0..BOARD_WIDTH {
-//             let element = game_board.game_board[y][x];
-//             if element == 4 {
-//                 anchor_position_x = x;
-//                 anchor_position_y = y;
-//             }
-//             if element == 4 || element == 1 {
-//                 game_board.game_board[y][x] = 0;
-//                 removal_count = removal_count + 1;
-//             }
-//             if removal_count == 4 {
-//                 break 'main_loop;
-//             }
-//         }
-//     }
-//     //replace piece with next rotation
-//     let corner_position_y: usize = anchor_position_y - current_anchor[0];
-//     let corner_position_x: usize = anchor_position_x - current_anchor[1];
-//     game_variables.rotation_state = game_variables.rotation_state + 1;
+fn rotate_piece(
+    game_variables: &mut GameVariables,
+    game_board: &mut GameBoard,
+) {
 
-//     let next_template: [[usize; HOLDING_SIZE]; HOLDING_SIZE] =
-//         tetronomino.template[game_variables.rotation_state];
-//     //print next_template from corner_position of template that was just cleared.
-//     let mut addition_count: usize = 0;
-//     'add_piece_loop: for y in 0..HOLDING_SIZE {
-//         for x in 0..HOLDING_SIZE {
-//             if next_template[y][x] == 1 || next_template[y][x] == 4 {
-//                 //in future, add collision handling code here
-//                 game_board.game_board[corner_position_y + y][corner_position_x + x] =
-//                     next_template[y][x];
-//                 addition_count = addition_count + 1;
-//             }
-//             if addition_count == 4 {
-//                 break 'add_piece_loop;
-//             }
-//         }
-//     }
-// }
+    //get current tetronomino
+    remove_piece(game_variables, game_board);
+    let tetronomino: &Tetronomino = &game_variables.current_piece;
+    //get current location of anchor
+    let anchor_position_y_start: isize = game_variables.piece_location[0] as isize;
+    let anchor_position_x_start: isize = game_variables.piece_location[1] as isize;
+    //get current rotation state
+    let rotation_state_start: usize = game_variables.rotation_state;
+    //remove current piece in present rotation from game_board
+    //find relative coordinates of next anchor position after rotation
+    let anchor_next_y: isize = tetronomino.template[rotation_state_start][0][0];
+    let anchor_next_x: isize = tetronomino.template[rotation_state_start][0][1];
+    //find absolute coordinates of next anchor position after rotation on game_board
+    let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
+    let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
+    //update game variables to current state
+    game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
+    game_variables.rotation_state = game_variables.rotation_state + 1;
+    //replace piece with next rotation
+    generate_piece(game_variables, game_board);
+
+}
 
 fn move_right() {
     for y in (0..BOARD_HEIGHT).rev() {
