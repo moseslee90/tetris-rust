@@ -29,10 +29,10 @@ const PIECE_L: Tetronomino = Tetronomino {
 
 const PIECE_J: Tetronomino = Tetronomino {
     template: [
-        [[0, -1], [0, -1], [1, 0], [2, 0]],
+        [[0, 0], [0, 1], [1, 1], [2, 1]],
         [[2, 0], [1, 0], [0, 1], [0, 2]],
-        [[-1, 0], [0, 1], [-1, 0], [-2, 0]],
-        [[-1, 0], [-1, 0], [0, -1], [0, -2]],
+        [[-1, 1], [0, 1], [-1, 0], [-2, 0]],
+        [[-1, -1], [-1, 0], [0, -1], [0, -2]],
     ],
 };
 
@@ -67,6 +67,12 @@ fn main() {
     print_holding_board(&holding_board);
     rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
+    rotate_piece(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    rotate_piece(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    rotate_piece(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
 }
 
 fn setup_board(game_board: &mut GameBoard) {
@@ -91,7 +97,7 @@ fn generate_piece(
     //print 3 pixels
     //find correct template base on rotation_state
     let current_template: [[isize; 2]; 4] = current_piece[rotation_state];
-    //pixels located from 1 to 3
+    //pixels located from 1 to 3 of array
     for i in 1..4 {
         let location_y: isize = location[0] as isize;
         let location_x: isize = location[1] as isize;
@@ -106,7 +112,24 @@ fn remove_piece(
     game_variables: &GameVariables,
     game_board: &mut GameBoard,
 ) {
+    let current_piece = game_variables.current_piece.template;
+    let location = game_variables.piece_location;
+    let rotation_state = game_variables.rotation_state;
 
+    //remove anchor
+    game_board.game_board[location[0]][location[1]] = 0;
+    //remove 3 pixels
+    //find correct template based on rotation state
+    let current_template: [[isize; 2]; 4] = current_piece[rotation_state];
+    //pixels located from 1 to 3 of array
+    for i in 1..4 {
+        let location_y: isize = location[0] as isize;
+        let location_x: isize = location[1] as isize;
+        let pixel_absolute_pos_y: isize = current_template[i][0] + location_y;
+        let pixel_absolute_pos_x: isize = current_template[i][1] + location_x;
+
+        game_board.game_board[pixel_absolute_pos_y as usize][pixel_absolute_pos_x as usize] = 0;
+    }
 }
 
 fn random_tetronomino(game_variables: &mut GameVariables) {
@@ -142,7 +165,12 @@ fn rotate_piece(
     let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
     //update game variables to current state
     game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
-    game_variables.rotation_state = game_variables.rotation_state + 1;
+    game_variables.rotation_state = if (game_variables.rotation_state + 1) > 3 {
+        0
+    } else {
+        game_variables.rotation_state + 1
+    };
+
     //replace piece with next rotation
     generate_piece(game_variables, game_board);
 
