@@ -11,12 +11,12 @@ const RIGHT: &str = "right";
 const LEFT: &str = "left";
 //game_board
 struct GameBoard {
-    game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT],
+    game_board: [[u8; BOARD_WIDTH]; BOARD_HEIGHT],
 }
 
 //Tetronominoes
 struct Tetronomino {
-    template: [[[isize; 2]; 4]; 4],
+    template: [[[i8; 2]; 4]; 4],
     //each template will have the formate
     //[[anchor_next],[pix1],[pix2],[pix3]]
 }
@@ -62,7 +62,7 @@ fn main() {
     };
     setup_board(&mut game_board);
     //initialise holding area
-    let holding_board: [[usize; HOLDING_SIZE]; HOLDING_SIZE] = [[0; HOLDING_SIZE]; HOLDING_SIZE];
+    let holding_board: [[u8; HOLDING_SIZE]; HOLDING_SIZE] = [[0; HOLDING_SIZE]; HOLDING_SIZE];
     //declare initial rotation state
     let mut game_variables = GameVariables {
         rotation_state: 0usize,
@@ -110,13 +110,13 @@ fn generate_piece(
     game_board.game_board[location[0]][location[1]] = 4;
     //print 3 pixels
     //find correct template base on rotation_state
-    let current_template: [[isize; 2]; 4] = current_piece[rotation_state];
+    let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
     //pixels located from 1 to 3 of array
     for i in 1..4 {
-        let location_y: isize = location[0] as isize;
-        let location_x: isize = location[1] as isize;
-        let pixel_absolute_pos_y: isize = current_template[i][0] + location_y;
-        let pixel_absolute_pos_x: isize = current_template[i][1] + location_x;
+        let location_y: i8 = location[0] as i8;
+        let location_x: i8 = location[1] as i8;
+        let pixel_absolute_pos_y: i8 = current_template[i][0] + location_y;
+        let pixel_absolute_pos_x: i8 = current_template[i][1] + location_x;
 
         game_board.game_board[pixel_absolute_pos_y as usize][pixel_absolute_pos_x as usize] = 1;
     }
@@ -134,13 +134,13 @@ fn remove_piece(
     game_board.game_board[location[0]][location[1]] = 0;
     //remove 3 pixels
     //find correct template based on rotation state
-    let current_template: [[isize; 2]; 4] = current_piece[rotation_state];
+    let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
     //pixels located from 1 to 3 of array
     for i in 1..4 {
-        let location_y: isize = location[0] as isize;
-        let location_x: isize = location[1] as isize;
-        let pixel_absolute_pos_y: isize = current_template[i][0] + location_y;
-        let pixel_absolute_pos_x: isize = current_template[i][1] + location_x;
+        let location_y: i8 = location[0] as i8;
+        let location_x: i8 = location[1] as i8;
+        let pixel_absolute_pos_y: i8 = current_template[i][0] + location_y;
+        let pixel_absolute_pos_x: i8 = current_template[i][1] + location_x;
 
         game_board.game_board[pixel_absolute_pos_y as usize][pixel_absolute_pos_x as usize] = 0;
     }
@@ -166,13 +166,13 @@ fn rotate_piece(
     //get current tetronomino
     let tetronomino: &Tetronomino = game_variables.current_piece;
     //get current location of anchor
-    let anchor_position_y_start: isize = game_variables.piece_location[0] as isize;
-    let anchor_position_x_start: isize = game_variables.piece_location[1] as isize;
+    let anchor_position_y_start: i8 = game_variables.piece_location[0] as i8;
+    let anchor_position_x_start: i8 = game_variables.piece_location[1] as i8;
     //get current rotation state
     let rotation_state_start: usize = game_variables.rotation_state;
     //find relative coordinates of next anchor position after rotation
-    let anchor_next_y: isize = tetronomino.template[rotation_state_start][0][0];
-    let anchor_next_x: isize = tetronomino.template[rotation_state_start][0][1];
+    let anchor_next_y: i8 = tetronomino.template[rotation_state_start][0][0];
+    let anchor_next_x: i8 = tetronomino.template[rotation_state_start][0][1];
     //find absolute coordinates of next anchor position after rotation on game_board
     let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
     let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
@@ -248,11 +248,11 @@ fn no_collision(
     }
     //check 3 pixels
     //find correct template base on rotation_state
-    let current_template: [[isize; 2]; 4] = current_piece[rotation_state];
+    let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
     //pixels located from 1 to 3 of array
     for i in 1..4 {
-        let location_y: isize = location[0] as isize;
-        let location_x: isize = location[1] as isize;
+        let location_y: i8 = location[0] as i8;
+        let location_x: i8 = location[1] as i8;
         let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
         let pixel_absolute_pos_x: usize = (current_template[i][1] + location_x) as usize;
 
@@ -278,7 +278,7 @@ fn print_game_board(game_board: &GameBoard) {
     println!("");
 }
 
-fn print_holding_board(holding_board: &[[usize; HOLDING_SIZE]; HOLDING_SIZE]) {
+fn print_holding_board(holding_board: &[[u8; HOLDING_SIZE]; HOLDING_SIZE]) {
     println!("",);
     for k in (0..HOLDING_SIZE).rev() {
         if k < 10 {
