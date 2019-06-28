@@ -13,34 +13,33 @@ struct GameBoard {
 
 //Tetronominoes
 struct Tetronomino {
-    template: [[[usize; HOLDING_SIZE]; HOLDING_SIZE]; HOLDING_SIZE],
-    //position of anchor for each template
-    //eg. anchor for PIECE_L for template 0 would be
-    //anchor[0]
-    //[0, 1]
-    anchor: [[usize; 2]; 4],
+    template: [[[isize; 2]; 4]; 4],
+    //each template will have the formate
+    //[[anchor_next],[pix1],[pix2],[pix3]]
 }
+
 const PIECE_L: Tetronomino = Tetronomino {
     template: [
-        [[0, 4, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
-        [[0, 4, 0, 0], [0, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
-        [[0, 0, 4, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
-        [[1, 1, 4, 0], [0, 0, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[1, 0], [0, 1], [1, 0], [2, 0]],
+        [[1, 1], [-1, 0], [0, 1], [0, 2]],
+        [[-2, 0], [0, -1], [-1, 0], [-2, 0]],
+        [[0, -1], [1, 0], [0, -1], [0, -2]],
     ],
-    anchor: [[0, 1], [0, 1], [0, 2], [0, 2]],
 };
+
 const PIECE_J: Tetronomino = Tetronomino {
     template: [
-        [[0, 4, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
-        [[0, 4, 1, 1], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-        [[0, 4, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
-        [[0, 0, 4, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[1, 0], [0, 1], [1, 0], [2, 0]],
+        [[1, 1], [-1, 0], [0, 1], [0, 2]],
+        [[-2, 0], [0, -1], [-1, 0], [-2, 0]],
+        [[0, -1], [1, 0], [0, -1], [0, -2]],
     ],
-    anchor: [[0, 1], [0, 1], [0, 1], [0, 2]],
 };
+
 struct GameVariables {
     rotation_state: usize,
     current_piece: Tetronomino,
+    //position of anchor on board [y,x]
     piece_location: [usize; 2],
 }
 
@@ -98,12 +97,6 @@ fn generate_piece(
         }
     }
 }
-
-// game_variables.current_piece = PIECE_L;
-// game_variables.piece_location = [
-//     PIECE_L.anchor[0][0] + SPAWN_Y,
-//     PIECE_L.anchor[0][1] + SPAWN_X,
-// ];
 
 fn random_tetronomino(game_variables: &mut GameVariables) {
     let random_number = rand::thread_rng().gen_range(1, 3);
@@ -165,6 +158,12 @@ fn rotate_piece(
                 break 'add_piece_loop;
             }
         }
+    }
+}
+
+fn move_right() {
+    for y in (0..BOARD_HEIGHT).rev() {
+        for x in 0..BOARD_WIDTH {}
     }
 }
 
