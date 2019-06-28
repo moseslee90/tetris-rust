@@ -68,11 +68,7 @@ fn main() {
     print_holding_board(&holding_board);
     rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
-    rotate_piece(&mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    rotate_piece(&mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    rotate_piece(&mut game_variables, &mut game_board);
+    move_right(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
 }
 
@@ -185,10 +181,14 @@ fn rotate_piece(
 
 }
 
-fn move_right() {
-    for y in (0..BOARD_HEIGHT).rev() {
-        for x in 0..BOARD_WIDTH {}
-    }
+fn move_right(
+    game_variables: &mut GameVariables,
+    game_board: &mut GameBoard,
+) {
+    remove_piece(game_variables, game_board);
+    //update game_variables
+    game_variables.piece_location[1] = game_variables.piece_location[1] + 1;
+    generate_piece(game_variables, game_board);
 }
 
 fn print_game_board(game_board: &GameBoard) {
