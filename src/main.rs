@@ -6,6 +6,9 @@ const HOLDING_SIZE: usize = 4;
 
 const SPAWN_X: usize = 4;
 const SPAWN_Y: usize = 17;
+const DOWN: &str = "down";
+const RIGHT: &str = "right";
+const LEFT: &str = "left";
 //game_board
 struct GameBoard {
     game_board: [[usize; BOARD_WIDTH]; BOARD_HEIGHT],
@@ -44,7 +47,6 @@ struct GameVariables<'a> {
 }
 
 fn main() {
-
     //initialise game_board
     let mut game_board = GameBoard {
         game_board: [[0; BOARD_WIDTH]; BOARD_HEIGHT],
@@ -66,7 +68,13 @@ fn main() {
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-    move_down(&mut game_variables, &mut game_board);
+    move_piece(DOWN, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(LEFT, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(RIGHT, &mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece(RIGHT, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
     rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
@@ -189,48 +197,24 @@ fn rotate_piece(
     }
 }
 
-fn move_right(
+fn move_piece(
+    direction: &str,
     game_variables: &mut GameVariables,
-    game_board: &mut GameBoard,
+    game_board: &mut GameBoard
 ) {
     let mut proposed_location = game_variables.piece_location;
-    proposed_location[1] = proposed_location[1] + 1;
-    let proposed_variables = GameVariables {
-        rotation_state: game_variables.rotation_state,
-        current_piece: game_variables.current_piece,
-        piece_location: proposed_location,
-    };
-    if no_collision(proposed_variables, game_board) {
-        remove_piece(game_variables, game_board);
-        game_variables.piece_location[1] = game_variables.piece_location[1] + 1;
-        //update game_variables
-        generate_piece(game_variables, game_board);
+    match direction {
+        RIGHT => {
+            proposed_location[1] = proposed_location[1] + 1;
+        }
+        LEFT => {
+            proposed_location[1] = proposed_location[1] - 1;
+        }
+        DOWN => {
+            proposed_location[0] = proposed_location[0] - 1;
+        }
+        _ => (),
     }
-}
-fn move_left(
-    game_variables: &mut GameVariables,
-    game_board: &mut GameBoard,
-) {
-    let mut proposed_location = game_variables.piece_location;
-    proposed_location[1] = proposed_location[1] - 1;
-    let proposed_variables = GameVariables {
-        rotation_state: game_variables.rotation_state,
-        current_piece: game_variables.current_piece,
-        piece_location: proposed_location,
-    };
-    if no_collision(proposed_variables, game_board) {
-        remove_piece(game_variables, game_board);
-        game_variables.piece_location = proposed_location;
-        //update game_variables
-        generate_piece(game_variables, game_board);
-    }
-}
-fn move_down(
-    game_variables: &mut GameVariables,
-    game_board: &mut GameBoard,
-) {
-    let mut proposed_location = game_variables.piece_location;
-    proposed_location[0] = proposed_location[0] - 1;
     let proposed_variables = GameVariables {
         rotation_state: game_variables.rotation_state,
         current_piece: game_variables.current_piece,
