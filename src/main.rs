@@ -44,6 +44,7 @@ struct GameVariables {
 }
 
 fn main() {
+
     //initialise game_board
     let mut game_board = GameBoard {
         game_board: [[0; BOARD_WIDTH]; BOARD_HEIGHT],
@@ -161,8 +162,16 @@ fn rotate_piece(
     let anchor_next_y: isize = tetronomino.template[rotation_state_start][0][0];
     let anchor_next_x: isize = tetronomino.template[rotation_state_start][0][1];
     //find absolute coordinates of next anchor position after rotation on game_board
-    let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
-    let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
+    let anchor_position_y_end: usize = if (anchor_position_y_start + anchor_next_y) > 0 {
+        (anchor_position_y_start + anchor_next_y) as usize
+    } else {
+        SPAWN_Y
+    };
+    let anchor_position_x_end: usize = if (anchor_position_x_start + anchor_next_x) > 0 {
+        (anchor_position_x_start + anchor_next_x) as usize
+    } else {
+        SPAWN_X
+    };
     //update game variables to current state
     game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
     game_variables.rotation_state = if (game_variables.rotation_state + 1) > 3 {
