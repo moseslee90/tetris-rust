@@ -385,7 +385,7 @@ fn is_row_blank(row: &[u8; BOARD_WIDTH]) -> bool {
 }
 
 fn is_row(operation: &str, row: &[u8; BOARD_WIDTH]) -> bool {
-    let mut value_to_compare: &u8;
+    let value_to_compare: &u8;
     match operation {
         BLANK => value_to_compare = &0u8,
         FILLED => value_to_compare = &2u8,
