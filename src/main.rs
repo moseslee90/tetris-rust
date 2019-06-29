@@ -17,6 +17,7 @@ const FLOOR_FOUND: &str = "floor_found";
 //constants for is_row function
 const BLANK: &str = "blank";
 const FILLED: &str = "filled";
+const PARTIAL_FILL: &str = "partial_fill";
 
 //game_board
 struct GameBoard {
@@ -352,51 +353,47 @@ fn no_collision(
     return true;
 }
 
-fn is_row_filled(row: &[u8; BOARD_WIDTH]) -> bool{
-    //check if row is filled
-    for element in row.iter() {
-        if element != &2u8 {
-            return false;
-        }
-    }
-    return true;
-}
-
-fn move_row_down(game_board: &mut GameBoard, row_index: usize, rows_filled: usize) {
+fn move_row_down(
+    game_board: &mut GameBoard,
+    row_index: usize,
+    rows_filled: usize,
+) {
     for x in 0..BOARD_WIDTH {
-        game_board.game_board[row_index-rows_filled][x] = game_board.game_board[row_index][x];
+        game_board.game_board[row_index - rows_filled][x] = game_board.game_board[row_index][x];
         game_board.game_board[row_index][x] = 0;
     }
 }
 
-fn clear_row(game_board: &mut GameBoard, row_index: usize) {
+fn clear_row(
+    game_board: &mut GameBoard,
+    row_index: usize,
+) {
     for x in 0..BOARD_WIDTH {
         game_board.game_board[row_index][x] = 0;
     }
 }
 
-fn is_row_blank(row: &[u8; BOARD_WIDTH]) -> bool {
-    for element in row.iter() {
-        if element != &0u8 {
-            return false;
-        }
-    }
-    return true;
-}
+fn row_is(row: &[u8; BOARD_WIDTH]) -> &str {
+    let mut blank: u8 = 0;
+    let mut filled: u8 = 0;
 
-fn is_row(operation: &str, row: &[u8; BOARD_WIDTH]) -> bool {
-    let value_to_compare: &u8;
-    match operation {
-        BLANK => value_to_compare = &0u8,
-        FILLED => value_to_compare = &2u8,
-        _ => panic!("is_row was given an unknown slice value")
-    }
     for element in row.iter() {
-        if element != value_to_compare {
-            return false;
+        if element == &0u8 {
+            blank = blank + 1;
+        } else if element == &2u8 {
+            filled = filled + 1;
+        }
+        if blank > 0 && filled > 0 {
+            return PARTIAL_FILL;
         }
     }
-    return true;
+    if blank == 10 {
+        return BLANK;
+    } else if filled == 10 {
+        return FILLED;
+    } else {
+        return PARTIAL_FILL;
+    }
 }
 
 fn update_game_board(game_board: &mut GameBoard) {
@@ -405,14 +402,15 @@ fn update_game_board(game_board: &mut GameBoard) {
     let mut rows_filled: usize = 0;
     for row_index in 1..BOARD_HEIGHT {
         let row_reference: &[u8; BOARD_WIDTH] = &game_board.game_board[row_index];
-        if is_row_blank(row_reference) {
-            return;
-        }
-        if is_row_filled(row_reference) {
-            rows_filled = rows_filled + 1;
-            clear_row(game_board, row_index);
-        } else if rows_filled != 0 {
-            move_row_down(game_board, row_index, rows_filled);
+        //row is will compute if row_reference give is a blank, filled or partial filled row
+        match row_is(row_reference) {
+            BLANK => return,
+            FILLED => {
+                rows_filled = rows_filled + 1;
+                clear_row(game_board, row_index);
+            }
+            PARTIAL_FILL => move_row_down(game_board, row_index, rows_filled),
+            _ => panic!("unhandled match pattern in update_game_board"),
         }
     }
 }
