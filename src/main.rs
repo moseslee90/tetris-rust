@@ -201,7 +201,8 @@ fn spawn_tetronomino(game_variables: &mut GameVariables) {
         7 => &PIECE_I,
         _ => &PIECE_L,
     };
-    game_variables.current_piece = spawned_piece;
+    game_variables.current_piece = game_variables.holding_piece;
+    game_variables.holding_piece = spawned_piece;
     game_variables.piece_location = [SPAWN_Y, SPAWN_X];
 }
 
@@ -342,6 +343,19 @@ fn no_collision(
         let pixel_absolute_pos_x: usize = (current_template[i][1] + location_x) as usize;
 
         if pixel_absolute_pos_y >= BOARD_HEIGHT || pixel_absolute_pos_x >= BOARD_WIDTH {
+            return false;
+        }
+    }
+    return true;
+}
+
+fn is_row_filled(row: [u8; BOARD_WIDTH]) -> bool{
+    //loop through game_board from bottom row, skip row 0
+    //check if row has all cells "filled" (2u8)
+    //if filled, move rows above it down
+    //continue checking from same row again
+    for element in row.iter() {
+        if element != &2u8 {
             return false;
         }
     }
