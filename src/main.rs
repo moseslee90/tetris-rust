@@ -57,9 +57,18 @@ const PIECE_T: Tetronomino = Tetronomino {
 const PIECE_Z: Tetronomino = Tetronomino {
     template: [
         [[0, 0], [1, -1], [1, 0], [0, 1]],
-        [[0, 0], [2, 1], [1, 1], [1, 0]],
+        [[0, 0], [1, 0], [1, 1], [2, 1]],
         [[0, 0], [1, -1], [1, 0], [0, 1]],
-        [[0, 0], [2, 1], [1, 1], [1, 0]],
+        [[0, 0], [1, 0], [1, 1], [2, 1]],
+    ],
+};
+
+const PIECE_S: Tetronomino = Tetronomino {
+    template: [
+        [[0, 1], [0, 1], [1, 1], [1, 2]],
+        [[0, -1], [1, 0], [1, -1], [2, -1]],
+        [[0, 1], [0, 1], [1, 1], [1, 2]],
+        [[0, -1], [1, 0], [1, -1], [2, -1]],
     ],
 };
 
@@ -153,12 +162,13 @@ fn change_piece(
 }
 
 fn spawn_tetronomino(game_variables: &mut GameVariables) {
-    let random_number = rand::thread_rng().gen_range(1, 5);
+    let random_number = rand::thread_rng().gen_range(1, 6);
     let spawned_piece: &Tetronomino = match random_number {
         1 => &PIECE_L, //choose L piece
         2 => &PIECE_J, //choose J piece
         3 => &PIECE_T,
         4 => &PIECE_Z,
+        5 => &PIECE_S,
         _ => &PIECE_L,
     };
     game_variables.current_piece = spawned_piece;
