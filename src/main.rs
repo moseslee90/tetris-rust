@@ -25,6 +25,7 @@ struct Tetronomino {
     template: [[[i8; 2]; 4]; 4],
     //each template will have the formate
     //[[anchor_next],[pix1],[pix2],[pix3]]
+    distinct_rotations: u8,
 }
 
 const PIECE_L: Tetronomino = Tetronomino {
@@ -34,6 +35,7 @@ const PIECE_L: Tetronomino = Tetronomino {
         [[-2, 0], [0, -1], [-1, 0], [-2, 0]],
         [[0, -1], [1, 0], [0, -1], [0, -2]],
     ],
+    distinct_rotations: 4,
 };
 
 const PIECE_J: Tetronomino = Tetronomino {
@@ -43,6 +45,7 @@ const PIECE_J: Tetronomino = Tetronomino {
         [[-1, 1], [0, 1], [-1, 0], [-2, 0]],
         [[-1, -1], [-1, 0], [0, -1], [0, -2]],
     ],
+    distinct_rotations: 4,
 };
 
 const PIECE_T: Tetronomino = Tetronomino {
@@ -52,6 +55,7 @@ const PIECE_T: Tetronomino = Tetronomino {
         [[0, 0], [-1, 0], [0, -1], [0, 1]],
         [[0, 0], [0, -1], [1, 0], [-1, 0]],
     ],
+    distinct_rotations: 4,
 };
 
 const PIECE_Z: Tetronomino = Tetronomino {
@@ -61,6 +65,7 @@ const PIECE_Z: Tetronomino = Tetronomino {
         [[0, 0], [1, -1], [1, 0], [0, 1]],
         [[0, 0], [1, 0], [1, 1], [2, 1]],
     ],
+    distinct_rotations: 2,
 };
 
 const PIECE_S: Tetronomino = Tetronomino {
@@ -70,6 +75,7 @@ const PIECE_S: Tetronomino = Tetronomino {
         [[0, 1], [0, 1], [1, 1], [1, 2]],
         [[0, -1], [1, 0], [1, -1], [2, -1]],
     ],
+    distinct_rotations: 2,
 };
 
 const PIECE_O: Tetronomino = Tetronomino {
@@ -79,6 +85,17 @@ const PIECE_O: Tetronomino = Tetronomino {
         [[0, 0], [1, 0], [1, 1], [0, 1]],
         [[0, 0], [1, 0], [1, 1], [0, 1]],
     ],
+    distinct_rotations: 1,
+};
+
+const PIECE_I: Tetronomino = Tetronomino {
+    template: [
+        [[0, 0], [0, -1], [0, 1], [0, 2]],
+        [[0, 0], [1, 0], [2, 0], [3, 0]],
+        [[0, 0], [0, -1], [0, 1], [0, 2]],
+        [[0, 0], [1, 0], [2, 0], [3, 0]],
+    ],
+    distinct_rotations: 2,
 };
 
 struct GameVariables<'a> {
@@ -171,7 +188,7 @@ fn change_piece(
 }
 
 fn spawn_tetronomino(game_variables: &mut GameVariables) {
-    let random_number = rand::thread_rng().gen_range(1, 7);
+    let random_number = rand::thread_rng().gen_range(1, 8);
     let spawned_piece: &Tetronomino = match random_number {
         1 => &PIECE_L, //choose L piece
         2 => &PIECE_J, //choose J piece
@@ -179,6 +196,7 @@ fn spawn_tetronomino(game_variables: &mut GameVariables) {
         4 => &PIECE_Z,
         5 => &PIECE_S,
         6 => &PIECE_O,
+        7 => &PIECE_I,
         _ => &PIECE_L,
     };
     game_variables.current_piece = spawned_piece;
