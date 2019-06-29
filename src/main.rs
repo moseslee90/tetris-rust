@@ -14,6 +14,9 @@ const LEFT: &str = "left";
 const REMOVE_PIECE: &str = "remove_piece";
 const GENERATE_PIECE: &str = "generate_piece";
 const FLOOR_FOUND: &str = "floor_found";
+//constants for is_row function
+const BLANK: &str = "blank";
+const FILLED: &str = "filled";
 
 //game_board
 struct GameBoard {
@@ -151,8 +154,8 @@ fn change_piece(
     game_variables: &GameVariables,
     game_board: &mut GameBoard,
 ) {
-    let mut anchor_value: u8 = 5;
-    let mut pixel_value: u8 = 5;
+    let anchor_value: u8;
+    let pixel_value: u8;
     match change_type {
         REMOVE_PIECE => {
             anchor_value = 0;
@@ -166,7 +169,7 @@ fn change_piece(
             anchor_value = 2;
             pixel_value = 2;
         }
-        _ => (),
+        _ => panic!("change_piece given unhandled change_type constant"),
     };
     let current_piece = game_variables.current_piece.template;
     let location = game_variables.piece_location;
@@ -199,7 +202,7 @@ fn spawn_tetronomino(game_variables: &mut GameVariables) {
         5 => &PIECE_S,
         6 => &PIECE_O,
         7 => &PIECE_I,
-        _ => &PIECE_L,
+        _ => panic!("unhandled number for spawn_tetronomino generated!"),
     };
     game_variables.current_piece = game_variables.holding_piece;
     game_variables.holding_piece = spawned_piece;
@@ -267,7 +270,7 @@ fn move_piece(
         DOWN => {
             proposed_location[0] = proposed_location[0] - 1;
         }
-        _ => (),
+        _ => panic!("move_piece: unhandled direction constant provided"),
     }
     let proposed_variables = GameVariables {
         rotation_state: game_variables.rotation_state,
@@ -366,13 +369,48 @@ fn move_row_down(game_board: &mut GameBoard, row_index: usize, rows_filled: usiz
     }
 }
 
+fn clear_row(game_board: &mut GameBoard, row_index: usize) {
+    for x in 0..BOARD_WIDTH {
+        game_board.game_board[row_index][x] = 0;
+    }
+}
+
+fn is_row_blank(row: &[u8; BOARD_WIDTH]) -> bool {
+    for element in row.iter() {
+        if element != &0u8 {
+            return false;
+        }
+    }
+    return true;
+}
+
+fn is_row(operation: &str, row: &[u8; BOARD_WIDTH]) -> bool {
+    let mut value_to_compare: &u8;
+    match operation {
+        BLANK => value_to_compare = &0u8,
+        FILLED => value_to_compare = &2u8,
+        _ => panic!("is_row was given an unknown slice value")
+    }
+    for element in row.iter() {
+        if element != value_to_compare {
+            return false;
+        }
+    }
+    return true;
+}
+
 fn update_game_board(game_board: &mut GameBoard) {
     //iterate through rows from bottom skipping row 0
     //declare counter to keep track of rows filled
     let mut rows_filled: usize = 0;
     for row_index in 1..BOARD_HEIGHT {
-        if is_row_filled(&game_board.game_board[row_index]) {
+        let row_reference: &[u8; BOARD_WIDTH] = &game_board.game_board[row_index];
+        if is_row_blank(row_reference) {
+            return;
+        }
+        if is_row_filled(row_reference) {
             rows_filled = rows_filled + 1;
+            clear_row(game_board, row_index);
         } else if rows_filled != 0 {
             move_row_down(game_board, row_index, rows_filled);
         }
