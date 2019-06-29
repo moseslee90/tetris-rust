@@ -100,6 +100,7 @@ const PIECE_I: Tetronomino = Tetronomino {
 
 struct GameVariables<'a> {
     rotation_state: usize,
+    holding_piece: &'a Tetronomino,
     current_piece: &'a Tetronomino,
     //position of anchor on board [y,x]
     piece_location: [usize; 2],
@@ -116,6 +117,7 @@ fn main() {
     //declare initial rotation state
     let mut game_variables = GameVariables {
         rotation_state: 0usize,
+        holding_piece: &PIECE_J,
         current_piece: &PIECE_J,
         piece_location: [0, 0],
     };
@@ -232,6 +234,7 @@ fn rotate_piece(
 
     let proposed_variables = GameVariables {
         rotation_state: rotation_state_end,
+        holding_piece: game_variables.holding_piece,
         current_piece: tetronomino,
         piece_location: proposed_location,
     };
@@ -267,6 +270,7 @@ fn move_piece(
     }
     let proposed_variables = GameVariables {
         rotation_state: game_variables.rotation_state,
+        holding_piece: game_variables.holding_piece,
         current_piece: game_variables.current_piece,
         piece_location: proposed_location,
     };
