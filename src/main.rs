@@ -349,17 +349,34 @@ fn no_collision(
     return true;
 }
 
-fn is_row_filled(row: [u8; BOARD_WIDTH]) -> bool{
-    //loop through game_board from bottom row, skip row 0
-    //check if row has all cells "filled" (2u8)
-    //if filled, move rows above it down
-    //continue checking from same row again
+fn is_row_filled(row: &[u8; BOARD_WIDTH]) -> bool{
+    //check if row is filled
     for element in row.iter() {
         if element != &2u8 {
             return false;
         }
     }
     return true;
+}
+
+fn move_row_down(game_board: &mut GameBoard, row_index: usize, rows_filled: usize) {
+    for x in 0..BOARD_WIDTH {
+        game_board.game_board[row_index-rows_filled][x] = game_board.game_board[row_index][x];
+        game_board.game_board[row_index][x] = 0;
+    }
+}
+
+fn update_game_board(game_board: &mut GameBoard) {
+    //iterate through rows from bottom skipping row 0
+    //declare counter to keep track of rows filled
+    let mut rows_filled: usize = 0;
+    for row_index in 1..BOARD_HEIGHT {
+        if is_row_filled(&game_board.game_board[row_index]) {
+            rows_filled = rows_filled + 1;
+        } else if rows_filled != 0 {
+            move_row_down(game_board, row_index, rows_filled);
+        }
+    }
 }
 
 fn print_game_board(game_board: &GameBoard) {
