@@ -135,10 +135,6 @@ fn main() {
     print_holding_board(&holding_board);
     move_piece(DOWN, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
-    move_piece(LEFT, &mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    move_piece(RIGHT, &mut game_variables, &mut game_board);
-    print_game_board(&game_board);
     rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
 }
@@ -283,7 +279,6 @@ fn move_piece(
         //is floor, turn piece into fixed
         change_piece(FLOOR_FOUND, &game_variables, game_board);
         update_game_board(game_board);
-
     } else if no_collision(&proposed_variables, game_board) {
         //remove piece before moved state
         change_piece(REMOVE_PIECE, game_variables, game_board);
@@ -385,12 +380,15 @@ fn row_is(row: &[u8; BOARD_WIDTH]) -> &str {
             filled = filled + 1;
         }
         if blank > 0 && filled > 0 {
+            println!("partial fill",);
             return PARTIAL_FILL;
         }
     }
     if blank == 10 {
+        println!("blank row",);
         return BLANK;
     } else if filled == 10 {
+        println!("filled row",);
         return FILLED;
     } else {
         return PARTIAL_FILL;
@@ -402,7 +400,7 @@ fn update_game_board(game_board: &mut GameBoard) {
     //iterate through rows from bottom skipping row 0
     //declare counter to keep track of rows filled
     let mut rows_filled: usize = 0;
-    for row_index in 1..BOARD_HEIGHT {
+    for row_index in 0..BOARD_HEIGHT {
         let row_reference: &[u8; BOARD_WIDTH] = &game_board.game_board[row_index];
         //row is will compute if row_reference given is a blank, filled or partial filled row
         match row_is(row_reference) {
@@ -411,7 +409,11 @@ fn update_game_board(game_board: &mut GameBoard) {
                 rows_filled = rows_filled + 1;
                 clear_row(game_board, row_index);
             }
-            PARTIAL_FILL => move_row_down(game_board, row_index, rows_filled),
+            PARTIAL_FILL => {
+                if rows_filled > 0 {
+                    move_row_down(game_board, row_index, rows_filled)
+                }
+            }
             _ => panic!("unhandled match pattern in update_game_board"),
         }
     }
