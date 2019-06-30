@@ -282,6 +282,7 @@ fn move_piece(
     if direction == DOWN && is_floor(&proposed_variables, &game_board) {
         //is floor, turn piece into fixed
         change_piece(FLOOR_FOUND, &game_variables, game_board);
+        update_game_board(game_board);
 
     } else if no_collision(&proposed_variables, game_board) {
         //remove piece before moved state
@@ -396,13 +397,14 @@ fn row_is(row: &[u8; BOARD_WIDTH]) -> &str {
     }
 }
 
+//function to call right after piece has been placed and turned into a fixed piece
 fn update_game_board(game_board: &mut GameBoard) {
     //iterate through rows from bottom skipping row 0
     //declare counter to keep track of rows filled
     let mut rows_filled: usize = 0;
     for row_index in 1..BOARD_HEIGHT {
         let row_reference: &[u8; BOARD_WIDTH] = &game_board.game_board[row_index];
-        //row is will compute if row_reference give is a blank, filled or partial filled row
+        //row is will compute if row_reference given is a blank, filled or partial filled row
         match row_is(row_reference) {
             BLANK => return,
             FILLED => {
