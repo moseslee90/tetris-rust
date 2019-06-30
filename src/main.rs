@@ -130,6 +130,7 @@ fn main() {
     //generate first piece on board
     //first iteration requires an explicit call to ready a holding piece
     spawn_tetronomino_holding_board(&mut game_variables);
+    //loop shld start around here
     spawn_tetronomino_on_board(&mut game_variables, &mut game_board);
     println!("{}", game_variables.rotation_state);
     //debugging to test results
@@ -137,7 +138,7 @@ fn main() {
     print_holding_board(&holding_board);
     //example of one iteration where piece is moved to the left, rotated once clockwise 90 degrees
     //and placed all the way down and game board is updated
-    move_piece(LEFT, &mut game_variables, &mut game_board);
+    move_piece(DOWN, 1, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
     rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
@@ -273,19 +274,20 @@ fn rotate_piece(
 
 fn move_piece(
     direction: &str,
+    amount: usize,
     game_variables: &mut GameVariables,
     game_board: &mut GameBoard,
 ) {
     let mut proposed_location = game_variables.piece_location;
     match direction {
         RIGHT => {
-            proposed_location[1] = proposed_location[1] + 1;
+            proposed_location[1] = proposed_location[1] + amount;
         }
         LEFT => {
-            proposed_location[1] = proposed_location[1] - 1;
+            proposed_location[1] = proposed_location[1] - amount;
         }
         DOWN => {
-            proposed_location[0] = proposed_location[0] - 1;
+            proposed_location[0] = proposed_location[0] - amount;
         }
         _ => panic!("move_piece: unhandled direction constant provided"),
     }
