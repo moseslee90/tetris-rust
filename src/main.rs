@@ -1,7 +1,9 @@
 use json;
-
 use rand::Rng;
 use std::fs;
+
+mod game_board_module;
+mod game_constants;
 
 const BOARD_HEIGHT: usize = 21;
 const BOARD_WIDTH: usize = 10;
@@ -142,14 +144,17 @@ fn main() {
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-    change_piece(REMOVE_PIECE, &game_variables, &mut game_board);
+    // change_piece(REMOVE_PIECE, &game_variables, &mut game_board);
 
-    generate_move_dataset(game_variables, game_board);
+    let game_board = game_board_module::GameBoard::new();
+    game_board.print_game_board();
 
-    let data = fs::read_to_string("data.json").expect("Unable to read data.json");
-    let parsed = json::parse(&data).unwrap();
-    let code = &parsed["code"];
-    println!("{:#}", code);
+    // generate_move_dataset(game_variables, game_board);
+
+    // let data = fs::read_to_string("data/data.json").expect("Unable to read data/data.json");
+    // let parsed = json::parse(&data).unwrap();
+    // let code = &parsed["code"];
+    // println!("{:#}", code);
     // let json_string = json::stringify(parsed);
     // fs::write("data_output.json", json_string).expect("Unable to write to data_output.json")
 }
@@ -602,4 +607,29 @@ fn generate_move_dataset(
             print_game_board(&game_board_left);
         }
     }
+}
+
+fn evaluate_game_board(game_board: &GameBoard) -> isize {
+    let array: [[u8; BOARD_WIDTH]; BOARD_HEIGHT] = game_board.game_board;
+    let mut score: isize = 0;
+    let mut filled_row: u8 = 0;
+    for y in 0..BOARD_HEIGHT {
+        let mut filled_cell: usize = 0;
+        let mut blank_cell: usize = 0;
+        for x in 0..BOARD_WIDTH {
+            //exit condition, if entire row is blank
+            if array[y][x] == 0 {
+                blank_cell = blank_cell + 1;
+            } else if array[y][x] == 2 {
+                filled_cell = filled_cell + 1;
+            }
+        }
+        if blank_cell == 10 {
+            break;
+        }
+        if filled_cell == 10 {
+            filled_row = filled_row + 1;
+        }
+    }
+    return score;
 }
