@@ -584,7 +584,9 @@ fn generate_move_dataset(
     for n in 0..distinct_rotations {
         //generate one data set each rotation
         let mut game_variables_rotation = game_variables;
-        rotate_piece_ai(n, &mut game_variables_rotation);
+        if n != 0 {
+            rotate_piece_ai(n, &mut game_variables_rotation);
+        }
         //find max right moves
         let max_right: usize = piece_max_moves(RIGHT, &game_variables_rotation, &game_board);
         //find max left movse
