@@ -1,4 +1,7 @@
+use json;
+
 use rand::Rng;
+use std::fs;
 
 const BOARD_HEIGHT: usize = 21;
 const BOARD_WIDTH: usize = 10;
@@ -143,6 +146,12 @@ fn main() {
 
     generate_move_dataset(game_variables, game_board);
 
+    let data = fs::read_to_string("data.json").expect("Unable to read data.json");
+    let parsed = json::parse(&data).unwrap();
+    let code = &parsed["code"];
+    println!("{:#}", code);
+    // let json_string = json::stringify(parsed);
+    // fs::write("data_output.json", json_string).expect("Unable to write to data_output.json")
 }
 
 fn setup_board(game_board: &mut GameBoard) {

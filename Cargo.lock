@@ -6,6 +6,11 @@ version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "json"
+version = "0.11.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "libc"
 version = "0.2.58"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -56,6 +61,7 @@ dependencies = [
 name = "tetris-rust"
 version = "0.1.0"
 dependencies = [
+ "json 0.11.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.3.23 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -80,6 +86,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
 "checksum fuchsia-cprng 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "a06f77d526c1a601b7c4cdd98f54b5eaabffc14d5f2f0296febdc7f357c6d3ba"
+"checksum json 0.11.14 (registry+https://github.com/rust-lang/crates.io-index)" = "01d7903059b22f1f09ced2fb9562507e3556a953caa2f835c64ab022bb6148c2"
 "checksum libc 0.2.58 (registry+https://github.com/rust-lang/crates.io-index)" = "6281b86796ba5e4366000be6e9e18bf35580adf9e63fbe2294aadb587613a319"
 "checksum rand 0.3.23 (registry+https://github.com/rust-lang/crates.io-index)" = "64ac302d8f83c0c1974bf758f6b041c6c8ada916fbb44a609158ca8b064cc76c"
 "checksum rand 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)" = "552840b97013b1a26992c11eac34bdd778e464601a4c2054b5f0bff7c6761293"
