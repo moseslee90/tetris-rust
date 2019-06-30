@@ -118,7 +118,7 @@ fn main() {
     };
     setup_board(&mut game_board);
     //initialise holding area
-    let holding_board: [[u8; HOLDING_SIZE]; HOLDING_SIZE] = [[0; HOLDING_SIZE]; HOLDING_SIZE];
+    let mut holding_board: [[u8; HOLDING_SIZE]; HOLDING_SIZE] = [[0; HOLDING_SIZE]; HOLDING_SIZE];
     //declare initial rotation state
     let mut game_variables = GameVariables {
         rotation_state: 0usize,
@@ -128,18 +128,26 @@ fn main() {
     };
 
     //generate first piece on board
-    spawn_tetronomino(&mut game_variables);
-    change_piece(GENERATE_PIECE, &game_variables, &mut game_board);
+    //first iteration requires an explicit call to ready a holding piece
+    spawn_tetronomino_holding_board(&mut game_variables);
+    spawn_tetronomino_on_board(&mut game_variables, &mut game_board);
     println!("{}", game_variables.rotation_state);
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
-    move_piece(DOWN, &mut game_variables, &mut game_board);
+    //example of one iteration where piece is moved to the left, rotated once clockwise 90 degrees
+    //and placed all the way down and game board is updated
+    move_piece(LEFT, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
     rotate_piece(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
     move_piece_down_max(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
+    //for ai simulation, a result of number of rows cleared might be
+    //required to be returned from update_game_board
+    update_game_board(&mut game_board);
+    print_game_board(&game_board);
+    //iteration ends
 }
 
 fn setup_board(game_board: &mut GameBoard) {
@@ -192,7 +200,7 @@ fn change_piece(
     }
 }
 
-fn spawn_tetronomino(game_variables: &mut GameVariables) {
+fn spawn_tetronomino_holding_board(game_variables: &mut GameVariables) {
     let random_number = rand::thread_rng().gen_range(1, 8);
     let spawned_piece: &Tetronomino = match random_number {
         1 => &PIECE_L, //choose L piece
@@ -204,9 +212,18 @@ fn spawn_tetronomino(game_variables: &mut GameVariables) {
         7 => &PIECE_I,
         _ => panic!("unhandled number for spawn_tetronomino generated!"),
     };
-    game_variables.current_piece = game_variables.holding_piece;
     game_variables.holding_piece = spawned_piece;
+}
+
+fn spawn_tetronomino_on_board(
+    game_variables: &mut GameVariables,
+    game_board: &mut GameBoard,
+) {
+    game_variables.current_piece = game_variables.holding_piece;
     game_variables.piece_location = [SPAWN_Y, SPAWN_X];
+    spawn_tetronomino_holding_board(game_variables);
+
+    change_piece(GENERATE_PIECE, game_variables, game_board);
 }
 
 fn rotate_piece(
@@ -457,7 +474,7 @@ fn update_game_board(game_board: &mut GameBoard) {
     //iterate through rows from bottom skipping row 0
     //declare counter to keep track of rows filled
     let mut rows_filled: usize = 0;
-    for row_index in 0..BOARD_HEIGHT {
+    for row_index in 1..BOARD_HEIGHT {
         let row_reference: &[u8; BOARD_WIDTH] = &game_board.game_board[row_index];
         //row is will compute if row_reference given is a blank, filled or partial filled row
         match row_is(row_reference) {
