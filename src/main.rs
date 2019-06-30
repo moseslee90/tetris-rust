@@ -45,10 +45,10 @@ struct GameVariables<'a> {
 
 const PIECE_L: Tetronomino = Tetronomino {
     template: [
-        [[1, 0], [0, 1], [1, 0], [2, 0]],
-        [[1, 1], [-1, 0], [0, 1], [0, 2]],
-        [[-2, 0], [0, -1], [-1, 0], [-2, 0]],
-        [[0, -1], [1, 0], [0, -1], [0, -2]],
+        [[0, 0], [2, 0], [1, 0], [0, 1]],
+        [[2, 0], [1, 0], [1, 1], [1, 2]],
+        [[-2, 0], [0, 1], [-1, 1], [-2, 1]],
+        [[0, 0], [0, -1], [0, 1], [1, 1]],
     ],
     distinct_rotations: 4,
 };
@@ -279,6 +279,28 @@ fn rotate_piece(
         //replace piece with next rotation
         change_piece(GENERATE_PIECE, game_variables, game_board);
     }
+}
+
+fn rotate_piece_ai(
+    rotation_state_end: usize,
+    game_variables: &mut GameVariables,
+) {
+    //get current tetronomino
+    let tetronomino: &Tetronomino = game_variables.current_piece;
+    //get current location of anchor
+    let anchor_position_y_start: i8 = game_variables.piece_location[0] as i8;
+    let anchor_position_x_start: i8 = game_variables.piece_location[1] as i8;
+    //get current rotation state
+    let rotation_state_start: usize = game_variables.rotation_state;
+    //find relative coordinates of next anchor position after rotation
+    let anchor_next_y: i8 = tetronomino.template[rotation_state_start][0][0];
+    let anchor_next_x: i8 = tetronomino.template[rotation_state_start][0][1];
+    //find absolute coordinates of next anchor position after rotation on game_board
+    let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
+    let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
+    //update game variables to current state
+    game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
+    game_variables.rotation_state = rotation_state_end;
 }
 
 fn move_piece(
@@ -562,7 +584,7 @@ fn generate_move_dataset(
     for n in 0..distinct_rotations {
         //generate one data set each rotation
         let mut game_variables_rotation = game_variables;
-        game_variables_rotation.rotation_state = n;
+        rotate_piece_ai(n, &mut game_variables_rotation);
         //find max right moves
         let max_right: usize = piece_max_moves(RIGHT, &game_variables_rotation, &game_board);
         //find max left movse
