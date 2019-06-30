@@ -143,19 +143,6 @@ fn main() {
 
     generate_move_dataset(game_variables, game_board);
 
-    //example of one iteration where piece is moved to the left, rotated once clockwise 90 degrees
-    //and placed all the way down and game board is updated
-    move_piece(DOWN, 1, &mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    rotate_piece(&mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    move_piece_down_max(&mut game_variables, &mut game_board);
-    print_game_board(&game_board);
-    //for ai simulation, a result of number of rows cleared might be
-    //required to be returned from update_game_board
-    update_game_board(&mut game_board);
-    print_game_board(&game_board);
-    //iteration ends
 }
 
 fn setup_board(game_board: &mut GameBoard) {
