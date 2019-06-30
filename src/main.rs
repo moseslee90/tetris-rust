@@ -32,6 +32,15 @@ struct Tetronomino {
     distinct_rotations: u8,
 }
 
+//Game Variables to be held to keep track of board activities
+struct GameVariables<'a> {
+    rotation_state: usize,
+    holding_piece: &'a Tetronomino,
+    current_piece: &'a Tetronomino,
+    //position of anchor on board [y,x]
+    piece_location: [usize; 2],
+}
+
 const PIECE_L: Tetronomino = Tetronomino {
     template: [
         [[1, 0], [0, 1], [1, 0], [2, 0]],
@@ -102,14 +111,6 @@ const PIECE_I: Tetronomino = Tetronomino {
     distinct_rotations: 2,
 };
 
-struct GameVariables<'a> {
-    rotation_state: usize,
-    holding_piece: &'a Tetronomino,
-    current_piece: &'a Tetronomino,
-    //position of anchor on board [y,x]
-    piece_location: [usize; 2],
-}
-
 fn main() {
     //initialise game_board
     let mut game_board = GameBoard {
@@ -136,6 +137,8 @@ fn main() {
     move_piece(DOWN, &mut game_variables, &mut game_board);
     print_game_board(&game_board);
     rotate_piece(&mut game_variables, &mut game_board);
+    print_game_board(&game_board);
+    move_piece_down_max(&mut game_variables, &mut game_board);
     print_game_board(&game_board);
 }
 
@@ -289,6 +292,59 @@ fn move_piece(
     };
 }
 
+fn move_piece_down_max(
+    game_variables: &mut GameVariables,
+    game_board: &mut GameBoard,
+) {
+    let current_piece = game_variables.current_piece.template;
+    let location = game_variables.piece_location;
+    let rotation_state = game_variables.rotation_state;
+
+    let mut down_moves: usize = 0;
+    //check anchor for column it is in.
+    //column of anchor is given by location[1]
+    down_moves = pixel_max_down(location, game_board);
+    //number of down moves for anchor to reach a fixed piece found
+    //now check for pixels
+   let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+
+    for i in 1..4 {
+        let location_y: i8 = location[0] as i8;
+        let location_x: i8 = location[1] as i8;
+        let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
+        let pixel_absolute_pos_x: usize = (current_template[i][1] + location_x) as usize;
+        let pixel_position: [usize; 2] = [pixel_absolute_pos_y, pixel_absolute_pos_x];
+
+        let pixel_down_moves = pixel_max_down(pixel_position, game_board);
+        if pixel_down_moves < down_moves {
+            down_moves = pixel_down_moves;
+        }
+    }
+    //down moves based on entire tetronomino has been found
+    //translate tetronomino based on down moves
+
+    //first remove old piece
+    change_piece(REMOVE_PIECE, game_variables, game_board);
+    //update game_variables location to new max down location
+    let new_anchor_location_y: usize = location[0] - down_moves;
+    game_variables.piece_location[0] = new_anchor_location_y;
+    change_piece(GENERATE_PIECE, game_variables, game_board);
+}
+
+fn pixel_max_down(
+    pixel_location: [usize; 2],
+    game_board: &GameBoard
+) -> usize {
+    let mut down_moves: usize = 0;
+    for y in (0..(pixel_location[0]-1)).rev() {
+        if game_board.game_board[y][pixel_location[1]] == 2 {
+            down_moves = pixel_location[0] - y - 1;
+            break;
+        }
+    }
+    return down_moves;
+}
+
 fn is_floor(
     game_variables: &GameVariables,
     game_board: &GameBoard,
@@ -380,15 +436,15 @@ fn row_is(row: &[u8; BOARD_WIDTH]) -> &str {
             filled = filled + 1;
         }
         if blank > 0 && filled > 0 {
-            println!("partial fill",);
+            // println!("partial fill",);
             return PARTIAL_FILL;
         }
     }
     if blank == 10 {
-        println!("blank row",);
+        // println!("blank row",);
         return BLANK;
     } else if filled == 10 {
-        println!("filled row",);
+        // println!("filled row",);
         return FILLED;
     } else {
         return PARTIAL_FILL;
