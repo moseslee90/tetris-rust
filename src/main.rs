@@ -315,7 +315,7 @@ fn move_piece_down_max(
     game_variables: &mut GameVariables,
     game_board: &mut GameBoard,
 ) {
-    let down_moves = piece_max_down_moves(game_variables, game_board);
+    let down_moves = piece_max_moves(DOWN, game_variables, game_board);
     let location = game_variables.piece_location;
     //down moves based on entire tetronomino has been found
     //translate tetronomino based on down moves
@@ -375,20 +375,58 @@ fn pixel_max_down_moves(
     return down_moves;
 }
 
-fn move_limit(
+fn piece_max_moves(
     direction: &str,
     game_variables: &GameVariables,
     game_board: &GameBoard,
 ) -> usize {
     let rotation_state = game_variables.rotation_state;
-    let current_piece_template = game_variables.current_piece.template[rotation_state];
-    let piece_location = game_variables.piece_location;
+    let current_piece = game_variables.current_piece.template;
+    let location = game_variables.piece_location;
 
     //check anchor
-    match direction {
-        _ => (),
+    let mut moves: usize = pixel_max_moves(direction, location, game_board);
+    //check pixels
+
+    let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+
+    for i in 1..4 {
+        let location_y: i8 = location[0] as i8;
+        let location_x: i8 = location[1] as i8;
+        let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
+        let pixel_absolute_pos_x: usize = (current_template[i][1] + location_x) as usize;
+        let pixel_position: [usize; 2] = [pixel_absolute_pos_y, pixel_absolute_pos_x];
+
+        let pixel_moves = pixel_max_moves(direction, pixel_position, game_board);
+        if pixel_moves < moves {
+            moves = pixel_moves;
+        }
     }
-    return 1;
+
+    return moves;
+}
+
+fn pixel_max_moves(
+    direction: &str,
+    pixel_location: [usize; 2],
+    game_board: &GameBoard,
+) -> usize {
+    match direction {
+        LEFT => pixel_location[1],
+        RIGHT => BOARD_WIDTH - 1 - pixel_location[1],
+        DOWN => {
+            let mut down_moves: usize = 0;
+            for y in (0..(pixel_location[0] - 1)).rev() {
+                if game_board.game_board[y][pixel_location[1]] == 2 {
+                    down_moves = pixel_location[0] - y - 1;
+                    break;
+                }
+            }
+            down_moves
+        }
+
+        _ => panic!("unhandled direction constant in pixel_max_side_moves"),
+    }
 }
 
 fn is_floor(
