@@ -20,6 +20,7 @@ const FILLED: &str = "filled";
 const PARTIAL_FILL: &str = "partial_fill";
 
 //game_board
+#[derive(Copy, Clone)]
 struct GameBoard {
     game_board: [[u8; BOARD_WIDTH]; BOARD_HEIGHT],
 }
@@ -29,10 +30,11 @@ struct Tetronomino {
     template: [[[i8; 2]; 4]; 4],
     //each template will have the formate
     //[[anchor_next],[pix1],[pix2],[pix3]]
-    distinct_rotations: u8,
+    distinct_rotations: usize,
 }
 
 //Game Variables to be held to keep track of board activities
+#[derive(Copy, Clone)]
 struct GameVariables<'a> {
     rotation_state: usize,
     holding_piece: &'a Tetronomino,
@@ -132,10 +134,15 @@ fn main() {
     spawn_tetronomino_holding_board(&mut game_variables);
     //loop shld start around here
     spawn_tetronomino_on_board(&mut game_variables, &mut game_board);
+    change_piece(GENERATE_PIECE, &game_variables, &mut game_board);
     println!("{}", game_variables.rotation_state);
     //debugging to test results
     print_game_board(&game_board);
     print_holding_board(&holding_board);
+    change_piece(REMOVE_PIECE, &game_variables, &mut game_board);
+
+    generate_move_dataset(game_variables, game_board);
+
     //example of one iteration where piece is moved to the left, rotated once clockwise 90 degrees
     //and placed all the way down and game board is updated
     move_piece(DOWN, 1, &mut game_variables, &mut game_board);
@@ -222,9 +229,11 @@ fn spawn_tetronomino_on_board(
 ) {
     game_variables.current_piece = game_variables.holding_piece;
     game_variables.piece_location = [SPAWN_Y, SPAWN_X];
+    game_variables.rotation_state = 0;
     spawn_tetronomino_holding_board(game_variables);
-
-    change_piece(GENERATE_PIECE, game_variables, game_board);
+    //to "see" tetronomino on game_board.game_board,
+    //change_piece(GENERATE_PIECE, game_variables, game_board);
+    //needs to be called
 }
 
 fn rotate_piece(
@@ -311,6 +320,7 @@ fn move_piece(
     };
 }
 
+//for use in particular for AI for computing data sets
 fn move_piece_down_max(
     game_variables: &mut GameVariables,
     game_board: &mut GameBoard,
@@ -378,7 +388,6 @@ fn pixel_max_moves(
             }
             down_moves
         }
-
         _ => panic!("unhandled direction constant in pixel_max_side_moves"),
     }
 }
@@ -541,4 +550,36 @@ fn print_holding_board(holding_board: &[[u8; HOLDING_SIZE]; HOLDING_SIZE]) {
         print!("{}  ", k);
     }
     println!("");
+}
+//current piece must be generated in game_variables
+fn generate_move_dataset(
+    game_variables: GameVariables,
+    game_board: GameBoard,
+) {
+    //find number of distinct rotations
+    let distinct_rotations: usize = game_variables.current_piece.distinct_rotations;
+    //first choose rotation
+    for n in 0..distinct_rotations {
+        //generate one data set each rotation
+        let mut game_variables_rotation = game_variables;
+        game_variables_rotation.rotation_state = n;
+        //find max right moves
+        let max_right: usize = piece_max_moves(RIGHT, &game_variables_rotation, &game_board);
+        //find max left movse
+        let max_left: usize = piece_max_moves(LEFT, &game_variables_rotation, &game_board);
+        for r in 0..(max_right + 1) {
+            let mut game_variables_right = game_variables_rotation;
+            game_variables_right.piece_location[1] = game_variables_right.piece_location[1] + r;
+            let mut game_board_right = game_board;
+            move_piece_down_max(&mut game_variables_right, &mut game_board_right);
+            print_game_board(&game_board_right);
+        }
+        for l in 1..(max_left + 1) {
+            let mut game_variables_left = game_variables_rotation;
+            game_variables_left.piece_location[1] = game_variables_left.piece_location[1] - l;
+            let mut game_board_left = game_board;
+            move_piece_down_max(&mut game_variables_left, &mut game_board_left);
+            print_game_board(&game_board_left);
+        }
+    }
 }
