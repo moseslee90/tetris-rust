@@ -306,7 +306,7 @@ fn move_piece_down_max(
     down_moves = pixel_max_down(location, game_board);
     //number of down moves for anchor to reach a fixed piece found
     //now check for pixels
-   let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+    let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
 
     for i in 1..4 {
         let location_y: i8 = location[0] as i8;
@@ -329,14 +329,15 @@ fn move_piece_down_max(
     let new_anchor_location_y: usize = location[0] - down_moves;
     game_variables.piece_location[0] = new_anchor_location_y;
     change_piece(GENERATE_PIECE, game_variables, game_board);
+    change_piece(FLOOR_FOUND, game_variables, game_board);
 }
 
 fn pixel_max_down(
     pixel_location: [usize; 2],
-    game_board: &GameBoard
+    game_board: &GameBoard,
 ) -> usize {
     let mut down_moves: usize = 0;
-    for y in (0..(pixel_location[0]-1)).rev() {
+    for y in (0..(pixel_location[0] - 1)).rev() {
         if game_board.game_board[y][pixel_location[1]] == 2 {
             down_moves = pixel_location[0] - y - 1;
             break;
