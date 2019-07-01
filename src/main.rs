@@ -2,7 +2,7 @@ use json;
 use rand::Rng;
 use std::fs;
 
-mod game_board_module;
+mod board;
 mod game_constants;
 
 const BOARD_HEIGHT: usize = 21;
@@ -146,8 +146,10 @@ fn main() {
     print_holding_board(&holding_board);
     // change_piece(REMOVE_PIECE, &game_variables, &mut game_board);
 
-    let game_board = game_board_module::GameBoard::new();
+    let game_board = board::GameBoard::new();
     game_board.print_game_board();
+    let game_variables = board::GameVariables::new();
+    println!("{:?}", game_variables.holding_piece.template );
 
     // generate_move_dataset(game_variables, game_board);
 
@@ -232,9 +234,6 @@ fn spawn_tetronomino_on_board(
     game_variables.piece_location = [SPAWN_Y, SPAWN_X];
     game_variables.rotation_state = 0;
     spawn_tetronomino_holding_board(game_variables);
-    //to "see" tetronomino on game_board.game_board,
-    //change_piece(GENERATE_PIECE, game_variables, game_board);
-    //needs to be called
 }
 
 fn rotate_piece(
