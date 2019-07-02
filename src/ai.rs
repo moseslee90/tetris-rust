@@ -1,4 +1,4 @@
-use crate::game_constants::primitive_constants;
+use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use crate::board::{GameBoard, GameVariables};
 
 fn evaluate_game_board(game_board: &GameBoard) -> isize {
@@ -41,7 +41,7 @@ pub fn generate_move_dataset(
         //generate one data set each rotation
         let mut game_variables_rotation = game_variables;
         if n != 0 {
-            game_variables_rotation.rotate_piece_ai(n);
+            rotate_piece_ai(&mut game_variables_rotation, n);
         }
         //find max right moves
         let max_right: usize = game_board.piece_max_moves(primitive_constants::RIGHT, &game_variables_rotation);
@@ -62,4 +62,24 @@ pub fn generate_move_dataset(
             game_board_left.print_game_board();
         }
     }
+}
+
+fn rotate_piece_ai(
+    game_variables: &mut GameVariables,
+    rotation_state_end: usize,
+) {
+    //get current tetronomino
+    let tetronomino: &Tetronomino = game_variables.current_piece;
+    //get current location of anchor
+    let anchor_position_y_start: i8 = game_variables.piece_location[0] as i8;
+    let anchor_position_x_start: i8 = game_variables.piece_location[1] as i8;
+    //find relative coordinates of next anchor position after rotation
+    let anchor_next_y: i8 = tetronomino.anchor_next[0][0];
+    let anchor_next_x: i8 = tetronomino.anchor_next[0][1];
+    //find absolute coordinates of next anchor position after rotation on game_board
+    let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
+    let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
+    //update game variables to current state
+    game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
+    game_variables.rotation_state = rotation_state_end;
 }
