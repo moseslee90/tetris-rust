@@ -24,7 +24,8 @@ impl GameBoard {
         }
         return game_board;
     }
-    pub fn change_piece(
+
+    fn change_piece(
         &mut self,
         change_type: &str,
         game_variables: &GameVariables,
@@ -67,6 +68,104 @@ impl GameBoard {
         }
     }
 
+    fn clear_row(
+        &mut self,
+        row_index: usize,
+    ) {
+        for x in 0..BOARD_WIDTH {
+            self.game_board[row_index][x] = 0;
+        }
+    }
+
+    fn evaluate_game_board(&self) -> isize {
+        let array: [[u8; BOARD_WIDTH]; BOARD_HEIGHT] = self.game_board;
+        let mut score: isize = 0;
+        let mut filled_row: u8 = 0;
+        for y in 0..BOARD_HEIGHT {
+            let mut filled_cell: usize = 0;
+            let mut blank_cell: usize = 0;
+            for x in 0..BOARD_WIDTH {
+                //exit condition, if entire row is blank
+                if array[y][x] == 0 {
+                    blank_cell = blank_cell + 1;
+                } else if array[y][x] == 2 {
+                    filled_cell = filled_cell + 1;
+                }
+            }
+            if blank_cell == 10 {
+                break;
+            }
+            if filled_cell == 10 {
+                filled_row = filled_row + 1;
+            }
+        }
+        return score;
+    }
+    //current piece must be generated in game_variables
+    pub fn generate_move_dataset(
+        self,
+        game_variables: GameVariables,
+    ) {
+        //find number of distinct rotations
+        let distinct_rotations: usize = game_variables.current_piece.distinct_rotations;
+        //first choose rotation
+        for n in 0..distinct_rotations {
+            //generate one data set each rotation
+            let mut game_variables_rotation = game_variables;
+            if n != 0 {
+                game_variables_rotation.rotate_piece_ai(n);
+            }
+            //find max right moves
+            let max_right: usize = self.piece_max_moves(RIGHT, &game_variables_rotation);
+            //find max left movse
+            let max_left: usize = self.piece_max_moves(LEFT, &game_variables_rotation);
+            for r in 0..(max_right + 1) {
+                let mut game_variables_right = game_variables_rotation;
+                game_variables_right.piece_location[1] = game_variables_right.piece_location[1] + r;
+                let mut game_board_right = self;
+                game_board_right.move_piece_down_max(&mut game_variables_right);
+                game_board_right.print_game_board();
+            }
+            for l in 1..(max_left + 1) {
+                let mut game_variables_left = game_variables_rotation;
+                game_variables_left.piece_location[1] = game_variables_left.piece_location[1] - l;
+                let mut game_board_left = self;
+                game_board_left.move_piece_down_max(&mut game_variables_left);
+                game_board_left.print_game_board();
+            }
+        }
+    }
+
+    fn is_floor(
+        &self,
+        game_variables: &GameVariables,
+    ) -> bool {
+        let current_piece = game_variables.current_piece.template;
+        let location = game_variables.piece_location;
+        let rotation_state = game_variables.rotation_state;
+
+        //check if anchor is adjacent to floor
+        if self.game_board[location[0]][location[1]] == 2 {
+            return true;
+        }
+        //check 3 pixels
+        //find correct template base on rotation_state
+        let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+        //pixels located from 1 to 3 of array
+        for i in 1..4 {
+            let location_y: i8 = location[0] as i8;
+            let location_x: i8 = location[1] as i8;
+            let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
+            let pixel_absolute_pos_x: usize = (current_template[i][1] + location_x) as usize;
+
+            if self.game_board[pixel_absolute_pos_y][pixel_absolute_pos_x] == 2 {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     pub fn move_piece(
         &mut self,
         direction: &str,
@@ -92,7 +191,7 @@ impl GameBoard {
             current_piece: game_variables.current_piece,
             piece_location: proposed_location,
         };
-        if direction == DOWN && is_floor(&proposed_variables, &self) {
+        if direction == DOWN && self.is_floor(&proposed_variables) {
             //is floor, turn piece into fixed
             self.change_piece(FLOOR_FOUND, &game_variables);
             self.update_game_board();
@@ -125,7 +224,19 @@ impl GameBoard {
         self.change_piece(FLOOR_FOUND, game_variables);
     }
 
-    pub fn no_collision(
+    fn move_row_down(
+        &mut self,
+        row_index: usize,
+        rows_filled: usize,
+    ) {
+        for x in 0..BOARD_WIDTH {
+            self.game_board[row_index - rows_filled][x] = self.game_board[row_index][x];
+            self.game_board[row_index][x] = 0;
+        }
+    }
+
+
+    fn no_collision(
         &self,
         game_variables: &GameVariables,
     ) -> bool {
@@ -155,22 +266,8 @@ impl GameBoard {
         return true;
         //collision with fixed pieces needs to be added in the future for human playability
     }
-    pub fn print_game_board(&self) {
-        println!("",);
-        for k in (0..BOARD_HEIGHT).rev() {
-            if k < 10 {
-                print!(" ");
-            }
-            println!("{} {:?}", k, self.game_board[k]);
-        }
-        print!("    ",);
-        for k in 0..BOARD_WIDTH {
-            print!("{}  ", k);
-        }
-        println!("");
-    }
 
-    pub fn piece_max_moves(
+    fn piece_max_moves(
         &self,
         direction: &str,
         game_variables: &GameVariables,
@@ -201,7 +298,7 @@ impl GameBoard {
         return moves;
     }
 
-    pub fn pixel_max_moves(
+    fn pixel_max_moves(
         &self,
         direction: &str,
         pixel_location: [usize; 2],
@@ -221,6 +318,21 @@ impl GameBoard {
             }
             _ => panic!("unhandled direction constant in pixel_max_side_moves"),
         }
+    }
+
+    pub fn print_game_board(&self) {
+        println!("",);
+        for k in (0..BOARD_HEIGHT).rev() {
+            if k < 10 {
+                print!(" ");
+            }
+            println!("{} {:?}", k, self.game_board[k]);
+        }
+        print!("    ",);
+        for k in 0..BOARD_WIDTH {
+            print!("{}  ", k);
+        }
+        println!("");
     }
 
     pub fn rotate_piece(
@@ -267,19 +379,82 @@ impl GameBoard {
             self.change_piece(GENERATE_PIECE, game_variables);
         }
     }
+
+    fn row_is(row: &[u8; BOARD_WIDTH]) -> &str {
+        let mut blank: u8 = 0;
+        let mut filled: u8 = 0;
+
+        for element in row.iter() {
+            if element == &0u8 {
+                blank = blank + 1;
+            } else if element == &2u8 {
+                filled = filled + 1;
+            }
+            if blank > 0 && filled > 0 {
+                // println!("partial fill",);
+                return PARTIAL_FILL;
+            }
+        }
+        if blank == 10 {
+            // println!("blank row",);
+            return BLANK;
+        } else if filled == 10 {
+            // println!("filled row",);
+            return FILLED;
+        } else {
+            return PARTIAL_FILL;
+        }
+    }
+    //function to call right after piece has been placed and turned into a fixed piece
+    pub fn update_game_board(&mut self) {
+        //iterate through rows from bottom skipping row 0
+        //declare counter to keep track of rows filled
+        let mut rows_filled: usize = 0;
+        for row_index in 1..BOARD_HEIGHT {
+            let row_reference: &[u8; BOARD_WIDTH] = &self.game_board[row_index];
+            //row is will compute if row_reference given is a blank, filled or partial filled row
+            match GameBoard::row_is(row_reference) {
+                BLANK => return,
+                FILLED => {
+                    rows_filled = rows_filled + 1;
+                    self.clear_row(row_index);
+                }
+                PARTIAL_FILL => {
+                    if rows_filled > 0 {
+                        self.move_row_down(row_index, rows_filled)
+                    }
+                }
+                _ => panic!("unhandled match pattern in update_game_board"),
+            }
+        }
+    }
 }
 
 impl<'a> GameVariables<'a> {
     pub fn new() -> GameVariables<'a> {
         let mut game_variables = GameVariables {
             rotation_state: 0usize,
-            holding_piece: &PIECE_J,
-            current_piece: &PIECE_J,
+            holding_piece: GameVariables::random_tetronomino(),
+            current_piece: GameVariables::random_tetronomino(),
             piece_location: [0, 0],
         };
         return game_variables;
     }
-    pub fn spawn_tetronomino_holding_board(&mut self) {
+    fn random_tetronomino() -> &'a Tetronomino {
+        let random_number = rand::thread_rng().gen_range(1, 8);
+        let spawned_piece: &Tetronomino = match random_number {
+            1 => &PIECE_L, //choose L piece
+            2 => &PIECE_J, //choose J piece
+            3 => &PIECE_T,
+            4 => &PIECE_Z,
+            5 => &PIECE_S,
+            6 => &PIECE_O,
+            7 => &PIECE_I,
+            _ => panic!("unhandled number for spawn_tetronomino generated!"),
+        };
+        return spawned_piece;
+    }
+    pub fn spawn_new_tetronomino_holding_board(&mut self) {
         let random_number = rand::thread_rng().gen_range(1, 8);
         let spawned_piece: &Tetronomino = match random_number {
             1 => &PIECE_L, //choose L piece
@@ -294,13 +469,11 @@ impl<'a> GameVariables<'a> {
         self.holding_piece = spawned_piece;
     }
 
-    pub fn spawn_tetronomino_on_board(
-        &mut self,
-    ) {
+    pub fn spawn_new_tetronomino_on_board(&mut self) {
         self.current_piece = self.holding_piece;
         self.piece_location = [SPAWN_Y, SPAWN_X];
         self.rotation_state = 0;
-        self.spawn_tetronomino_holding_board();
+        self.spawn_new_tetronomino_holding_board();
         //to "see" tetronomino on game_board.game_board,
         //change_piece(GENERATE_PIECE, game_variables, game_board);
         //needs to be called

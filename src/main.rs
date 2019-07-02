@@ -146,11 +146,12 @@ fn main() {
     print_holding_board(&holding_board);
     // change_piece(REMOVE_PIECE, &game_variables, &mut game_board);
 
-    let game_board = board::GameBoard::new();
+    let mut game_board = board::GameBoard::new();
     game_board.print_game_board();
-    let game_variables = board::GameVariables::new();
-    println!("{:?}", game_variables.holding_piece.template );
+    let mut game_variables = board::GameVariables::new();
 
+    game_variables.spawn_new_tetronomino_holding_board();
+    game_variables.spawn_new_tetronomino_on_board();
     // generate_move_dataset(game_variables, game_board);
 
     // let data = fs::read_to_string("data/data.json").expect("Unable to read data/data.json");
