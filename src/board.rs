@@ -25,7 +25,7 @@ impl GameBoard {
         return game_board;
     }
 
-    fn change_piece(
+    pub fn change_piece(
         &mut self,
         change_type: &str,
         game_variables: &GameVariables,
@@ -330,6 +330,21 @@ impl GameBoard {
         }
         print!("    ",);
         for k in 0..BOARD_WIDTH {
+            print!("{}  ", k);
+        }
+        println!("");
+    }
+
+    pub fn print_holding_board(holding_board: &[[u8; HOLDING_SIZE]; HOLDING_SIZE]) {
+        println!("",);
+        for k in (0..HOLDING_SIZE).rev() {
+            if k < 10 {
+                print!(" ");
+            }
+            println!("{} {:?}", k, holding_board[k]);
+        }
+        print!("    ",);
+        for k in 0..HOLDING_SIZE {
             print!("{}  ", k);
         }
         println!("");
