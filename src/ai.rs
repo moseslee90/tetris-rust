@@ -1,30 +1,47 @@
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use crate::board::{GameBoard, GameVariables};
 
-fn evaluate_game_board(game_board: &GameBoard) -> isize {
-    let array: [[u8; primitive_constants::BOARD_WIDTH]; primitive_constants::BOARD_HEIGHT] = game_board.game_board;
-    let mut score: isize = 0;
-    let mut consecutive_cells_score = 0;
-    let mut filled_row: u8 = 0;
+struct Genes {
+    consecutive_x: f64,
+}
+
+struct Baby {
+    genes: Genes,
+    fitness: usize,
+}
+//evaluation shld happen before update of game_board and filled cells are cleared
+fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
+    let array: [[u8; primitive_constants::BOARD_WIDTH]; primitive_constants::BOARD_HEIGHT] =
+    game_board.game_board;
+
+    let mut score: f64 = 0.0;
+    let mut consecutive_cells_score: f64 = 0.0;
+    let mut filled_score: f64 = 0.0;
+
+    let mut filled_row: f64 = 0.0;
     for y in 0..primitive_constants::BOARD_HEIGHT {
-        let mut consecutive_cells: u8 = 0;
-        let mut filled_cell: usize = 0;
-        let mut blank_cell: usize = 0;
+        let mut consecutive_cells: f64 = 0.0;
+        let mut filled_cell: f64 = 0.0;
+        let mut blank_cell: f64 = 0.0;
         for x in 0..primitive_constants::BOARD_WIDTH {
             //exit condition, if entire row is blank
             if array[y][x] == 0 {
-                consecutive_cells = 0;
-                blank_cell = blank_cell + 1;
+                //update score for horizontal consecutive cells
+                if consecutive_cells != 0.0 {
+                    consecutive_cells_score += genes.consecutive_x.powf(consecutive_cells);
+                    consecutive_cells = 0.0;
+                }
+                blank_cell = blank_cell + 1.0;
             } else if array[y][x] == 2 {
-                consecutive_cells = consecutive_cells + 1;
-                filled_cell = filled_cell + 1;
+                consecutive_cells = consecutive_cells + 1.0;
+                filled_cell = filled_cell + 1.0;
             }
         }
-        if blank_cell == 10 {
+        if blank_cell == 10.0 {
             break;
         }
-        if filled_cell == 10 {
-            filled_row = filled_row + 1;
+        if filled_cell == 10.0 {
+            filled_row = filled_row + 1.0;
         }
     }
     return score;
