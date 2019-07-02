@@ -1,10 +1,10 @@
-mod board;
 mod ai;
+mod board;
 mod game_constants;
 
+use game_constants::primitive_constants;
 use json;
 use std::fs;
-use game_constants::primitive_constants;
 
 fn main() {
     //initialise game_board

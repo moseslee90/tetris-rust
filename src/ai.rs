@@ -1,5 +1,5 @@
-use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use crate::board::{GameBoard, GameVariables};
+use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 
 struct Genes {
     consecutive_x: f64,
@@ -15,9 +15,12 @@ struct Baby {
     fitness: usize,
 }
 //evaluation shld happen before update of game_board and filled cells are cleared
-fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
-    let game_board_array: [[u8; primitive_constants::BOARD_WIDTH]; primitive_constants::BOARD_HEIGHT] =
-    game_board.game_board;
+fn evaluate_game_board(
+    game_board: &GameBoard,
+    genes: &Genes,
+) -> f64 {
+    let game_board_array: [[u8; primitive_constants::BOARD_WIDTH];
+        primitive_constants::BOARD_HEIGHT] = game_board.game_board;
 
     let mut score: f64 = 0.0;
     //score given based on consecutive groups of cells horizontally
@@ -27,7 +30,8 @@ fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
     //array to keep track of number of gaps in each column
     let mut gaps_score: f64 = 0.0;
 
-    let mut gaps_array: [f64; primitive_constants::BOARD_WIDTH] = [0.0; primitive_constants::BOARD_WIDTH];
+    let mut gaps_array: [f64; primitive_constants::BOARD_WIDTH] =
+        [0.0; primitive_constants::BOARD_WIDTH];
     let mut num_of_filled_rows: u8 = 0;
     for y in 0..primitive_constants::BOARD_HEIGHT {
         let mut num_of_con_x_cells: f64 = 0.0;
@@ -35,7 +39,12 @@ fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
         let mut blank_cell: u8 = 0;
         for x in 0..primitive_constants::BOARD_WIDTH {
             let cell_value = game_board_array[y][x];
-            update_for_con_cell_x(&mut con_cell_x_score, &mut num_of_con_x_cells, genes, cell_value);
+            update_for_con_cell_x(
+                &mut con_cell_x_score,
+                &mut num_of_con_x_cells,
+                genes,
+                cell_value,
+            );
             update_for_vertical_gaps(&mut gaps_array, &mut gaps_score, genes, cell_value, x);
             //exit condition, if entire row is blank
             if cell_value == 0 {
@@ -70,9 +79,11 @@ pub fn generate_move_dataset(
             rotate_piece_ai(&mut game_variables_rotation, n);
         }
         //find max right moves
-        let max_right: usize = game_board.piece_max_moves(primitive_constants::RIGHT, &game_variables_rotation);
+        let max_right: usize =
+            game_board.piece_max_moves(primitive_constants::RIGHT, &game_variables_rotation);
         //find max left movse
-        let max_left: usize = game_board.piece_max_moves(primitive_constants::LEFT, &game_variables_rotation);
+        let max_left: usize =
+            game_board.piece_max_moves(primitive_constants::LEFT, &game_variables_rotation);
         for r in 0..(max_right + 1) {
             let mut game_variables_right = game_variables_rotation;
             game_variables_right.piece_location[1] = game_variables_right.piece_location[1] + r;
@@ -115,7 +126,7 @@ fn update_for_con_cell_x(
     num_of_con_x_cells: &mut f64,
     genes: &Genes,
     cell_value: u8,
-    ) {
+) {
     if cell_value == 0 {
         //update score for horizontal consecutive cells
         if *num_of_con_x_cells != 0.0 {
