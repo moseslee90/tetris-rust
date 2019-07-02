@@ -397,8 +397,8 @@ impl<'a> GameVariables<'a> {
     fn random_tetronomino() -> &'a Tetronomino {
         let random_number = rand::thread_rng().gen_range(1, 8);
         let spawned_piece: &Tetronomino = match random_number {
-            1 => &PIECE_L, //choose L piece
-            2 => &PIECE_J, //choose J piece
+            1 => &PIECE_L,
+            2 => &PIECE_J,
             3 => &PIECE_T,
             4 => &PIECE_Z,
             5 => &PIECE_S,

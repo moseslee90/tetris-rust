@@ -7,6 +7,7 @@ struct Genes {
     two_rows_filled: f64,
     three_rows_filled: f64,
     four_rows_filled: f64,
+    gaps_vertical: f64,
 }
 
 struct Baby {
@@ -23,7 +24,10 @@ fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
     let mut con_cell_x_score: f64 = 0.0;
     //score given based on filled rows
     let mut filled_rows_score: f64 = 0.0;
+    //array to keep track of number of gaps in each column
+    let mut gaps_score: f64 = 0.0;
 
+    let mut gaps_array: [f64; primitive_constants::BOARD_WIDTH] = [0.0; primitive_constants::BOARD_WIDTH];
     let mut num_of_filled_rows: u8 = 0;
     for y in 0..primitive_constants::BOARD_HEIGHT {
         let mut num_of_con_x_cells: f64 = 0.0;
@@ -32,9 +36,11 @@ fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
         for x in 0..primitive_constants::BOARD_WIDTH {
             let cell_value = game_board_array[y][x];
             update_for_con_cell_x(&mut con_cell_x_score, &mut num_of_con_x_cells, genes, cell_value);
+            update_for_vertical_gaps(&mut gaps_array, &mut gaps_score, genes, cell_value, x);
             //exit condition, if entire row is blank
             if cell_value == 0 {
                 blank_cell += 1;
+                gaps_array[x] += 1.0;
             } else if cell_value == 2 {
                 filled_cell += 1;
             }
@@ -131,5 +137,18 @@ fn update_for_filled_rows(
         3u8 => genes.three_rows_filled,
         4u8 => genes.four_rows_filled,
         _ => panic!("more rows filled than possible!"),
+    }
+}
+fn update_for_vertical_gaps(
+    gaps_array: &mut [f64; 10],
+    gaps_score: &mut f64,
+    genes: &Genes,
+    cell_value: u8,
+    x: usize,
+) {
+    if cell_value == 0 {
+        gaps_array[x] += 1.0;
+    } else if cell_value == 2 {
+        *gaps_score += gaps_array[x] * genes.gaps_vertical;
     }
 }
