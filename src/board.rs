@@ -76,31 +76,6 @@ impl GameBoard {
             self.game_board[row_index][x] = 0;
         }
     }
-
-    fn evaluate_game_board(&self) -> isize {
-        let array: [[u8; BOARD_WIDTH]; BOARD_HEIGHT] = self.game_board;
-        let mut score: isize = 0;
-        let mut filled_row: u8 = 0;
-        for y in 0..BOARD_HEIGHT {
-            let mut filled_cell: usize = 0;
-            let mut blank_cell: usize = 0;
-            for x in 0..BOARD_WIDTH {
-                //exit condition, if entire row is blank
-                if array[y][x] == 0 {
-                    blank_cell = blank_cell + 1;
-                } else if array[y][x] == 2 {
-                    filled_cell = filled_cell + 1;
-                }
-            }
-            if blank_cell == 10 {
-                break;
-            }
-            if filled_cell == 10 {
-                filled_row = filled_row + 1;
-            }
-        }
-        return score;
-    }
     //current piece must be generated in game_variables
     pub fn generate_move_dataset(
         self,
@@ -266,7 +241,7 @@ impl GameBoard {
         //collision with fixed pieces needs to be added in the future for human playability
     }
 
-    fn piece_max_moves(
+    pub fn piece_max_moves(
         &self,
         direction: &str,
         game_variables: &GameVariables,
