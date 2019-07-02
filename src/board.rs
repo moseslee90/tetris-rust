@@ -55,9 +55,9 @@ impl GameBoard {
         self.game_board[location[0]][location[1]] = anchor_value;
         //change 3 pixels to fixed
         //find correct template based on rotation state
-        let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+        let current_template: [[i8; 2]; 3] = current_piece[rotation_state];
         //pixels located from 1 to 3 of array
-        for i in 1..4 {
+        for i in 0..3 {
             let location_y: i8 = location[0] as i8;
             let location_x: i8 = location[1] as i8;
             let pixel_absolute_pos_y: i8 = current_template[i][0] + location_y;
@@ -150,9 +150,9 @@ impl GameBoard {
         }
         //check 3 pixels
         //find correct template base on rotation_state
-        let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+        let current_template: [[i8; 2]; 3] = current_piece[rotation_state];
         //pixels located from 1 to 3 of array
-        for i in 1..4 {
+        for i in 0..3 {
             let location_y: i8 = location[0] as i8;
             let location_x: i8 = location[1] as i8;
             let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
@@ -235,7 +235,6 @@ impl GameBoard {
         }
     }
 
-
     fn no_collision(
         &self,
         game_variables: &GameVariables,
@@ -251,9 +250,9 @@ impl GameBoard {
         }
         //check 3 pixels
         //find correct template base on rotation_state
-        let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+        let current_template: [[i8; 2]; 3] = current_piece[rotation_state];
         //pixels located from 1 to 3 of array
-        for i in 1..4 {
+        for i in 0..3 {
             let location_y: i8 = location[0] as i8;
             let location_x: i8 = location[1] as i8;
             let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
@@ -280,9 +279,9 @@ impl GameBoard {
         let mut moves: usize = self.pixel_max_moves(direction, location);
         //check pixels
 
-        let current_template: [[i8; 2]; 4] = current_piece[rotation_state];
+        let current_template: [[i8; 2]; 3] = current_piece[rotation_state];
 
-        for i in 1..4 {
+        for i in 0..3 {
             let location_y: i8 = location[0] as i8;
             let location_x: i8 = location[1] as i8;
             let pixel_absolute_pos_y: usize = (current_template[i][0] + location_y) as usize;
@@ -354,7 +353,6 @@ impl GameBoard {
         &mut self,
         game_variables: &mut GameVariables,
     ) {
-
         //get current tetronomino
         let tetronomino: &Tetronomino = game_variables.current_piece;
         //get current location of anchor
@@ -363,8 +361,8 @@ impl GameBoard {
         //get current rotation state
         let rotation_state_start: usize = game_variables.rotation_state;
         //find relative coordinates of next anchor position after rotation
-        let anchor_next_y: i8 = tetronomino.template[rotation_state_start][0][0];
-        let anchor_next_x: i8 = tetronomino.template[rotation_state_start][0][1];
+        let anchor_next_y: i8 = tetronomino.anchor_next[0][0];
+        let anchor_next_x: i8 = tetronomino.anchor_next[0][1];
         //find absolute coordinates of next anchor position after rotation on game_board
         let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
         let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
@@ -506,8 +504,8 @@ impl<'a> GameVariables<'a> {
         //get current rotation state
         let rotation_state_start: usize = self.rotation_state;
         //find relative coordinates of next anchor position after rotation
-        let anchor_next_y: i8 = tetronomino.template[rotation_state_start][0][0];
-        let anchor_next_x: i8 = tetronomino.template[rotation_state_start][0][1];
+        let anchor_next_y: i8 = tetronomino.anchor_next[0][0];
+        let anchor_next_x: i8 = tetronomino.anchor_next[0][1];
         //find absolute coordinates of next anchor position after rotation on game_board
         let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
         let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;

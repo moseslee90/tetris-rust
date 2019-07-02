@@ -14,9 +14,17 @@ fn main() {
 
     game_variables.spawn_new_tetronomino_holding_board();
     game_variables.spawn_new_tetronomino_on_board();
-    game_board.change_piece(game_constants::primitive_constants::GENERATE_PIECE, &game_variables);
+    game_board.change_piece(
+        game_constants::primitive_constants::GENERATE_PIECE,
+        &game_variables,
+    );
     game_board.print_game_board();
-    game_board.move_piece(game_constants::primitive_constants::LEFT, 2, &mut game_variables);
+    game_board.move_piece(
+        game_constants::primitive_constants::LEFT,
+        2,
+        &mut game_variables,
+    );
+    game_board.rotate_piece(&mut game_variables);
     game_board.print_game_board();
 
     // generate_move_dataset(game_variables, game_board);
