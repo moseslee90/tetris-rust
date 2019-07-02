@@ -8,6 +8,8 @@ struct Genes {
     three_rows_filled: f64,
     four_rows_filled: f64,
     gaps_vertical: f64,
+    height: f64,
+    border: f64,
 }
 
 struct Baby {
@@ -29,6 +31,8 @@ fn evaluate_game_board(
     let mut filled_rows_score: f64 = 0.0;
     //array to keep track of number of gaps in each column
     let mut gaps_score: f64 = 0.0;
+    //score given based on whether piece is occupying the sides of the board
+    let mut border_score: f64 = 0.0;
 
     let mut gaps_array: [f64; primitive_constants::BOARD_WIDTH] =
         [0.0; primitive_constants::BOARD_WIDTH];
@@ -46,6 +50,7 @@ fn evaluate_game_board(
                 cell_value,
             );
             update_for_vertical_gaps(&mut gaps_array, &mut gaps_score, genes, cell_value, x);
+            update_for_border_piece(&mut border_score, genes, cell_value, x);
             //exit condition, if entire row is blank
             if cell_value == 0 {
                 blank_cell += 1;
@@ -161,5 +166,15 @@ fn update_for_vertical_gaps(
         gaps_array[x] += 1.0;
     } else if cell_value == 2 {
         *gaps_score += gaps_array[x] * genes.gaps_vertical;
+    }
+}
+fn update_for_border_piece(
+    border_score: &mut f64,
+    genes: &Genes,
+    cell_value: u8,
+    x: usize,
+) {
+    if cell_value == 2 && (x == 0 || x == primitive_constants::BOARD_WIDTH - 1) {
+        *border_score += genes.border;
     }
 }
