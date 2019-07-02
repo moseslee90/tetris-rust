@@ -11,29 +11,25 @@ struct Baby {
 }
 //evaluation shld happen before update of game_board and filled cells are cleared
 fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
-    let array: [[u8; primitive_constants::BOARD_WIDTH]; primitive_constants::BOARD_HEIGHT] =
+    let game_board_array: [[u8; primitive_constants::BOARD_WIDTH]; primitive_constants::BOARD_HEIGHT] =
     game_board.game_board;
 
     let mut score: f64 = 0.0;
-    let mut consecutive_cells_score: f64 = 0.0;
+    let mut con_cell_x_score: f64 = 0.0;
     let mut filled_score: f64 = 0.0;
 
     let mut filled_row: f64 = 0.0;
     for y in 0..primitive_constants::BOARD_HEIGHT {
-        let mut consecutive_cells: f64 = 0.0;
+        let mut num_of_con_x_cells: f64 = 0.0;
         let mut filled_cell: f64 = 0.0;
         let mut blank_cell: f64 = 0.0;
         for x in 0..primitive_constants::BOARD_WIDTH {
+            let cell_value = game_board_array[y][x];
+            update_con_cell_x(&mut con_cell_x_score, &mut num_of_con_x_cells, genes, cell_value);
             //exit condition, if entire row is blank
-            if array[y][x] == 0 {
-                //update score for horizontal consecutive cells
-                if consecutive_cells != 0.0 {
-                    consecutive_cells_score += genes.consecutive_x.powf(consecutive_cells);
-                    consecutive_cells = 0.0;
-                }
+            if cell_value == 0 {
                 blank_cell = blank_cell + 1.0;
-            } else if array[y][x] == 2 {
-                consecutive_cells = consecutive_cells + 1.0;
+            } else if cell_value == 2 {
                 filled_cell = filled_cell + 1.0;
             }
         }
@@ -99,4 +95,21 @@ fn rotate_piece_ai(
     //update game variables to current state
     game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
     game_variables.rotation_state = rotation_state_end;
+}
+
+fn update_con_cell_x(
+    con_cell_x_score: &mut f64,
+    num_of_con_x_cells: &mut f64,
+    genes: &Genes,
+    cell_value: u8,
+    ) {
+    if cell_value == 0 {
+        //update score for horizontal consecutive cells
+        if *num_of_con_x_cells != 0.0 {
+            *con_cell_x_score += genes.consecutive_x.powf(*num_of_con_x_cells);
+            *num_of_con_x_cells = 0.0;
+        }
+    } else if cell_value == 2 {
+        *num_of_con_x_cells += 1.0;
+    }
 }
