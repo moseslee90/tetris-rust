@@ -3,6 +3,10 @@ use crate::board::{GameBoard, GameVariables};
 
 struct Genes {
     consecutive_x: f64,
+    one_row_filled: f64,
+    two_rows_filled: f64,
+    three_rows_filled: f64,
+    four_rows_filled: f64,
 }
 
 struct Baby {
@@ -15,31 +19,34 @@ fn evaluate_game_board(game_board: &GameBoard, genes: &Genes) -> f64 {
     game_board.game_board;
 
     let mut score: f64 = 0.0;
+    //score given based on consecutive groups of cells horizontally
     let mut con_cell_x_score: f64 = 0.0;
-    let mut filled_score: f64 = 0.0;
+    //score given based on filled rows
+    let mut filled_rows_score: f64 = 0.0;
 
-    let mut filled_row: f64 = 0.0;
+    let mut num_of_filled_rows: u8 = 0;
     for y in 0..primitive_constants::BOARD_HEIGHT {
         let mut num_of_con_x_cells: f64 = 0.0;
-        let mut filled_cell: f64 = 0.0;
-        let mut blank_cell: f64 = 0.0;
+        let mut filled_cell: u8 = 0;
+        let mut blank_cell: u8 = 0;
         for x in 0..primitive_constants::BOARD_WIDTH {
             let cell_value = game_board_array[y][x];
-            update_con_cell_x(&mut con_cell_x_score, &mut num_of_con_x_cells, genes, cell_value);
+            update_for_con_cell_x(&mut con_cell_x_score, &mut num_of_con_x_cells, genes, cell_value);
             //exit condition, if entire row is blank
             if cell_value == 0 {
-                blank_cell = blank_cell + 1.0;
+                blank_cell += 1;
             } else if cell_value == 2 {
-                filled_cell = filled_cell + 1.0;
+                filled_cell += 1;
             }
         }
-        if blank_cell == 10.0 {
+        if blank_cell == 10 {
             break;
         }
-        if filled_cell == 10.0 {
-            filled_row = filled_row + 1.0;
+        if filled_cell == 10 {
+            num_of_filled_rows = num_of_filled_rows + 1;
         }
     }
+    update_for_filled_rows(&mut filled_rows_score, num_of_filled_rows, genes);
     return score;
 }
 //current piece must be generated in game_variables
@@ -97,7 +104,7 @@ fn rotate_piece_ai(
     game_variables.rotation_state = rotation_state_end;
 }
 
-fn update_con_cell_x(
+fn update_for_con_cell_x(
     con_cell_x_score: &mut f64,
     num_of_con_x_cells: &mut f64,
     genes: &Genes,
@@ -111,5 +118,18 @@ fn update_con_cell_x(
         }
     } else if cell_value == 2 {
         *num_of_con_x_cells += 1.0;
+    }
+}
+fn update_for_filled_rows(
+    filled_rows_score: &mut f64,
+    num_of_filled_rows: u8,
+    genes: &Genes,
+) {
+    *filled_rows_score += match num_of_filled_rows {
+        1u8 => genes.one_row_filled,
+        2u8 => genes.two_rows_filled,
+        3u8 => genes.three_rows_filled,
+        4u8 => genes.four_rows_filled,
+        _ => panic!("more rows filled than possible!"),
     }
 }
