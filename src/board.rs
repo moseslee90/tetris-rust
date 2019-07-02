@@ -386,7 +386,7 @@ impl GameBoard {
 
 impl<'a> GameVariables<'a> {
     pub fn new() -> GameVariables<'a> {
-        let mut game_variables = GameVariables {
+        let game_variables = GameVariables {
             rotation_state: 0usize,
             holding_piece: GameVariables::random_tetronomino(),
             current_piece: GameVariables::random_tetronomino(),
@@ -409,18 +409,7 @@ impl<'a> GameVariables<'a> {
         return spawned_piece;
     }
     pub fn spawn_new_tetronomino_holding_board(&mut self) {
-        let random_number = rand::thread_rng().gen_range(1, 8);
-        let spawned_piece: &Tetronomino = match random_number {
-            1 => &PIECE_L, //choose L piece
-            2 => &PIECE_J, //choose J piece
-            3 => &PIECE_T,
-            4 => &PIECE_Z,
-            5 => &PIECE_S,
-            6 => &PIECE_O,
-            7 => &PIECE_I,
-            _ => panic!("unhandled number for spawn_tetronomino generated!"),
-        };
-        self.holding_piece = spawned_piece;
+        self.holding_piece = GameVariables::random_tetronomino();
     }
 
     pub fn spawn_new_tetronomino_on_board(&mut self) {
