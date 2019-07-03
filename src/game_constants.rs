@@ -17,6 +17,12 @@ pub mod primitive_constants {
     pub const BLANK: &str = "blank";
     pub const FILLED: &str = "filled";
     pub const PARTIAL_FILL: &str = "partial_fill";
+    //current piece or holding piece
+    pub const CURRENT_PIECE: &str = "current_piece";
+    pub const HOLDING_PIECE: &str = "holding_piece";
+    //constant to flag simulations
+    pub const SIMULATION: &str = "simulation";
+    pub const NOT_SIMULATION: &str = "not_simulation";
 }
 
 pub mod tetronominoes {

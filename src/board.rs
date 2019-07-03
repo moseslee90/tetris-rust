@@ -412,11 +412,13 @@ impl<'a> GameVariables<'a> {
         self.holding_piece = GameVariables::random_tetronomino();
     }
 
-    pub fn spawn_new_tetronomino_on_board(&mut self) {
+    pub fn spawn_new_tetronomino_on_board(&mut self, is_simulation: &str) {
         self.current_piece = self.holding_piece;
         self.piece_location = [SPAWN_Y, SPAWN_X];
         self.rotation_state = 0;
-        self.spawn_new_tetronomino_holding_board();
+        if is_simulation != SIMULATION {
+            self.spawn_new_tetronomino_holding_board();
+        }
         //to "see" tetronomino on game_board.game_board,
         //change_piece(GENERATE_PIECE, game_variables, game_board);
         //needs to be called

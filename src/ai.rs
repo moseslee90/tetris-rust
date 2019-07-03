@@ -155,11 +155,13 @@ fn evaluate_game_board_lines_cleared(
     return filled_rows_score;
 }
 //current piece must be generated in game_variables
-pub fn generate_move_dataset(
+pub fn generate_move_dataset<'a>(
+    current_or_holding: &str,
     game_board: GameBoard,
     game_variables: GameVariables,
     genes: &Genes,
-) {
+    decision_final: Decision<'a>,
+) -> Decision<'a> {
     //find number of distinct rotations
     let distinct_rotations: usize = game_variables.current_piece.distinct_rotations;
     //first choose rotation
@@ -176,17 +178,32 @@ pub fn generate_move_dataset(
         let max_left: usize =
             game_board.piece_max_moves(primitive_constants::LEFT, &game_variables_rotation);
 
-        let mut final_decision: Decision = Decision::new(primitive_constants::RIGHT, 0, 0);
-
         for r in 0..(max_right + 1) {
             let mut decision: Decision = Decision::new(primitive_constants::RIGHT, r, n);
             let mut game_variables_right = game_variables_rotation;
             game_variables_right.piece_location[1] = r;
             let mut game_board_right = game_board;
             game_board_right.move_piece_down_max(&mut game_variables_right);
-            decision.score += evaluate_game_board_lines_cleared(&game_board_right, genes);
             //evaluation of the gameboard happens here
-            game_board_right.print_game_board();
+            match current_or_holding {
+                primitive_constants::CURRENT_PIECE => {
+                    decision.score = evaluate_game_board_lines_cleared(&game_board_right, genes);
+                    //update game board
+                    game_board_right.update_game_board();
+                    //reset game_variables for holding piece
+                    game_variables_right.spawn_new_tetronomino_on_board(primitive_constants::SIMULATION);
+                    generate_move_dataset(primitive_constants::HOLDING_PIECE, game_board_right, game_variables_right, genes, decision);
+                },
+                primitive_constants::HOLDING_PIECE => {
+                    //evaluate game_board a second time in full and update the decision score accordingly but
+                    //keep decision moves, rotation and direction the
+                    //same so decision can be made only on current piece
+                    decision.score += evaluate_game_board(&game_board_right, genes);
+                    if decision.score > decision_final.score {
+                        decision_final.score = decision.score;
+                    }
+                }
+            }
         }
         for l in 1..(max_left + 1) {
             let mut decision: Decision = Decision::new(primitive_constants::LEFT, l, n);
@@ -199,6 +216,41 @@ pub fn generate_move_dataset(
             game_board_left.print_game_board();
         }
     }
+    return decision_final;
+}
+
+fn evaluate_move(
+    direction: &str,
+    moves: usize,
+    rotations: usize,
+    game_variables: GameVariables,
+    
+) {
+            let mut decision: Decision = Decision::new(primitive_constants::RIGHT, r, n);
+            let mut game_variables_right = game_variables_rotation;
+            game_variables_right.piece_location[1] = r;
+            let mut game_board_right = game_board;
+            game_board_right.move_piece_down_max(&mut game_variables_right);
+            //evaluation of the gameboard happens here
+            match current_or_holding {
+                primitive_constants::CURRENT_PIECE => {
+                    decision.score = evaluate_game_board_lines_cleared(&game_board_right, genes);
+                    //update game board
+                    game_board_right.update_game_board();
+                    //reset game_variables for holding piece
+                    game_variables_right.spawn_new_tetronomino_on_board(primitive_constants::SIMULATION);
+                    generate_move_dataset(primitive_constants::HOLDING_PIECE, game_board_right, game_variables_right, genes, decision);
+                },
+                primitive_constants::HOLDING_PIECE => {
+                    //evaluate game_board a second time in full and update the decision score accordingly but
+                    //keep decision moves, rotation and direction the
+                    //same so decision can be made only on current piece
+                    decision.score += evaluate_game_board(&game_board_right, genes);
+                    if decision.score > decision_final.score {
+                        decision_final.score = decision.score;
+                    }
+                }
+            }
 }
 
 fn rotate_piece_ai(
