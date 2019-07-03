@@ -1,5 +1,6 @@
 use crate::board::{GameBoard, GameVariables};
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
+use rand::Rng;
 
 struct Genes {
     consecutive_x: f64,
@@ -10,6 +11,21 @@ struct Genes {
     gaps_vertical: f64,
     height: f64,
     border: f64,
+}
+
+impl Genes {
+    fn new() -> Genes {
+        Genes {
+            consecutive_x: rand::thread_rng().gen_range(0.0, 100.0),
+            one_row_filled: rand::thread_rng().gen_range(0.0, 100.0),
+            two_rows_filled: rand::thread_rng().gen_range(0.0, 100.0),
+            three_rows_filled: rand::thread_rng().gen_range(0.0, 100.0),
+            four_rows_filled: rand::thread_rng().gen_range(0.0, 100.0),
+            gaps_vertical: rand::thread_rng().gen_range(0.0, 100.0),
+            height: rand::thread_rng().gen_range(0.0, 100.0),
+            border: rand::thread_rng().gen_range(0.0, 100.0),
+        }
+    }
 }
 
 struct Baby {
