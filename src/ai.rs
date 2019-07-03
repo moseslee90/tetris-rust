@@ -41,6 +41,32 @@ impl Baby {
         }
     }
 }
+//Struct to store decision that AI could or will take
+struct Decision<'a> {
+    //if this decision is towards the left or right
+    x_direction: &'a str,
+    //number of moves in the x_direction
+    moves: usize,
+    //how many rotations
+    rotations: usize,
+    //score for the decision. highest scored decision will be chosen
+    score: f64,
+}
+
+impl<'a> Decision<'a> {
+    fn new(
+        x_direction: &str,
+        moves: usize,
+        rotations: usize,
+    ) -> Decision {
+        Decision {
+            x_direction,
+            moves,
+            rotations,
+            score: 0.0,
+        }
+    }
+}
 
 //evaluation shld happen before update of game_board and filled cells are cleared
 fn evaluate_game_board(
@@ -93,12 +119,46 @@ fn evaluate_game_board(
         }
     }
     update_for_filled_rows(&mut filled_rows_score, num_of_filled_rows, genes);
+    score = con_cell_x_score + filled_rows_score + gaps_score + border_score;
     return score;
+}
+
+fn evaluate_game_board_lines_cleared(
+    game_board: &GameBoard,
+    genes: &Genes,
+) -> f64 {
+    let game_board_array: [[u8; primitive_constants::BOARD_WIDTH];
+        primitive_constants::BOARD_HEIGHT] = game_board.game_board;
+    //score given based on filled rows
+    let mut filled_rows_score: f64 = 0.0;
+    let mut num_of_filled_rows: u8 = 0;
+    for y in 0..primitive_constants::BOARD_HEIGHT {
+        let mut filled_cell: u8 = 0;
+        let mut blank_cell: u8 = 0;
+        for x in 0..primitive_constants::BOARD_WIDTH {
+            let cell_value = game_board_array[y][x];
+
+            if cell_value == 0 {
+                blank_cell += 1;
+            } else if cell_value == 2 {
+                filled_cell += 1;
+            }
+        }
+        if blank_cell == 10 {
+            break;
+        }
+        if filled_cell == 10 {
+            num_of_filled_rows = num_of_filled_rows + 1;
+        }
+    }
+    update_for_filled_rows(&mut filled_rows_score, num_of_filled_rows, genes);
+    return filled_rows_score;
 }
 //current piece must be generated in game_variables
 pub fn generate_move_dataset(
     game_board: GameBoard,
     game_variables: GameVariables,
+    genes: &Genes,
 ) {
     //find number of distinct rotations
     let distinct_rotations: usize = game_variables.current_piece.distinct_rotations;
@@ -115,18 +175,27 @@ pub fn generate_move_dataset(
         //find max left movse
         let max_left: usize =
             game_board.piece_max_moves(primitive_constants::LEFT, &game_variables_rotation);
+
+        let mut final_decision: Decision = Decision::new(primitive_constants::RIGHT, 0, 0);
+
         for r in 0..(max_right + 1) {
+            let mut decision: Decision = Decision::new(primitive_constants::RIGHT, r, n);
             let mut game_variables_right = game_variables_rotation;
-            game_variables_right.piece_location[1] = game_variables_right.piece_location[1] + r;
+            game_variables_right.piece_location[1] = r;
             let mut game_board_right = game_board;
             game_board_right.move_piece_down_max(&mut game_variables_right);
+            decision.score += evaluate_game_board_lines_cleared(&game_board_right, genes);
+            //evaluation of the gameboard happens here
             game_board_right.print_game_board();
         }
         for l in 1..(max_left + 1) {
+            let mut decision: Decision = Decision::new(primitive_constants::LEFT, l, n);
             let mut game_variables_left = game_variables_rotation;
-            game_variables_left.piece_location[1] = game_variables_left.piece_location[1] - l;
+            game_variables_left.piece_location[1] = 0 - l;
             let mut game_board_left = game_board;
             game_board_left.move_piece_down_max(&mut game_variables_left);
+            decision.score += evaluate_game_board_lines_cleared(&game_board_left, genes);
+            //and here
             game_board_left.print_game_board();
         }
     }
