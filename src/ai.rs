@@ -32,6 +32,16 @@ struct Baby {
     genes: Genes,
     fitness: usize,
 }
+
+impl Baby {
+    fn new() -> Baby {
+        Baby {
+            genes: Genes::new(),
+            fitness: 0,
+        }
+    }
+}
+
 //evaluation shld happen before update of game_board and filled cells are cleared
 fn evaluate_game_board(
     game_board: &GameBoard,
