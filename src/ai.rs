@@ -16,12 +16,12 @@ pub struct Genes {
 impl Genes {
     fn new() -> Genes {
         Genes {
-            consecutive_x: rand::thread_rng().gen_range(0.0, 100.0),
+            consecutive_x: rand::thread_rng().gen::<f64>() * 2.0,
             one_row_filled: rand::thread_rng().gen_range(0.0, 100.0),
-            two_rows_filled: rand::thread_rng().gen_range(0.0, 100.0),
-            three_rows_filled: rand::thread_rng().gen_range(0.0, 100.0),
-            four_rows_filled: rand::thread_rng().gen_range(0.0, 100.0),
-            gaps_vertical: rand::thread_rng().gen_range(0.0, 100.0),
+            two_rows_filled: 60.0,
+            three_rows_filled: 75.0,
+            four_rows_filled: 100.0,
+            gaps_vertical: -rand::thread_rng().gen_range(0.0, 100.0),
             height: rand::thread_rng().gen_range(0.0, 100.0),
             border: rand::thread_rng().gen_range(0.0, 100.0),
         }
@@ -77,7 +77,6 @@ fn evaluate_game_board(
     let game_board_array: [[u8; primitive_constants::BOARD_WIDTH];
         primitive_constants::BOARD_HEIGHT] = game_board.game_board;
 
-    let mut score: f64 = 0.0;
     //score given based on consecutive groups of cells horizontally
     let mut con_cell_x_score: f64 = 0.0;
     //score given based on filled rows
@@ -90,7 +89,7 @@ fn evaluate_game_board(
     let mut gaps_array: [f64; primitive_constants::BOARD_WIDTH] =
         [0.0; primitive_constants::BOARD_WIDTH];
     let mut num_of_filled_rows: u8 = 0;
-    for y in 0..primitive_constants::BOARD_HEIGHT {
+    for y in 1..primitive_constants::BOARD_HEIGHT {
         let mut num_of_con_x_cells: f64 = 0.0;
         let mut filled_cell: u8 = 0;
         let mut blank_cell: u8 = 0;
@@ -120,7 +119,7 @@ fn evaluate_game_board(
         }
     }
     update_for_filled_rows(&mut filled_rows_score, num_of_filled_rows, genes);
-    score = con_cell_x_score + filled_rows_score + gaps_score + border_score;
+    let score: f64 = con_cell_x_score + filled_rows_score + gaps_score + border_score;
     return score;
 }
 
@@ -169,9 +168,9 @@ pub fn generate_move_dataset<'a>(
     for n in 0..distinct_rotations {
         //generate one data set each rotation
         let mut game_variables_rotation = game_variables;
-        if n != 0 {
-            rotate_piece_ai(&mut game_variables_rotation, n);
-        }
+
+        rotate_piece_ai(&mut game_variables_rotation, n);
+
         //find max right moves
         let max_right: usize =
             game_board.piece_max_moves(primitive_constants::RIGHT, &game_variables_rotation);
@@ -260,6 +259,10 @@ pub fn rotate_piece_ai(
     game_variables: &mut GameVariables,
     rotation_state_end: usize,
 ) {
+    if rotation_state_end == 0 {
+        game_variables.rotation_state = rotation_state_end;
+        return;
+    }
     //get current tetronomino
     let tetronomino: &Tetronomino = game_variables.current_piece;
     //get current location of anchor

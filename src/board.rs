@@ -381,6 +381,7 @@ impl GameBoard {
             match GameBoard::row_is(row_reference) {
                 BLANK => return rows_filled,
                 FILLED => {
+                    println!("row filled!");
                     rows_filled = rows_filled + 1;
                     self.clear_row(row_index);
                 }
