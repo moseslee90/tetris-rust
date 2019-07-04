@@ -106,6 +106,17 @@ impl GameBoard {
 
         return false;
     }
+    //if row 21 is occupied by a fixed piece (2), return true to signal game over.
+    pub fn is_game_over(&self) -> bool {
+
+        for x in 0..BOARD_WIDTH {
+            if self.game_board[21][x] == 2 {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     pub fn move_piece(
         &mut self,
@@ -360,7 +371,7 @@ impl GameBoard {
         }
     }
     //function to call right after piece has been placed and turned into a fixed piece
-    pub fn update_game_board(&mut self) {
+    pub fn update_game_board(&mut self) -> usize {
         //iterate through rows from bottom skipping row 0
         //declare counter to keep track of rows filled
         let mut rows_filled: usize = 0;
@@ -368,7 +379,7 @@ impl GameBoard {
             let row_reference: &[u8; BOARD_WIDTH] = &self.game_board[row_index];
             //row is will compute if row_reference given is a blank, filled or partial filled row
             match GameBoard::row_is(row_reference) {
-                BLANK => return,
+                BLANK => return rows_filled,
                 FILLED => {
                     rows_filled = rows_filled + 1;
                     self.clear_row(row_index);
@@ -381,6 +392,7 @@ impl GameBoard {
                 _ => panic!("unhandled match pattern in update_game_board"),
             }
         }
+        return rows_filled;
     }
 }
 

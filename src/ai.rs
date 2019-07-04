@@ -251,6 +251,10 @@ fn evaluate_move<'a>(
     }
 }
 
+//bug here, need to rewrite portion of finding anchor next so that
+//code iterates through every preceding anchor next to find the final relative anchor position
+
+
 pub fn rotate_piece_ai(
     game_variables: &mut GameVariables,
     rotation_state_end: usize,
