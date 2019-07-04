@@ -13,9 +13,9 @@ fn main() {
     let mut game_variables = board::GameVariables::new();
     //generates random ai baby with random set of genes and 0 initial fitness
     let mut ai_baby: ai::Baby = ai::Baby::new();
-    let mut decision: ai::Decision = ai::Decision::new(primitive_constants::NONE, 0, 0);
     game_variables.spawn_new_tetronomino_holding_board();
     while !game_board.is_game_over() {
+        let mut decision: ai::Decision = ai::Decision::new(primitive_constants::NONE, 0, 0);
         game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
         game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
         game_board.print_game_board();

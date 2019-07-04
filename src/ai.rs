@@ -1,6 +1,7 @@
 use crate::board::{GameBoard, GameVariables};
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use rand::Rng;
+use std::f64;
 
 pub struct Genes {
     consecutive_x: f64,
@@ -64,7 +65,7 @@ impl<'a> Decision<'a> {
             x_direction,
             moves,
             rotations,
-            score: 0.0,
+            score: f64::NEG_INFINITY,
         }
     }
 }
@@ -222,7 +223,8 @@ fn evaluate_move<'a>(
     //evaluation of the gameboard happens here
     match current_or_holding {
         primitive_constants::CURRENT_PIECE => {
-            decision.score = evaluate_game_board_lines_cleared(&game_board, genes);
+            let first_piece_lines_filled_score =
+                evaluate_game_board_lines_cleared(&game_board, genes);
             //update game board
             game_board.update_game_board();
             //reset game_variables for holding piece
@@ -234,6 +236,7 @@ fn evaluate_move<'a>(
                 genes,
                 decision,
             );
+            decision.score = decision.score + first_piece_lines_filled_score;
             if decision.score > decision_final.score {
                 *decision_final = decision;
             }
@@ -242,7 +245,7 @@ fn evaluate_move<'a>(
             //evaluate game_board a second time in full and update the decision score accordingly but
             //keep decision moves, rotation and direction the
             //same so decision can be made only on current piece
-            decision.score += evaluate_game_board(&game_board, genes);
+            decision.score = evaluate_game_board(&game_board, genes);
             if decision.score > decision_final.score {
                 decision_final.score = decision.score;
             }
