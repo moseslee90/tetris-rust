@@ -2,7 +2,7 @@ use crate::board::{GameBoard, GameVariables};
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use rand::Rng;
 
-struct Genes {
+pub struct Genes {
     consecutive_x: f64,
     one_row_filled: f64,
     two_rows_filled: f64,
@@ -28,13 +28,13 @@ impl Genes {
     }
 }
 
-struct Baby {
-    genes: Genes,
-    fitness: usize,
+pub struct Baby {
+    pub genes: Genes,
+    pub fitness: usize,
 }
 
 impl Baby {
-    fn new() -> Baby {
+    pub fn new() -> Baby {
         Baby {
             genes: Genes::new(),
             fitness: 0,
@@ -42,19 +42,19 @@ impl Baby {
     }
 }
 //Struct to store decision that AI could or will take
-struct Decision<'a> {
+pub struct Decision<'a> {
     //if this decision is towards the left or right
-    x_direction: &'a str,
+    pub x_direction: &'a str,
     //number of moves in the x_direction
-    moves: usize,
+    pub moves: usize,
     //how many rotations
-    rotations: usize,
+    pub rotations: usize,
     //score for the decision. highest scored decision will be chosen
-    score: f64,
+    pub score: f64,
 }
 
 impl<'a> Decision<'a> {
-    fn new(
+    pub fn new(
         x_direction: &str,
         moves: usize,
         rotations: usize,
@@ -160,7 +160,7 @@ pub fn generate_move_dataset<'a>(
     game_board: GameBoard,
     game_variables: GameVariables,
     genes: &Genes,
-    decision_final: Decision<'a>,
+    mut decision_final: Decision<'a>,
 ) -> Decision<'a> {
     //find number of distinct rotations
     let distinct_rotations: usize = game_variables.current_piece.distinct_rotations;
@@ -212,16 +212,12 @@ fn evaluate_move<'a>(
     direction: &'a str,
     moves: usize,
     rotations: usize,
-    game_variables: GameVariables, //copy
-    game_board: GameBoard, //copy
+    mut game_variables: GameVariables, //copy
+    mut game_board: GameBoard,         //copy
     genes: &Genes,
 ) {
     let mut decision: Decision = Decision::new(direction, moves, rotations);
-    if direction == primitive_constants::RIGHT {
-        game_variables.piece_location[1] += moves;
-    } else {
-        game_variables.piece_location[1] -= moves;
-    }
+    move_piece_x_ai(direction, moves, &mut game_variables);
     game_board.move_piece_down_max(&mut game_variables);
     //evaluation of the gameboard happens here
     match current_or_holding {
@@ -255,7 +251,7 @@ fn evaluate_move<'a>(
     }
 }
 
-fn rotate_piece_ai(
+pub fn rotate_piece_ai(
     game_variables: &mut GameVariables,
     rotation_state_end: usize,
 ) {
@@ -273,6 +269,23 @@ fn rotate_piece_ai(
     //update game variables to current state
     game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
     game_variables.rotation_state = rotation_state_end;
+}
+
+pub fn move_piece_x_ai(
+    direction: &str,
+    moves: usize,
+    game_variables: &mut GameVariables,
+) {
+    if direction == primitive_constants::RIGHT {
+        game_variables.piece_location[1] += moves;
+    } else if direction == primitive_constants::LEFT {
+        game_variables.piece_location[1] -= moves;
+    } else {
+        panic!(
+            "unknown x movement constant given for move_piece_x_ai: {}",
+            direction
+        );
+    }
 }
 
 fn update_for_con_cell_x(
