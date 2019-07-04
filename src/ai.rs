@@ -42,6 +42,7 @@ impl Baby {
     }
 }
 //Struct to store decision that AI could or will take
+#[derive(Debug)]
 pub struct Decision<'a> {
     //if this decision is towards the left or right
     pub x_direction: &'a str,
@@ -132,7 +133,7 @@ fn evaluate_game_board_lines_cleared(
     //score given based on filled rows
     let mut filled_rows_score: f64 = 0.0;
     let mut num_of_filled_rows: u8 = 0;
-    for y in 0..primitive_constants::BOARD_HEIGHT {
+    for y in 1..primitive_constants::BOARD_HEIGHT {
         let mut filled_cell: u8 = 0;
         let mut blank_cell: u8 = 0;
         for x in 0..primitive_constants::BOARD_WIDTH {
@@ -265,11 +266,18 @@ pub fn rotate_piece_ai(
     let anchor_position_y_start: i8 = game_variables.piece_location[0] as i8;
     let anchor_position_x_start: i8 = game_variables.piece_location[1] as i8;
     //find relative coordinates of next anchor position after rotation
-    let anchor_next_y: i8 = tetronomino.anchor_next[0][0];
-    let anchor_next_x: i8 = tetronomino.anchor_next[0][1];
+    let mut anchor_position_y_end = anchor_position_y_start;
+    let mut anchor_position_x_end = anchor_position_x_start;
+    for i in 0..rotation_state_end {
+        let anchor_next_y: i8 = tetronomino.anchor_next[i][0];
+        let anchor_next_x: i8 = tetronomino.anchor_next[i][1];
+
+        anchor_position_y_end = anchor_position_y_end + anchor_next_y;
+        anchor_position_x_end = anchor_position_x_end + anchor_next_x;
+    }
     //find absolute coordinates of next anchor position after rotation on game_board
-    let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
-    let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;
+    let anchor_position_y_end: usize = anchor_position_y_end as usize;
+    let anchor_position_x_end: usize = anchor_position_x_end as usize;
     //update game variables to current state
     game_variables.piece_location = [anchor_position_y_end, anchor_position_x_end];
     game_variables.rotation_state = rotation_state_end;
@@ -314,11 +322,12 @@ fn update_for_filled_rows(
     genes: &Genes,
 ) {
     *filled_rows_score += match num_of_filled_rows {
+        0u8 => 0.0,
         1u8 => genes.one_row_filled,
         2u8 => genes.two_rows_filled,
         3u8 => genes.three_rows_filled,
         4u8 => genes.four_rows_filled,
-        _ => panic!("more rows filled than possible!"),
+        _ => panic!("unhandled number of rows filled!: {}", num_of_filled_rows),
     }
 }
 fn update_for_vertical_gaps(

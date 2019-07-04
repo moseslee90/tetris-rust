@@ -313,8 +313,8 @@ impl GameBoard {
         //get current rotation state
         let rotation_state_start: usize = game_variables.rotation_state;
         //find relative coordinates of next anchor position after rotation
-        let anchor_next_y: i8 = tetronomino.anchor_next[0][0];
-        let anchor_next_x: i8 = tetronomino.anchor_next[0][1];
+        let anchor_next_y: i8 = tetronomino.anchor_next[rotation_state_start][0];
+        let anchor_next_x: i8 = tetronomino.anchor_next[rotation_state_start][1];
         //find absolute coordinates of next anchor position after rotation on game_board
         let anchor_position_y_end: usize = (anchor_position_y_start + anchor_next_y) as usize;
         let anchor_position_x_end: usize = (anchor_position_x_start + anchor_next_x) as usize;

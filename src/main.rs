@@ -27,6 +27,7 @@ fn main() {
             &ai_baby.genes,
             decision,
         );
+        println!("{:?}", decision);
         //decision generated, act on decision
         //first rotate piece based on decision
         ai::rotate_piece_ai(&mut game_variables, decision.rotations);
