@@ -23,6 +23,8 @@ pub mod primitive_constants {
     //constant to flag simulations
     pub const SIMULATION: &str = "simulation";
     pub const NOT_SIMULATION: &str = "not_simulation";
+    //constant to simulate none
+    pub const NONE: &str = "none";
 }
 
 pub mod tetronominoes {
