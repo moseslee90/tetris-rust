@@ -21,8 +21,13 @@ fn main() {
 
     match command.trim() {
         "init-pop" => ai::initialise_random_population(),
-        "read-pop" => ai::write_population_to_file(ai::read_population()),
-        "next-pop" => println!("you entered next-pop"),
+        "read-pop" => {
+            ai::write_population_to_file(ai::read_population(primitive_constants::DATA_PATH))
+        }
+        "next-pop" => ai::next_generation(
+            primitive_constants::DATA_OUTPUT_PATH,
+            primitive_constants::DATA_PATH,
+        ),
         "cycle-pop" => println!("you entered cycle-pop"),
         _ => (),
     };

@@ -5,6 +5,7 @@ pub mod primitive_constants {
     //population constants
     pub const TOP_INDIVIDUALS_SIZE: usize = 3;
     pub const POPULATION_SIZE: usize = 10;
+    pub const MAX_GENES_SWAP: usize = 4;
     pub const DATA_OUTPUT_PATH: &str = "data/data_output.json";
     pub const DATA_PATH: &str = "data/data.json";
 

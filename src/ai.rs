@@ -1,9 +1,10 @@
 use crate::board::{GameBoard, GameVariables};
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
-use json::{array, object};
+use json::{array, object, JsonValue};
 
 use rand::Rng;
 use std::{f64, fs};
+
 #[derive(Copy, Clone)]
 pub struct Genes {
     consecutive_x: f64,
@@ -448,10 +449,9 @@ pub fn write_population_to_file(
     fs::write(primitive_constants::DATA_OUTPUT_PATH, json_string)
         .expect("Unable to write to data_output.json");
 }
-pub fn read_population() -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
+pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
     //read population data from json file;
-    let data =
-        fs::read_to_string(primitive_constants::DATA_PATH).expect("Unable to read data/data.json");
+    let data = fs::read_to_string(file_path).expect("Unable to read data/data.json");
     let parsed = json::parse(&data).unwrap();
     let population = &parsed["individuals"];
     //initialise random array of 10 individuals with 0 fitness
@@ -461,28 +461,7 @@ pub fn read_population() -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
 
     for i in 0..population.len() {
         let genes = &population[i]["genes"];
-        let mut baby = Baby::new_with_values(
-            genes["consecutive_x"]
-                .as_f64()
-                .expect("non-f64 value found"),
-            genes["one_row_filled"]
-                .as_f64()
-                .expect("non-f64 value found"),
-            genes["two_rows_filled"]
-                .as_f64()
-                .expect("non-f64 value found"),
-            genes["three_rows_filled"]
-                .as_f64()
-                .expect("non-f64 value found"),
-            genes["four_rows_filled"]
-                .as_f64()
-                .expect("non-f64 value found"),
-            genes["gaps_vertical"]
-                .as_f64()
-                .expect("non-f64 value found"),
-            genes["height"].as_f64().expect("non-f64 value found"),
-            genes["border"].as_f64().expect("non-f64 value found"),
-        );
+        let mut baby = baby_from_json_baby(genes);
         baby.fitness = play_game_for_individual(&baby);
         for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
             if baby.fitness > top_ten[j].fitness {
@@ -493,6 +472,31 @@ pub fn read_population() -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
     }
 
     return top_ten;
+}
+
+pub fn baby_from_json_baby(genes: &JsonValue) -> Baby {
+    Baby::new_with_values(
+        genes["consecutive_x"]
+            .as_f64()
+            .expect("non-f64 value found"),
+        genes["one_row_filled"]
+            .as_f64()
+            .expect("non-f64 value found"),
+        genes["two_rows_filled"]
+            .as_f64()
+            .expect("non-f64 value found"),
+        genes["three_rows_filled"]
+            .as_f64()
+            .expect("non-f64 value found"),
+        genes["four_rows_filled"]
+            .as_f64()
+            .expect("non-f64 value found"),
+        genes["gaps_vertical"]
+            .as_f64()
+            .expect("non-f64 value found"),
+        genes["height"].as_f64().expect("non-f64 value found"),
+        genes["border"].as_f64().expect("non-f64 value found"),
+    )
 }
 
 pub fn play_game_for_individual(baby: &Baby) -> usize {
@@ -531,4 +535,81 @@ pub fn play_game_for_individual(baby: &Baby) -> usize {
         fitness_sum += ai_baby.fitness;
     }
     return fitness_sum / 3;
+}
+
+pub fn breed_individuals(
+    mut baby_1: Baby,
+    baby_2: &Baby,
+) -> Baby {
+    //select random number of genes
+    let number_of_genes_to_swap: usize =
+        rand::thread_rng().gen_range(1, primitive_constants::MAX_GENES_SWAP);
+    for _i in 0..number_of_genes_to_swap {
+        match rand::thread_rng().gen_range(0, 8) {
+            0 => baby_1.genes.consecutive_x = baby_2.genes.consecutive_x,
+            1 => baby_1.genes.one_row_filled = baby_2.genes.one_row_filled,
+            2 => baby_1.genes.two_rows_filled = baby_2.genes.two_rows_filled,
+            3 => baby_1.genes.three_rows_filled = baby_2.genes.three_rows_filled,
+            4 => baby_1.genes.four_rows_filled = baby_2.genes.four_rows_filled,
+            5 => baby_1.genes.gaps_vertical = baby_2.genes.gaps_vertical,
+            6 => baby_1.genes.height = baby_2.genes.height,
+            7 => baby_1.genes.border = baby_2.genes.border,
+            _ => (),
+        }
+    }
+    return baby_1;
+}
+
+pub fn next_generation(
+    source_path: &str,
+    output_path: &str,
+) {
+    let data = fs::read_to_string(source_path).expect("Unable to read data/data.json");
+    let parsed = json::parse(&data).unwrap();
+    let population = &parsed["individuals"];
+
+    let mut result = object! {
+        "individuals" => array![]
+    };
+
+    for i in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
+        let baby = baby_from_json_baby(&population[i]["genes"]);
+        result["individuals"][i] = object! {
+            "genes" => object!{
+                "consecutive_x" => baby.genes.consecutive_x,
+                "one_row_filled" => baby.genes.one_row_filled,
+                "two_rows_filled" => baby.genes.two_rows_filled,
+                "three_rows_filled" => baby.genes.three_rows_filled,
+                "four_rows_filled" => baby.genes.four_rows_filled,
+                "gaps_vertical" => baby.genes.gaps_vertical,
+                "height" => baby.genes.height,
+                "border" => baby.genes.border,
+            },
+            "fitness" => baby.fitness,
+        };
+    }
+
+    for i in primitive_constants::TOP_INDIVIDUALS_SIZE..primitive_constants::POPULATION_SIZE {
+        let baby_1_genes = &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
+        let baby_1 = baby_from_json_baby(baby_1_genes);
+        let baby_2_genes = &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
+        let baby_2 = baby_from_json_baby(baby_2_genes);
+        let baby = breed_individuals(baby_1, &baby_2);
+        result["individuals"][i] = object! {
+            "genes" => object!{
+                "consecutive_x" => baby.genes.consecutive_x,
+                "one_row_filled" => baby.genes.one_row_filled,
+                "two_rows_filled" => baby.genes.two_rows_filled,
+                "three_rows_filled" => baby.genes.three_rows_filled,
+                "four_rows_filled" => baby.genes.four_rows_filled,
+                "gaps_vertical" => baby.genes.gaps_vertical,
+                "height" => baby.genes.height,
+                "border" => baby.genes.border,
+            },
+            "fitness" => baby.fitness,
+        };
+    }
+
+    let json_string = json::stringify(result);
+    fs::write(output_path, json_string).expect("Unable to write to data.json");
 }
