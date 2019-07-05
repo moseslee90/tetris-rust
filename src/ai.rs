@@ -4,7 +4,7 @@ use json::{array, object};
 use std::{f64, fs};
 use rand::Rng;
 
-
+#[derive(Copy, Clone)]
 pub struct Genes {
     consecutive_x: f64,
     one_row_filled: f64,
@@ -402,7 +402,7 @@ pub fn initialise_random_population() {
     let mut parsed = object! {
         "individuals" => array![]
     };
-    for i in 0..2 {
+    for i in 0..primitive_constants::POPULATION_SIZE {
         let baby = Baby::new();
         parsed["individuals"][i] = object! {
             "genes" => object!{
@@ -428,10 +428,7 @@ pub fn read_population() -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
     let population = &parsed["individuals"];
     //initialise random array of 10 individuals with 0 fitness
     //array is for keeping track of the top 10 individuals in the population during evaluation
-    let mut top_ten: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE];
-    for i in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
-        top_ten[i] = Baby::new();
-    }
+    let mut top_ten: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] = [Baby::new(); primitive_constants::TOP_INDIVIDUALS_SIZE];
 
     let mut baby: Baby = Baby::new();
     for i in 0..population.len() {
