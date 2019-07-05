@@ -3,7 +3,7 @@ use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use json::{array, object, JsonValue};
 
 use rand::Rng;
-use std::{f64, fs};
+use std::{f64, fs, usize};
 
 #[derive(Copy, Clone)]
 pub struct Genes {
@@ -459,14 +459,32 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
     let mut top_ten: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] =
         [Baby::new(); primitive_constants::TOP_INDIVIDUALS_SIZE];
 
-    for i in 0..population.len() {
+    let mut lowest_fitness: usize = usize::max_value();
+    let mut lowest_index: usize = primitive_constants::TOP_INDIVIDUALS_SIZE;
+    //initialise top_ten with first 3 in population
+    for i in 0..3 {
         let genes = &population[i]["genes"];
         let mut baby = baby_from_json_baby(genes);
         baby.fitness = play_game_for_individual(&baby);
-        for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
-            if baby.fitness > top_ten[j].fitness {
-                top_ten[j] = baby;
-                break;
+        top_ten[i] = baby;
+        if baby.fitness < lowest_fitness {
+            lowest_fitness = baby.fitness;
+            lowest_index = i;
+        }
+    }
+
+    for i in 3..population.len() {
+        let genes = &population[i]["genes"];
+        let mut baby = baby_from_json_baby(genes);
+        baby.fitness = play_game_for_individual(&baby);
+        if baby.fitness > lowest_fitness {
+            top_ten[lowest_index] = baby;
+            lowest_fitness = usize::max_value();
+            for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
+                if baby.fitness < lowest_fitness {
+                    lowest_fitness = baby.fitness;
+                    lowest_index = j;
+                }
             }
         }
     }

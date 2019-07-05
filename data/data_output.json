@@ -2,42 +2,42 @@
 	"individuals": [
 		{
 			"genes": {
-				"consecutive_x": 0.5610889035664854,
-				"one_row_filled": 71.02892130065801,
-				"two_rows_filled": 6.90482910307888,
-				"three_rows_filled": 156.4593673066904,
-				"four_rows_filled": 815.9483185162992,
-				"gaps_vertical": -63.20870777546024,
-				"height": 1.26329022670196,
-				"border": 74.93330538433188
+				"consecutive_x": 0.5753717230988373,
+				"one_row_filled": 28.031412937662699,
+				"two_rows_filled": 46.16826879352969,
+				"three_rows_filled": 131.32536921111174,
+				"four_rows_filled": 769.8644505064145,
+				"gaps_vertical": -64.37469323458038,
+				"height": 1.9617330568558025,
+				"border": 18.14380428377076
 			},
-			"fitness": 282
+			"fitness": 44
 		},
 		{
 			"genes": {
-				"consecutive_x": 0.5610889035664854,
-				"one_row_filled": 71.02892130065801,
-				"two_rows_filled": 6.90482910307888,
-				"three_rows_filled": 156.4593673066904,
-				"four_rows_filled": 815.9483185162992,
-				"gaps_vertical": -63.20870777546024,
-				"height": 1.26329022670196,
-				"border": 74.93330538433188
+				"consecutive_x": 1.3047786894714664,
+				"one_row_filled": 97.91287289840294,
+				"two_rows_filled": 131.0587640285845,
+				"three_rows_filled": 328.0389430514504,
+				"four_rows_filled": 813.5983208775267,
+				"gaps_vertical": -69.18900967368357,
+				"height": 1.540422629083574,
+				"border": 40.50426079704137
 			},
-			"fitness": 35
+			"fitness": 33
 		},
 		{
 			"genes": {
-				"consecutive_x": 0.8074189863292949,
-				"one_row_filled": 97.40438903933473,
-				"two_rows_filled": 123.18072746011115,
-				"three_rows_filled": 275.01116947721536,
-				"four_rows_filled": 286.76552716451359,
-				"gaps_vertical": -61.8856963363348,
-				"height": 1.586720945880899,
-				"border": 26.672047294887017
+				"consecutive_x": 1.226300715811715,
+				"one_row_filled": 63.50534093911251,
+				"two_rows_filled": 91.41158393596469,
+				"three_rows_filled": 296.8385172090671,
+				"four_rows_filled": 632.874214437921,
+				"gaps_vertical": -71.96670748712376,
+				"height": 1.8090444421474928,
+				"border": 76.73014235379118
 			},
-			"fitness": 0
+			"fitness": 18
 		}
 	]
 }
