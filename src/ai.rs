@@ -1,8 +1,9 @@
 use crate::board::{GameBoard, GameVariables};
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
-use rand::Rng;
+use json::{array, object};
 use std::{f64, fs};
-use json::{object, array};
+use rand::Rng;
+
 
 pub struct Genes {
     consecutive_x: f64,
@@ -52,8 +53,8 @@ impl Baby {
         height: f64,
         border: f64,
     ) -> Baby {
-        Baby{
-            genes: Genes{
+        Baby {
+            genes: Genes {
                 consecutive_x,
                 one_row_filled,
                 two_rows_filled,
@@ -397,13 +398,13 @@ fn update_for_height(
         *height_score -= genes.height.powf(y as f64);
     }
 }
-pub fn initialise_random_population(){
-    let mut parsed = object!{
+pub fn initialise_random_population() {
+    let mut parsed = object! {
         "individuals" => array![]
     };
     for i in 0..2 {
         let baby = Baby::new();
-        parsed["individuals"][i] = object!{
+        parsed["individuals"][i] = object! {
             "genes" => object!{
                 "consecutive_x" => baby.genes.consecutive_x,
                 "one_row_filled" => baby.genes.one_row_filled,
@@ -429,51 +430,65 @@ pub fn read_population() -> Baby {
     for i in 0..population.len() {
         let genes = &population[i]["genes"];
         baby = Baby::new_with_values(
-            genes["consecutive_x"].as_f64().expect("non-f64 value found"),
-            genes["one_row_filled"].as_f64().expect("non-f64 value found"),
-            genes["two_rows_filled"].as_f64().expect("non-f64 value found"),
-            genes["three_rows_filled"].as_f64().expect("non-f64 value found"),
-            genes["four_rows_filled"].as_f64().expect("non-f64 value found"),
-            genes["gaps_vertical"].as_f64().expect("non-f64 value found"),
+            genes["consecutive_x"]
+                .as_f64()
+                .expect("non-f64 value found"),
+            genes["one_row_filled"]
+                .as_f64()
+                .expect("non-f64 value found"),
+            genes["two_rows_filled"]
+                .as_f64()
+                .expect("non-f64 value found"),
+            genes["three_rows_filled"]
+                .as_f64()
+                .expect("non-f64 value found"),
+            genes["four_rows_filled"]
+                .as_f64()
+                .expect("non-f64 value found"),
+            genes["gaps_vertical"]
+                .as_f64()
+                .expect("non-f64 value found"),
             genes["height"].as_f64().expect("non-f64 value found"),
-            genes["border"].as_f64().expect("non-f64 value found")
+            genes["border"].as_f64().expect("non-f64 value found"),
         );
     }
     return baby;
 }
 
-pub fn play_game_for_individual(
-    baby: &Baby,
-) -> usize {
+pub fn play_game_for_individual(baby: &Baby) -> usize {
     let mut game_board = GameBoard::new();
     let mut game_variables = GameVariables::new();
     //generates random ai baby with random set of genes and 0 initial fitness
     let mut ai_baby: Baby = Baby::new();
     game_variables.spawn_new_tetronomino_holding_board();
-    while !game_board.is_game_over() && ai_baby.fitness < 500 {
-        let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
-        game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
-        game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
-        game_board.print_game_board();
-        game_board.change_piece(primitive_constants::REMOVE_PIECE, &game_variables);
-        decision = generate_move_dataset(
-            primitive_constants::CURRENT_PIECE,
-            game_board,
-            game_variables,
-            &ai_baby.genes,
-            decision,
-        );
-        println!("{:?}", decision);
-        //decision generated, act on decision
-        //first rotate piece based on decision
-        rotate_piece_ai(&mut game_variables, decision.rotations);
-        //second, move piece based on decision
-        move_piece_x_ai(decision.x_direction, decision.moves, &mut game_variables);
-        //move piece all the way down on game_board
-        game_board.move_piece_down_max(&mut game_variables);
-        ai_baby.fitness += game_board.update_game_board();
-        //print move made by random ai
-        game_board.print_game_board();
+    let mut fitness_sum = 0;
+    for _i in 0..3 {
+        while !game_board.is_game_over() && ai_baby.fitness < 500 {
+            let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
+            game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
+            game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
+            game_board.print_game_board();
+            game_board.change_piece(primitive_constants::REMOVE_PIECE, &game_variables);
+            decision = generate_move_dataset(
+                primitive_constants::CURRENT_PIECE,
+                game_board,
+                game_variables,
+                &ai_baby.genes,
+                decision,
+            );
+            println!("{:?}", decision);
+            //decision generated, act on decision
+            //first rotate piece based on decision
+            rotate_piece_ai(&mut game_variables, decision.rotations);
+            //second, move piece based on decision
+            move_piece_x_ai(decision.x_direction, decision.moves, &mut game_variables);
+            //move piece all the way down on game_board
+            game_board.move_piece_down_max(&mut game_variables);
+            ai_baby.fitness += game_board.update_game_board();
+            //print move made by random ai
+            game_board.print_game_board();
+        }
+        fitness_sum += ai_baby.fitness;
     }
-    return ai_baby.fitness;
+    return fitness_sum / 3;
 }
