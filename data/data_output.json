@@ -2,42 +2,42 @@
 	"individuals": [
 		{
 			"genes": {
-				"consecutive_x": 0.5753717230988373,
-				"one_row_filled": 28.031412937662699,
-				"two_rows_filled": 46.16826879352969,
-				"three_rows_filled": 131.32536921111174,
-				"four_rows_filled": 769.8644505064145,
-				"gaps_vertical": -64.37469323458038,
-				"height": 1.9617330568558025,
-				"border": 18.14380428377076
+				"consecutive_x": 0.1626825541872612,
+				"one_row_filled": 52.935314963956539,
+				"two_rows_filled": 174.56949319997436,
+				"three_rows_filled": 363.020807462665,
+				"four_rows_filled": 947.630696994044,
+				"gaps_vertical": -6.083491292208376,
+				"height": 1.739817591742459,
+				"border": 17.12501255557004
 			},
-			"fitness": 44
+			"fitness": 143
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.3047786894714664,
-				"one_row_filled": 97.91287289840294,
-				"two_rows_filled": 131.0587640285845,
-				"three_rows_filled": 328.0389430514504,
-				"four_rows_filled": 813.5983208775267,
-				"gaps_vertical": -69.18900967368357,
-				"height": 1.540422629083574,
-				"border": 40.50426079704137
+				"consecutive_x": 1.452174767582512,
+				"one_row_filled": 77.19514004945438,
+				"two_rows_filled": 26.66892746565943,
+				"three_rows_filled": 342.6243661342394,
+				"four_rows_filled": 914.5255569821233,
+				"gaps_vertical": -1.3255248197613812,
+				"height": 1.8638963831570826,
+				"border": 77.83696264677518
 			},
-			"fitness": 33
+			"fitness": 14
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.226300715811715,
-				"one_row_filled": 63.50534093911251,
-				"two_rows_filled": 91.41158393596469,
-				"three_rows_filled": 296.8385172090671,
-				"four_rows_filled": 632.874214437921,
-				"gaps_vertical": -71.96670748712376,
-				"height": 1.8090444421474928,
-				"border": 76.73014235379118
+				"consecutive_x": 0.975791558547472,
+				"one_row_filled": 77.19514004945438,
+				"two_rows_filled": 26.66892746565943,
+				"three_rows_filled": 97.97882306310096,
+				"four_rows_filled": 871.5725955439247,
+				"gaps_vertical": -75.76183264753085,
+				"height": 1.745888430774879,
+				"border": 52.94021294377684
 			},
-			"fitness": 18
+			"fitness": 14
 		}
 	]
 }

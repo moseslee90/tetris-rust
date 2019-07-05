@@ -481,8 +481,8 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
             top_ten[lowest_index] = baby;
             lowest_fitness = usize::max_value();
             for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
-                if baby.fitness < lowest_fitness {
-                    lowest_fitness = baby.fitness;
+                if top_ten[j].fitness < lowest_fitness {
+                    lowest_fitness = top_ten[j].fitness;
                     lowest_index = j;
                 }
             }
