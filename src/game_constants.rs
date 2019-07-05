@@ -2,6 +2,7 @@ pub mod primitive_constants {
     pub const BOARD_HEIGHT: usize = 25;
     pub const BOARD_WIDTH: usize = 10;
     pub const HOLDING_SIZE: usize = 4;
+    pub const TOP_INDIVIDUALS_SIZE: usize = 3;
 
     pub const SPAWN_X: usize = 4;
     pub const SPAWN_Y: usize = BOARD_HEIGHT - 4;

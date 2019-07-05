@@ -30,7 +30,7 @@ impl Genes {
         }
     }
 }
-
+#[derive(Copy, Clone)]
 pub struct Baby {
     pub genes: Genes,
     pub fitness: usize,
@@ -421,11 +421,18 @@ pub fn initialise_random_population() {
     let json_string = json::stringify(parsed);
     fs::write("data/data_output.json", json_string).expect("Unable to write to data_output.json")
 }
-pub fn read_population() -> Baby {
+pub fn read_population() -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
+    //read population data from json file;
     let data = fs::read_to_string("data/data_output.json").expect("Unable to read data/data.json");
     let parsed = json::parse(&data).unwrap();
-
     let population = &parsed["individuals"];
+    //initialise random array of 10 individuals with 0 fitness
+    //array is for keeping track of the top 10 individuals in the population during evaluation
+    let mut top_ten: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE];
+    for i in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
+        top_ten[i] = Baby::new();
+    }
+
     let mut baby: Baby = Baby::new();
     for i in 0..population.len() {
         let genes = &population[i]["genes"];
@@ -451,8 +458,15 @@ pub fn read_population() -> Baby {
             genes["height"].as_f64().expect("non-f64 value found"),
             genes["border"].as_f64().expect("non-f64 value found"),
         );
+        baby.fitness = play_game_for_individual(&baby);
+        for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
+            if baby.fitness > top_ten[j].fitness {
+                top_ten[j] = baby;
+                break;
+            }
+        }
     }
-    return baby;
+    return top_ten;
 }
 
 pub fn play_game_for_individual(baby: &Baby) -> usize {
