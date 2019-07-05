@@ -107,8 +107,6 @@ fn evaluate_game_board(
 
     //score given based on consecutive groups of cells horizontally
     let mut con_cell_x_score: f64 = 0.0;
-    //score given based on filled rows
-    let mut filled_rows_score: f64 = 0.0;
     //array to keep track of number of gaps in each column
     let mut gaps_score: f64 = 0.0;
     //score given based on whether piece is occupying the sides of the board
@@ -149,9 +147,8 @@ fn evaluate_game_board(
             num_of_filled_rows = num_of_filled_rows + 1;
         }
     }
-    update_for_filled_rows(&mut filled_rows_score, num_of_filled_rows, genes);
     let score: f64 =
-        con_cell_x_score + filled_rows_score + gaps_score + border_score + height_score;
+        con_cell_x_score + gaps_score + border_score + height_score;
     return score;
 }
 
@@ -276,7 +273,9 @@ fn evaluate_move<'a>(
             //evaluate game_board a second time in full and update the decision score accordingly but
             //keep decision moves, rotation and direction the
             //same so decision can be made only on current piece
-            decision.score = evaluate_game_board(&game_board, genes);
+            let second_piece_lines_filled_score = evaluate_game_board_lines_cleared(&game_board, genes);
+            game_board.update_game_board();
+            decision.score = evaluate_game_board(&game_board, genes) + second_piece_lines_filled_score;
             if decision.score > decision_final.score {
                 decision_final.score = decision.score;
             }
@@ -550,7 +549,7 @@ pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
             //print move made by random ai
             // game_board.print_game_board();
         }
-        println!("fitness_min is {} fitness is {}", fitness_min, fitness);
+        // println!("fitness_min is {} fitness is {}", fitness_min, fitness);
         fitness_min = cmp::min(fitness_min, fitness);
     }
     println!("{}", fitness_min);
