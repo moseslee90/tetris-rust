@@ -5,6 +5,8 @@ pub mod primitive_constants {
     //population constants
     pub const TOP_INDIVIDUALS_SIZE: usize = 3;
     pub const POPULATION_SIZE: usize = 10;
+    pub const DATA_OUTPUT_PATH: &str = "data/data_output.json";
+    pub const DATA_PATH: &str = "data/data.json";
 
     pub const SPAWN_X: usize = 4;
     pub const SPAWN_Y: usize = BOARD_HEIGHT - 4;

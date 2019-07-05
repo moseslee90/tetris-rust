@@ -1,9 +1,9 @@
 use crate::board::{GameBoard, GameVariables};
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use json::{array, object};
-use std::{f64, fs};
-use rand::Rng;
 
+use rand::Rng;
+use std::{f64, fs};
 #[derive(Copy, Clone)]
 pub struct Genes {
     consecutive_x: f64,
@@ -419,21 +419,49 @@ pub fn initialise_random_population() {
         };
     }
     let json_string = json::stringify(parsed);
-    fs::write("data/data_output.json", json_string).expect("Unable to write to data_output.json")
+    fs::write(primitive_constants::DATA_PATH, json_string)
+        .expect("Unable to write to data_output.json");
+}
+pub fn write_population_to_file(
+    array_individuals: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE]
+) {
+    let mut parsed = object! {
+        "individuals" => array![]
+    };
+    for i in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
+        let baby = array_individuals[i];
+        parsed["individuals"][i] = object! {
+            "genes" => object!{
+                "consecutive_x" => baby.genes.consecutive_x,
+                "one_row_filled" => baby.genes.one_row_filled,
+                "two_rows_filled" => baby.genes.two_rows_filled,
+                "three_rows_filled" => baby.genes.three_rows_filled,
+                "four_rows_filled" => baby.genes.four_rows_filled,
+                "gaps_vertical" => baby.genes.gaps_vertical,
+                "height" => baby.genes.height,
+                "border" => baby.genes.border,
+            },
+            "fitness" => baby.fitness,
+        };
+    }
+    let json_string = json::stringify(parsed);
+    fs::write(primitive_constants::DATA_OUTPUT_PATH, json_string)
+        .expect("Unable to write to data_output.json");
 }
 pub fn read_population() -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
     //read population data from json file;
-    let data = fs::read_to_string("data/data_output.json").expect("Unable to read data/data.json");
+    let data =
+        fs::read_to_string(primitive_constants::DATA_PATH).expect("Unable to read data/data.json");
     let parsed = json::parse(&data).unwrap();
     let population = &parsed["individuals"];
     //initialise random array of 10 individuals with 0 fitness
     //array is for keeping track of the top 10 individuals in the population during evaluation
-    let mut top_ten: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] = [Baby::new(); primitive_constants::TOP_INDIVIDUALS_SIZE];
+    let mut top_ten: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] =
+        [Baby::new(); primitive_constants::TOP_INDIVIDUALS_SIZE];
 
-    let mut baby: Baby = Baby::new();
     for i in 0..population.len() {
         let genes = &population[i]["genes"];
-        baby = Baby::new_with_values(
+        let mut baby = Baby::new_with_values(
             genes["consecutive_x"]
                 .as_f64()
                 .expect("non-f64 value found"),
@@ -463,6 +491,7 @@ pub fn read_population() -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
             }
         }
     }
+
     return top_ten;
 }
 

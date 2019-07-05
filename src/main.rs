@@ -15,15 +15,16 @@ fn main() {
 
     let mut command = String::new();
 
-    io::stdin().read_line(&mut command)
+    io::stdin()
+        .read_line(&mut command)
         .expect("Failed to read line");
 
     match command.trim() {
-        "init-pop" => println!("you entered init-pop"),
-        "read-pop" => println!("you entered read-pop"),
+        "init-pop" => ai::initialise_random_population(),
+        "read-pop" => ai::write_population_to_file(ai::read_population()),
         "next-pop" => println!("you entered next-pop"),
         "cycle-pop" => println!("you entered cycle-pop"),
-        _ => ()
+        _ => (),
     };
 
     // println!("You guessed: {}", guess);

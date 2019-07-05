@@ -1,7 +1,134 @@
 {
-	"code": 200,
-	"success": true,
-	"payload": {
-		"features": ["awesome", "easyAPI", "lowLearningCurve"]
-	}
+	"individuals": [
+		{
+			"genes": {
+				"consecutive_x": 1.7687761248188637,
+				"one_row_filled": 98.79809020001487,
+				"two_rows_filled": 176.7564381831326,
+				"three_rows_filled": 94.35363866285025,
+				"four_rows_filled": 544.2843249720063,
+				"gaps_vertical": -88.42585724200856,
+				"height": 1.6696885241064923,
+				"border": 97.53420609329872
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.7563420882643928,
+				"one_row_filled": 56.862190549258318,
+				"two_rows_filled": 152.43913789737645,
+				"three_rows_filled": 353.01859240777358,
+				"four_rows_filled": 378.3545685234376,
+				"gaps_vertical": -37.78653166102044,
+				"height": 1.2864853010798443,
+				"border": 70.21430169602665
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.0328271986772549,
+				"one_row_filled": 45.7384758540537,
+				"two_rows_filled": 55.1683404007794,
+				"three_rows_filled": 31.505473788105044,
+				"four_rows_filled": 781.6553098274818,
+				"gaps_vertical": -89.41221297304205,
+				"height": 1.2594225807823585,
+				"border": 54.18529667056207
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.7402401725935826,
+				"one_row_filled": 37.87675750516604,
+				"two_rows_filled": 8.847057047164509,
+				"three_rows_filled": 79.63209337198896,
+				"four_rows_filled": 272.22045923908225,
+				"gaps_vertical": -4.318426201346437,
+				"height": 1.9202255275264404,
+				"border": 41.89698113170648
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.9514284003879348,
+				"one_row_filled": 29.214517083476687,
+				"two_rows_filled": 11.940907656233169,
+				"three_rows_filled": 141.58491503978318,
+				"four_rows_filled": 890.3653539557384,
+				"gaps_vertical": -77.154487012644,
+				"height": 1.3739815003272527,
+				"border": 21.357801733961915
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 0.5610889035664854,
+				"one_row_filled": 71.02892130065801,
+				"two_rows_filled": 195.4909657528844,
+				"three_rows_filled": 253.00080612981786,
+				"four_rows_filled": 239.99015362330915,
+				"gaps_vertical": -30.597399294897465,
+				"height": 1.1347264817847243,
+				"border": 82.9808185269256
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.5832721430137836,
+				"one_row_filled": 87.2126107948253,
+				"two_rows_filled": 35.12829154778405,
+				"three_rows_filled": 276.2635737725744,
+				"four_rows_filled": 874.0913578006965,
+				"gaps_vertical": -29.807087045276039,
+				"height": 1.9373739177846732,
+				"border": 23.898524694867065
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 0.1558443050045546,
+				"one_row_filled": 80.59497254118698,
+				"two_rows_filled": 76.29256313382769,
+				"three_rows_filled": 267.4431380134891,
+				"four_rows_filled": 401.7701955824652,
+				"gaps_vertical": -88.29923522241782,
+				"height": 1.666984992154467,
+				"border": 57.11432464761479
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.6732517914902925,
+				"one_row_filled": 95.03600014403546,
+				"two_rows_filled": 6.90482910307888,
+				"three_rows_filled": 156.45936730669039,
+				"four_rows_filled": 815.9483185162992,
+				"gaps_vertical": -63.20870777546024,
+				"height": 1.26329022670196,
+				"border": 74.93330538433188
+			},
+			"fitness": 0
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.6198288803703558,
+				"one_row_filled": 24.264648221459284,
+				"two_rows_filled": 63.73586076560169,
+				"three_rows_filled": 360.3453113485851,
+				"four_rows_filled": 672.2624557766036,
+				"gaps_vertical": -89.6001512506444,
+				"height": 1.8701550932322238,
+				"border": 0.17990112630101863
+			},
+			"fitness": 0
+		}
+	]
 }
