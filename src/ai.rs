@@ -1,7 +1,8 @@
 use crate::board::{GameBoard, GameVariables};
 use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use rand::Rng;
-use std::f64;
+use std::{f64, fs};
+use json::{object, array};
 
 pub struct Genes {
     consecutive_x: f64,
@@ -19,9 +20,9 @@ impl Genes {
         Genes {
             consecutive_x: rand::thread_rng().gen::<f64>() * 2.0,
             one_row_filled: rand::thread_rng().gen_range(0.0, 100.0),
-            two_rows_filled: 60.0,
-            three_rows_filled: 75.0,
-            four_rows_filled: 100.0,
+            two_rows_filled: rand::thread_rng().gen_range(0.0, 200.0),
+            three_rows_filled: rand::thread_rng().gen_range(0.0, 400.0),
+            four_rows_filled: rand::thread_rng().gen_range(200.0, 1000.0),
             gaps_vertical: -rand::thread_rng().gen_range(0.0, 100.0),
             height: rand::thread_rng().gen::<f64>() + 1.0,
             border: rand::thread_rng().gen_range(0.0, 100.0),
@@ -371,4 +372,27 @@ fn update_for_height(
     if cell_value == 2 {
         *height_score -= genes.height.powf(y as f64);
     }
+}
+pub fn initialise_random_population(){
+    let mut parsed = object!{
+        "individuals" => array![]
+    };
+    for i in 0..2 {
+        let baby = Baby::new();
+        parsed["individuals"][i] = object!{
+            "genes" => object!{
+                "consecutive_x" => baby.genes.consecutive_x,
+                "one_row_filled" => baby.genes.one_row_filled,
+                "two_rows_filled" => baby.genes.two_rows_filled,
+                "three_rows_filled" => baby.genes.three_rows_filled,
+                "four_rows_filled" => baby.genes.four_rows_filled,
+                "gaps_vertical" => baby.genes.gaps_vertical,
+                "height" => baby.genes.height,
+                "border" => baby.genes.border,
+            },
+            "fitness" => 0,
+        };
+    }
+    let json_string = json::stringify(parsed);
+    fs::write("data/data_output.json", json_string).expect("Unable to write to data_output.json")
 }

@@ -1,7 +1,30 @@
 {
-	"code": 200,
-	"success": true,
-	"payload": {
-		"features": ["awesome", "easyAPI", "lowLearningCurve"]
-	}
+	"individuals": [
+		{
+			"genes": {
+				"consecutive_x": 1.3286739535920278,
+				"one_row_filled": 54.92242695746749,
+				"two_rows_filled": 51.31028683042831,
+				"three_rows_filled": 190.61220000776053,
+				"four_rows_filled": 766.1542166335459,
+				"gaps_vertical": -76.80755344555537,
+				"height": 1.686523002103338,
+				"border": 53.58160708457758
+			},
+			"fitness": 20
+		},
+		{
+			"genes": {
+				"consecutive_x": 1.6098274257038523,
+				"one_row_filled": 47.861647505541409,
+				"two_rows_filled": 60.87597132968177,
+				"three_rows_filled": 2.524864838036045,
+				"four_rows_filled": 336.24708371993679,
+				"gaps_vertical": -8.686964711147894,
+				"height": 1.5405893649252947,
+				"border": 73.90788187892747
+			},
+			"fitness": 20
+		}
+	]
 }
