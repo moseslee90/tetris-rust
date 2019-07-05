@@ -7,7 +7,6 @@ use json;
 use std::fs;
 
 fn main() {
-
     //initialise game_board
     let mut game_board = board::GameBoard::new();
     let mut game_variables = board::GameVariables::new();

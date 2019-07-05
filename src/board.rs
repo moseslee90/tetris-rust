@@ -108,7 +108,6 @@ impl GameBoard {
     }
     //if row 21 is occupied by a fixed piece (2), return true to signal game over.
     pub fn is_game_over(&self) -> bool {
-
         for x in 0..BOARD_WIDTH {
             if self.game_board[21][x] == 2 {
                 return true;

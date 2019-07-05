@@ -23,7 +23,7 @@ impl Genes {
             three_rows_filled: 75.0,
             four_rows_filled: 100.0,
             gaps_vertical: -rand::thread_rng().gen_range(0.0, 100.0),
-            height: rand::thread_rng().gen_range(0.0, 100.0),
+            height: rand::thread_rng().gen::<f64>() + 1.0,
             border: rand::thread_rng().gen_range(0.0, 100.0),
         }
     }
@@ -86,6 +86,8 @@ fn evaluate_game_board(
     let mut gaps_score: f64 = 0.0;
     //score given based on whether piece is occupying the sides of the board
     let mut border_score: f64 = 0.0;
+    //score, demerit, given based on how tall the tetris board is
+    let mut height_score: f64 = 0.0;
 
     let mut gaps_array: [f64; primitive_constants::BOARD_WIDTH] =
         [0.0; primitive_constants::BOARD_WIDTH];
@@ -104,6 +106,7 @@ fn evaluate_game_board(
             );
             update_for_vertical_gaps(&mut gaps_array, &mut gaps_score, genes, cell_value, x);
             update_for_border_piece(&mut border_score, genes, cell_value, x);
+            update_for_height(&mut height_score, genes, cell_value, y);
             //exit condition, if entire row is blank
             if cell_value == 0 {
                 blank_cell += 1;
@@ -120,7 +123,8 @@ fn evaluate_game_board(
         }
     }
     update_for_filled_rows(&mut filled_rows_score, num_of_filled_rows, genes);
-    let score: f64 = con_cell_x_score + filled_rows_score + gaps_score + border_score;
+    let score: f64 =
+        con_cell_x_score + filled_rows_score + gaps_score + border_score + height_score;
     return score;
 }
 
@@ -257,7 +261,6 @@ fn evaluate_move<'a>(
 //bug here, need to rewrite portion of finding anchor next so that
 //code iterates through every preceding anchor next to find the final relative anchor position
 
-
 pub fn rotate_piece_ai(
     game_variables: &mut GameVariables,
     rotation_state_end: usize,
@@ -357,5 +360,15 @@ fn update_for_border_piece(
 ) {
     if cell_value == 2 && (x == 0 || x == primitive_constants::BOARD_WIDTH - 1) {
         *border_score += genes.border;
+    }
+}
+fn update_for_height(
+    height_score: &mut f64,
+    genes: &Genes,
+    cell_value: u8,
+    y: usize,
+) {
+    if cell_value == 2 {
+        *height_score -= genes.height.powf(y as f64);
     }
 }
