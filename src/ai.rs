@@ -3,7 +3,7 @@ use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use json::{array, object, JsonValue};
 
 use rand::Rng;
-use std::{f64, fs, usize};
+use std::{f64, fs, usize, cmp};
 
 #[derive(Copy, Clone)]
 pub struct Genes {
@@ -522,7 +522,7 @@ pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
     let mut game_variables = GameVariables::new();
     //generates random ai baby with random set of genes and 0 initial fitness
     game_variables.spawn_new_tetronomino_holding_board();
-    let mut fitness_sum = 0;
+    let mut fitness_min = usize::max_value();
     for _i in 0..3 {
         let mut fitness = 0;
         while !game_board.is_game_over() && ai_baby.fitness < 500 {
@@ -550,10 +550,10 @@ pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
             //print move made by random ai
             // game_board.print_game_board();
         }
-        fitness_sum += fitness;
+        fitness_min = cmp::min(fitness_min, fitness);
     }
-    println!("{}", fitness_sum / 3);
-    return fitness_sum / 3;
+    println!("{}", fitness_min);
+    return fitness_min;
 }
 
 pub fn breed_individuals(
@@ -576,7 +576,32 @@ pub fn breed_individuals(
             _ => (),
         }
     }
+    random_mutation(&mut baby_1);
     return baby_1;
+}
+
+fn random_mutation(baby_1: &mut Baby) {
+    let dice_roll = rand::thread_rng().gen_range(0, 100);
+
+    if dice_roll == 99 {
+        let baby_2 = Baby::new();
+        //mutate
+        let number_of_genes_to_swap: usize =
+            rand::thread_rng().gen_range(1, primitive_constants::MAX_GENES_SWAP);
+        for _i in 0..number_of_genes_to_swap {
+            match rand::thread_rng().gen_range(0, 8) {
+                0 => baby_1.genes.consecutive_x = baby_2.genes.consecutive_x,
+                1 => baby_1.genes.one_row_filled = baby_2.genes.one_row_filled,
+                2 => baby_1.genes.two_rows_filled = baby_2.genes.two_rows_filled,
+                3 => baby_1.genes.three_rows_filled = baby_2.genes.three_rows_filled,
+                4 => baby_1.genes.four_rows_filled = baby_2.genes.four_rows_filled,
+                5 => baby_1.genes.gaps_vertical = baby_2.genes.gaps_vertical,
+                6 => baby_1.genes.height = baby_2.genes.height,
+                7 => baby_1.genes.border = baby_2.genes.border,
+                _ => (),
+            }
+        }
+    }
 }
 
 pub fn next_generation(
@@ -608,7 +633,7 @@ pub fn next_generation(
         };
     }
 
-    for i in primitive_constants::TOP_INDIVIDUALS_SIZE..primitive_constants::POPULATION_SIZE {
+    for i in primitive_constants::TOP_INDIVIDUALS_SIZE..(primitive_constants::POPULATION_SIZE - primitive_constants::RANDOM_INDIVIDUALS) {
         let baby_1_genes =
             &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
         let baby_1 = baby_from_json_baby(baby_1_genes);
@@ -616,6 +641,23 @@ pub fn next_generation(
             &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
         let baby_2 = baby_from_json_baby(baby_2_genes);
         let baby = breed_individuals(baby_1, &baby_2);
+        result["individuals"][i] = object! {
+            "genes" => object!{
+                "consecutive_x" => baby.genes.consecutive_x,
+                "one_row_filled" => baby.genes.one_row_filled,
+                "two_rows_filled" => baby.genes.two_rows_filled,
+                "three_rows_filled" => baby.genes.three_rows_filled,
+                "four_rows_filled" => baby.genes.four_rows_filled,
+                "gaps_vertical" => baby.genes.gaps_vertical,
+                "height" => baby.genes.height,
+                "border" => baby.genes.border,
+            },
+            "fitness" => baby.fitness,
+        };
+    }
+
+    for i in (primitive_constants::POPULATION_SIZE - primitive_constants::RANDOM_INDIVIDUALS)..primitive_constants::POPULATION_SIZE {
+        let baby = Baby::new();
         result["individuals"][i] = object! {
             "genes" => object!{
                 "consecutive_x" => baby.genes.consecutive_x,

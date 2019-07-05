@@ -3,9 +3,10 @@ pub mod primitive_constants {
     pub const BOARD_WIDTH: usize = 10;
     pub const HOLDING_SIZE: usize = 4;
     //population constants
-    pub const TOP_INDIVIDUALS_SIZE: usize = 3;
-    pub const POPULATION_SIZE: usize = 10;
-    pub const MAX_GENES_SWAP: usize = 4;
+    pub const TOP_INDIVIDUALS_SIZE: usize = 50;
+    pub const POPULATION_SIZE: usize = 1000;
+    pub const RANDOM_INDIVIDUALS: usize = 20;
+    pub const MAX_GENES_SWAP: usize = 2;
     pub const DATA_OUTPUT_PATH: &str = "data/data_output.json";
     pub const DATA_PATH: &str = "data/data.json";
 
