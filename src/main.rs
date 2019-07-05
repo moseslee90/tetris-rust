@@ -28,7 +28,21 @@ fn main() {
             primitive_constants::DATA_OUTPUT_PATH,
             primitive_constants::DATA_PATH,
         ),
-        "cycle-pop" => println!("you entered cycle-pop"),
+        "cycle-pop" => {
+            let mut num_generations = String::new();
+            io::stdin()
+                .read_line(&mut num_generations)
+                .expect("Failed to read line");
+            let num_generations: usize = num_generations.trim().parse().expect("please use a number");
+            for _i in 0..num_generations {
+                ai::write_population_to_file(ai::read_population(primitive_constants::DATA_PATH));
+                ai::next_generation(
+                    primitive_constants::DATA_OUTPUT_PATH,
+                    primitive_constants::DATA_PATH,
+                );
+            }
+
+        },
         _ => (),
     };
 

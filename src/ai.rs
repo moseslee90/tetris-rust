@@ -499,19 +499,19 @@ pub fn baby_from_json_baby(genes: &JsonValue) -> Baby {
     )
 }
 
-pub fn play_game_for_individual(baby: &Baby) -> usize {
+pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
     let mut game_board = GameBoard::new();
     let mut game_variables = GameVariables::new();
     //generates random ai baby with random set of genes and 0 initial fitness
-    let mut ai_baby: Baby = Baby::new();
     game_variables.spawn_new_tetronomino_holding_board();
     let mut fitness_sum = 0;
     for _i in 0..3 {
+        let mut fitness = 0;
         while !game_board.is_game_over() && ai_baby.fitness < 500 {
             let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
             game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
             game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
-            game_board.print_game_board();
+            // game_board.print_game_board();
             game_board.change_piece(primitive_constants::REMOVE_PIECE, &game_variables);
             decision = generate_move_dataset(
                 primitive_constants::CURRENT_PIECE,
@@ -520,7 +520,7 @@ pub fn play_game_for_individual(baby: &Baby) -> usize {
                 &ai_baby.genes,
                 decision,
             );
-            println!("{:?}", decision);
+            // println!("{:?}", decision);
             //decision generated, act on decision
             //first rotate piece based on decision
             rotate_piece_ai(&mut game_variables, decision.rotations);
@@ -528,12 +528,13 @@ pub fn play_game_for_individual(baby: &Baby) -> usize {
             move_piece_x_ai(decision.x_direction, decision.moves, &mut game_variables);
             //move piece all the way down on game_board
             game_board.move_piece_down_max(&mut game_variables);
-            ai_baby.fitness += game_board.update_game_board();
+            fitness += game_board.update_game_board();
             //print move made by random ai
-            game_board.print_game_board();
+            // game_board.print_game_board();
         }
-        fitness_sum += ai_baby.fitness;
+        fitness_sum += fitness;
     }
+    println!("{}", fitness_sum / 3);
     return fitness_sum / 3;
 }
 
@@ -590,9 +591,11 @@ pub fn next_generation(
     }
 
     for i in primitive_constants::TOP_INDIVIDUALS_SIZE..primitive_constants::POPULATION_SIZE {
-        let baby_1_genes = &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
+        let baby_1_genes =
+            &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
         let baby_1 = baby_from_json_baby(baby_1_genes);
-        let baby_2_genes = &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
+        let baby_2_genes =
+            &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
         let baby_2 = baby_from_json_baby(baby_2_genes);
         let baby = breed_individuals(baby_1, &baby_2);
         result["individuals"][i] = object! {
