@@ -3,7 +3,7 @@ use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use json::{array, object, JsonValue};
 
 use rand::Rng;
-use std::{f64, fs, usize, cmp};
+use std::{cmp, f64, fs, usize};
 
 #[derive(Copy, Clone)]
 pub struct Genes {
@@ -518,12 +518,12 @@ pub fn baby_from_json_baby(genes: &JsonValue) -> Baby {
 }
 
 pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
-    let mut game_board = GameBoard::new();
-    let mut game_variables = GameVariables::new();
-    //generates random ai baby with random set of genes and 0 initial fitness
-    game_variables.spawn_new_tetronomino_holding_board();
     let mut fitness_min = usize::max_value();
     for _i in 0..3 {
+        let mut game_board = GameBoard::new();
+        let mut game_variables = GameVariables::new();
+        //generates random ai baby with random set of genes and 0 initial fitness
+        game_variables.spawn_new_tetronomino_holding_board();
         let mut fitness = 0;
         while !game_board.is_game_over() && ai_baby.fitness < 500 {
             let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
@@ -550,6 +550,7 @@ pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
             //print move made by random ai
             // game_board.print_game_board();
         }
+        println!("fitness_min is {} fitness is {}", fitness_min, fitness);
         fitness_min = cmp::min(fitness_min, fitness);
     }
     println!("{}", fitness_min);
@@ -633,7 +634,9 @@ pub fn next_generation(
         };
     }
 
-    for i in primitive_constants::TOP_INDIVIDUALS_SIZE..(primitive_constants::POPULATION_SIZE - primitive_constants::RANDOM_INDIVIDUALS) {
+    for i in primitive_constants::TOP_INDIVIDUALS_SIZE
+        ..(primitive_constants::POPULATION_SIZE - primitive_constants::RANDOM_INDIVIDUALS)
+    {
         let baby_1_genes =
             &population[rand::thread_rng().gen_range(0, population.len()) as usize]["genes"];
         let baby_1 = baby_from_json_baby(baby_1_genes);
@@ -656,7 +659,9 @@ pub fn next_generation(
         };
     }
 
-    for i in (primitive_constants::POPULATION_SIZE - primitive_constants::RANDOM_INDIVIDUALS)..primitive_constants::POPULATION_SIZE {
+    for i in (primitive_constants::POPULATION_SIZE - primitive_constants::RANDOM_INDIVIDUALS)
+        ..primitive_constants::POPULATION_SIZE
+    {
         let baby = Baby::new();
         result["individuals"][i] = object! {
             "genes" => object!{

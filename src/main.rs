@@ -30,6 +30,7 @@ fn main() {
         ),
         "cycle-pop" => {
             let mut num_generations = String::new();
+            println!("Enter a number for the number of generations to run:");
             io::stdin()
                 .read_line(&mut num_generations)
                 .expect("Failed to read line");
