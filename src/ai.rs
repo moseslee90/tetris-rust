@@ -42,6 +42,30 @@ impl Baby {
             fitness: 0,
         }
     }
+    pub fn new_with_values(
+        consecutive_x: f64,
+        one_row_filled: f64,
+        two_rows_filled: f64,
+        three_rows_filled: f64,
+        four_rows_filled: f64,
+        gaps_vertical: f64,
+        height: f64,
+        border: f64,
+    ) -> Baby {
+        Baby{
+            genes: Genes{
+                consecutive_x,
+                one_row_filled,
+                two_rows_filled,
+                three_rows_filled,
+                four_rows_filled,
+                gaps_vertical,
+                height,
+                border,
+            },
+            fitness: 0,
+        }
+    }
 }
 //Struct to store decision that AI could or will take
 #[derive(Debug)]
@@ -395,4 +419,61 @@ pub fn initialise_random_population(){
     }
     let json_string = json::stringify(parsed);
     fs::write("data/data_output.json", json_string).expect("Unable to write to data_output.json")
+}
+pub fn read_population() -> Baby {
+    let data = fs::read_to_string("data/data_output.json").expect("Unable to read data/data.json");
+    let parsed = json::parse(&data).unwrap();
+
+    let population = &parsed["individuals"];
+    let mut baby: Baby = Baby::new();
+    for i in 0..population.len() {
+        let genes = &population[i]["genes"];
+        baby = Baby::new_with_values(
+            genes["consecutive_x"].as_f64().expect("non-f64 value found"),
+            genes["one_row_filled"].as_f64().expect("non-f64 value found"),
+            genes["two_rows_filled"].as_f64().expect("non-f64 value found"),
+            genes["three_rows_filled"].as_f64().expect("non-f64 value found"),
+            genes["four_rows_filled"].as_f64().expect("non-f64 value found"),
+            genes["gaps_vertical"].as_f64().expect("non-f64 value found"),
+            genes["height"].as_f64().expect("non-f64 value found"),
+            genes["border"].as_f64().expect("non-f64 value found")
+        );
+    }
+    return baby;
+}
+
+pub fn play_game_for_individual(
+    baby: &Baby,
+) -> usize {
+    let mut game_board = GameBoard::new();
+    let mut game_variables = GameVariables::new();
+    //generates random ai baby with random set of genes and 0 initial fitness
+    let mut ai_baby: Baby = Baby::new();
+    game_variables.spawn_new_tetronomino_holding_board();
+    while !game_board.is_game_over() && ai_baby.fitness < 500 {
+        let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
+        game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
+        game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
+        game_board.print_game_board();
+        game_board.change_piece(primitive_constants::REMOVE_PIECE, &game_variables);
+        decision = generate_move_dataset(
+            primitive_constants::CURRENT_PIECE,
+            game_board,
+            game_variables,
+            &ai_baby.genes,
+            decision,
+        );
+        println!("{:?}", decision);
+        //decision generated, act on decision
+        //first rotate piece based on decision
+        rotate_piece_ai(&mut game_variables, decision.rotations);
+        //second, move piece based on decision
+        move_piece_x_ai(decision.x_direction, decision.moves, &mut game_variables);
+        //move piece all the way down on game_board
+        game_board.move_piece_down_max(&mut game_variables);
+        ai_baby.fitness += game_board.update_game_board();
+        //print move made by random ai
+        game_board.print_game_board();
+    }
+    return ai_baby.fitness;
 }

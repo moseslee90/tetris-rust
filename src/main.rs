@@ -11,7 +11,7 @@ fn main() {
     // //generates random ai baby with random set of genes and 0 initial fitness
     // let mut ai_baby: ai::Baby = ai::Baby::new();
     // game_variables.spawn_new_tetronomino_holding_board();
-    // while !game_board.is_game_over() {
+    // while !game_board.is_game_over() && ai_baby.fitness < 500 {
     //     let mut decision: ai::Decision = ai::Decision::new(primitive_constants::NONE, 0, 0);
     //     game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
     //     game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
@@ -36,11 +36,14 @@ fn main() {
     //     //print move made by random ai
     //     game_board.print_game_board();
     // }
-    // println!("ai fitness is: {}", ai_baby.fitness);
+
+    println!("ai fitness is: {}", ai::play_game_for_individual(&ai::read_population()));
 
     // let data = fs::read_to_string("data/data.json").expect("Unable to read data/data.json");
     // let parsed = json::parse(&data).unwrap();
     // let code = &parsed["code"];
     // println!("{:#}", code);
-    ai::initialise_random_population();
+
+    // ai::initialise_random_population();
+    // ai::read_population();
 }
