@@ -25,7 +25,7 @@ repopulating.
 
 ---
 
-"top-play": quick demonstration of a top scoring individual playing tetris
+"play-top": quick demonstration of a top scoring individual playing tetris
 
 ---
 
