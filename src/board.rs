@@ -285,6 +285,37 @@ impl GameBoard {
         println!("");
     }
 
+    pub fn pretty_print_game_board(&self) {
+        let mut pretty_board: [[&str; BOARD_WIDTH]; BOARD_HEIGHT] =
+            [[" "; BOARD_WIDTH]; BOARD_HEIGHT];
+        for y in 0..BOARD_HEIGHT {
+            for x in 0..BOARD_WIDTH {
+                pretty_board[y][x] = match self.game_board[y][x] {
+                    1 => "W",
+                    4 => "W",
+                    2 => "X",
+                    _ => " ",
+                }
+            }
+        }
+        println!("",);
+        for y in (0..BOARD_HEIGHT).rev() {
+            if y < 10 {
+                print!(" ");
+            }
+            print!("{}", y);
+            for x in 0..BOARD_WIDTH {
+                print!(" {} ", pretty_board[y][x])
+            }
+            println!("");
+        }
+        print!("   ",);
+        for k in 0..BOARD_WIDTH {
+            print!("{}  ", k);
+        }
+        println!("");
+    }
+
     pub fn print_holding_board(holding_board: &[[u8; HOLDING_SIZE]; HOLDING_SIZE]) {
         println!("",);
         for k in (0..HOLDING_SIZE).rev() {

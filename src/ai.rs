@@ -542,7 +542,7 @@ pub fn play_game_for_individual(
             game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
             game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
             if print {
-                game_board.print_game_board();
+                game_board.pretty_print_game_board();
             }
             game_board.change_piece(primitive_constants::REMOVE_PIECE, &game_variables);
             decision = generate_move_dataset(
@@ -563,7 +563,7 @@ pub fn play_game_for_individual(
             fitness += game_board.update_game_board();
             //print move made by random ai
             if print {
-                game_board.print_game_board();
+                game_board.pretty_print_game_board();
                 println!("lines cleared: {}", fitness);
             }
         }
