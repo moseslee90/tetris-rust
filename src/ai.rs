@@ -147,8 +147,7 @@ fn evaluate_game_board(
             num_of_filled_rows = num_of_filled_rows + 1;
         }
     }
-    let score: f64 =
-        con_cell_x_score + gaps_score + border_score + height_score;
+    let score: f64 = con_cell_x_score + gaps_score + border_score + height_score;
     return score;
 }
 
@@ -273,9 +272,11 @@ fn evaluate_move<'a>(
             //evaluate game_board a second time in full and update the decision score accordingly but
             //keep decision moves, rotation and direction the
             //same so decision can be made only on current piece
-            let second_piece_lines_filled_score = evaluate_game_board_lines_cleared(&game_board, genes);
+            let second_piece_lines_filled_score =
+                evaluate_game_board_lines_cleared(&game_board, genes);
             game_board.update_game_board();
-            decision.score = evaluate_game_board(&game_board, genes) + second_piece_lines_filled_score;
+            decision.score =
+                evaluate_game_board(&game_board, genes) + second_piece_lines_filled_score;
             if decision.score > decision_final.score {
                 decision_final.score = decision.score;
             }
@@ -524,7 +525,7 @@ pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
         //generates random ai baby with random set of genes and 0 initial fitness
         game_variables.spawn_new_tetronomino_holding_board();
         let mut fitness = 0;
-        while !game_board.is_game_over() && ai_baby.fitness < 500 {
+        while !game_board.is_game_over() && fitness < 700 && fitness < fitness_min {
             let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
             game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
             game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
