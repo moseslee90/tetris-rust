@@ -8,10 +8,11 @@ use game_constants::primitive_constants;
 fn main() {
 
     println!("Welcome to tetris rust ai!");
-    println!("To initialise a random population, type: init-pop");
-    println!("To read from current population and begin evaluation of population, type: read-pop");
-    println!("To repopulate via top 1% of evaluated population, type: next-pop");
-    println!("To cycle through a few generations of read-pop and next-pop, type: cycle-pop");
+    println!("init-pop: initialise a random population");
+    println!("read-pop: read from current population and begin evaluation of population");
+    println!("next-pop: repopulate via top 1% of evaluated population");
+    println!("cycle-pop: cycle through a few generations of read-pop and next-pop");
+    println!("play-top: run game using top individual currently stored. game will be printed out");
 
     let mut command = String::new();
 
@@ -34,7 +35,8 @@ fn main() {
             io::stdin()
                 .read_line(&mut num_generations)
                 .expect("Failed to read line");
-            let num_generations: usize = num_generations.trim().parse().expect("please use a number");
+            let num_generations: usize =
+                num_generations.trim().parse().expect("please use a number");
             for _i in 0..num_generations {
                 ai::write_population_to_file(ai::read_population(primitive_constants::DATA_PATH));
                 ai::next_generation(
@@ -42,8 +44,14 @@ fn main() {
                     primitive_constants::DATA_PATH,
                 );
             }
-
-        },
+        }
+        "play-top" => {
+            let population = ai::get_population_json_from_file("data/best_individual.json");
+            let best_genes = &population["individuals"][2]["genes"];
+            let best_individual: ai::Baby = ai::baby_from_json_baby(best_genes);
+            let score = ai::play_game_for_individual(&best_individual, true);
+            println!("Individual cleared {} lines total", score);
+        }
         _ => (),
     };
 

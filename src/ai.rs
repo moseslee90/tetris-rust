@@ -449,6 +449,13 @@ pub fn write_population_to_file(
     fs::write(primitive_constants::DATA_OUTPUT_PATH, json_string)
         .expect("Unable to write to data_output.json");
 }
+pub fn get_population_json_from_file(file_path: &str) -> JsonValue {
+    let data = fs::read_to_string(file_path).expect("Unable to read data/data.json");
+    let parsed = json::parse(&data).unwrap();
+    return parsed;
+    // let population = &parsed["individuals"];
+    // let baby = population
+}
 pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
     //read population data from json file;
     let data = fs::read_to_string(file_path).expect("Unable to read data/data.json");
@@ -465,7 +472,7 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
     for i in 0..3 {
         let genes = &population[i]["genes"];
         let mut baby = baby_from_json_baby(genes);
-        baby.fitness = play_game_for_individual(&baby);
+        baby.fitness = play_game_for_individual(&baby, false);
         top_ten[i] = baby;
         if baby.fitness < lowest_fitness {
             lowest_fitness = baby.fitness;
@@ -476,7 +483,7 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
     for i in 3..population.len() {
         let genes = &population[i]["genes"];
         let mut baby = baby_from_json_baby(genes);
-        baby.fitness = play_game_for_individual(&baby);
+        baby.fitness = play_game_for_individual(&baby, false);
         if baby.fitness > lowest_fitness {
             top_ten[lowest_index] = baby;
             lowest_fitness = usize::max_value();
@@ -517,19 +524,26 @@ pub fn baby_from_json_baby(genes: &JsonValue) -> Baby {
     )
 }
 
-pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
+pub fn play_game_for_individual(
+    ai_baby: &Baby,
+    print: bool,
+) -> usize {
     let mut fitness_min = usize::max_value();
-    for _i in 0..3 {
+    let iterations: usize = if print { 1 } else { 3 };
+    let line_limit: usize = if print { 1000 } else { 700 };
+    for _i in 0..iterations {
         let mut game_board = GameBoard::new();
         let mut game_variables = GameVariables::new();
         //generates random ai baby with random set of genes and 0 initial fitness
         game_variables.spawn_new_tetronomino_holding_board();
         let mut fitness = 0;
-        while !game_board.is_game_over() && fitness < 700 && fitness < fitness_min {
+        while !game_board.is_game_over() && fitness < line_limit && fitness < fitness_min {
             let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
             game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
             game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
-            // game_board.print_game_board();
+            if print {
+                game_board.print_game_board();
+            }
             game_board.change_piece(primitive_constants::REMOVE_PIECE, &game_variables);
             decision = generate_move_dataset(
                 primitive_constants::CURRENT_PIECE,
@@ -548,7 +562,10 @@ pub fn play_game_for_individual(ai_baby: &Baby) -> usize {
             game_board.move_piece_down_max(&mut game_variables);
             fitness += game_board.update_game_board();
             //print move made by random ai
-            // game_board.print_game_board();
+            if print {
+                game_board.print_game_board();
+                println!("lines cleared: {}", fitness);
+            }
         }
         // println!("fitness_min is {} fitness is {}", fitness_min, fitness);
         fitness_min = cmp::min(fitness_min, fitness);
