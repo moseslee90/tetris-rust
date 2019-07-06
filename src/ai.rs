@@ -458,8 +458,7 @@ pub fn get_population_json_from_file(file_path: &str) -> JsonValue {
 }
 pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
     //read population data from json file;
-    let data = fs::read_to_string(file_path).expect("Unable to read data/data.json");
-    let parsed = json::parse(&data).unwrap();
+    let parsed = get_population_json_from_file(file_path);
     let population = &parsed["individuals"];
     //initialise random array of 10 individuals with 0 fitness
     //array is for keeping track of the top 10 individuals in the population during evaluation
@@ -626,8 +625,7 @@ pub fn next_generation(
     source_path: &str,
     output_path: &str,
 ) {
-    let data = fs::read_to_string(source_path).expect("Unable to read data/data.json");
-    let parsed = json::parse(&data).unwrap();
+    let parsed = get_population_json_from_file(source_path);
     let population = &parsed["individuals"];
 
     let mut result = object! {
