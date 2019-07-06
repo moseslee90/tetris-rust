@@ -1,21 +1,22 @@
 # tetris-rust
-A rust project to generate a tetris artificial intelligence through the genetic algorithm
 
-Project currently still in development.
-
-Current Status:
-
-Tetris structure and pieces expressed in arrays built.
-Movement and rotation functions implemented.
-Line clearing not added.
-Explicit user controls not yet implemented.
-Game currently only displays 'visuals' via command line
-
-Priority is to create environment for Machine Learning algorithm to run in.
-Tentative algorithm chosen to be implemented is currently Genetic Algorithm (not yet implemented).
-
-Example output of current game structure can be seen by running:
+A rust project to generate a tetris artificial intelligence through the genetic
+algorithm
 
 cargo run
 
-Movement and rotation can be observed by manipulating change_piece and rotate_piece functions.
+After cargo run, follow the command line instructions:
+
+"init-pop": generates a new population with random genes "cycle-pop": would
+cycle through a few generations depending on the number specified "read-pop":
+reads current population and writes best individuals to file without
+repopulating "next-gen": repopulates based on best individuals on file
+
+---
+
+Current settings make algorithm run 3 times for each individual and return the
+lowest score of 3 runs. Maximum lines cleared wherby assesment for individual
+ends is 700 lines Default population size is 1000 and takes a few hours to
+complete.
+
+Future optimizations would be to multi-thread the process.
