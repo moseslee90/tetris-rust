@@ -2,16 +2,16 @@
 	"individuals": [
 		{
 			"genes": {
-				"consecutive_x": 1.598305506939422,
-				"one_row_filled": 58.7362322302547,
-				"two_rows_filled": 57.19799501906016,
-				"three_rows_filled": 55.71594485746773,
-				"four_rows_filled": 237.9642651288826,
-				"gaps_vertical": -19.000126446622234,
-				"height": 1.956157518064685,
-				"border": 32.13860081629678
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 700
+			"fitness": 1000
 		},
 		{
 			"genes": {

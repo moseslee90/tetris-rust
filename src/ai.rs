@@ -87,12 +87,13 @@ impl<'a> Decision<'a> {
         x_direction: &str,
         moves: usize,
         rotations: usize,
+        score: f64,
     ) -> Decision {
         Decision {
             x_direction,
             moves,
             rotations,
-            score: f64::NEG_INFINITY,
+            score,
         }
     }
 }
@@ -137,6 +138,9 @@ fn evaluate_game_board(
                 blank_cell += 1;
                 gaps_array[x] += 1.0;
             } else if cell_value == 2 {
+                if y == primitive_constants::SPAWN_Y {
+                    return f64::NEG_INFINITY + 1.0;
+                }
                 filled_cell += 1;
             }
         }
@@ -244,7 +248,7 @@ fn evaluate_move<'a>(
     mut game_board: GameBoard,         //copy
     genes: &Genes,
 ) {
-    let mut decision: Decision = Decision::new(direction, moves, rotations);
+    let mut decision: Decision = Decision::new(direction, moves, rotations, f64::NEG_INFINITY);
     move_piece_x_ai(direction, moves, &mut game_variables);
     game_board.move_piece_down_max(&mut game_variables);
     //evaluation of the gameboard happens here
@@ -529,7 +533,7 @@ pub fn play_game_for_individual(
 ) -> usize {
     let mut fitness_min = usize::max_value();
     let iterations: usize = if print { 1 } else { 3 };
-    let line_limit: usize = if print { 1000 } else { 700 };
+    let line_limit: usize = if print { 2000 } else { 1500 };
     for _i in 0..iterations {
         let mut game_board = GameBoard::new();
         let mut game_variables = GameVariables::new();
@@ -537,7 +541,8 @@ pub fn play_game_for_individual(
         game_variables.spawn_new_tetronomino_holding_board();
         let mut fitness = 0;
         while !game_board.is_game_over() && fitness < line_limit && fitness < fitness_min {
-            let mut decision: Decision = Decision::new(primitive_constants::NONE, 0, 0);
+            let mut decision: Decision =
+                Decision::new(primitive_constants::LEFT, 0, 0, f64::NEG_INFINITY);
             game_variables.spawn_new_tetronomino_on_board(primitive_constants::NOT_SIMULATION);
             game_board.change_piece(primitive_constants::GENERATE_PIECE, &game_variables);
             if print {

@@ -47,7 +47,7 @@ fn main() {
         }
         "play-top" => {
             let population = ai::get_population_json_from_file("data/best_individual.json");
-            let best_genes = &population["individuals"][1]["genes"];
+            let best_genes = &population["individuals"][0]["genes"];
             let best_individual: ai::Baby = ai::baby_from_json_baby(best_genes);
             let score = ai::play_game_for_individual(&best_individual, true);
             println!("Individual cleared {} lines total", score);
