@@ -3,7 +3,11 @@ use crate::game_constants::{primitive_constants, tetronominoes::Tetronomino};
 use json::{array, object, JsonValue};
 
 use rand::Rng;
-use std::{cmp, f64, fs, usize};
+use std::{
+    cmp, f64, fs,
+    sync::{mpsc, Arc, Mutex},
+    thread, usize,
+};
 
 #[derive(Copy, Clone)]
 pub struct Genes {
@@ -464,43 +468,57 @@ pub fn get_population_json_from_file(file_path: &str) -> JsonValue {
 pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] {
     //read population data from json file;
     let parsed = get_population_json_from_file(file_path);
+    let population_length = parsed["individuals"].len();
     let population = &parsed["individuals"];
     //initialise random array of 10 individuals with 0 fitness
     //array is for keeping track of the top 10 individuals in the population during evaluation
-    let mut top_individuals: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] =
+    let top_individuals_origin: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] =
         [Baby::new(); primitive_constants::TOP_INDIVIDUALS_SIZE];
+    let top_individuals_arc = Arc::new(Mutex::new(top_individuals_origin));
 
-    let mut lowest_fitness: usize = usize::max_value();
-    let mut lowest_index: usize = primitive_constants::TOP_INDIVIDUALS_SIZE;
-    //initialise top_ten with first 3 in population
-    for i in 0..3 {
+    let lowest_fitness_origin: usize = 0;
+    let lowest_fitness_arc = Arc::new(Mutex::new(lowest_fitness_origin));
+
+    let lowest_index_origin: usize = primitive_constants::TOP_INDIVIDUALS_SIZE - 1;
+    let lowest_index_arc = Arc::new(Mutex::new(lowest_index_origin));
+
+    let mut handles = vec![];
+
+    for i in 0..population_length {
+        let top_individuals_arc_clone = Arc::clone(&top_individuals_arc);
+        let lowest_fitness_arc_clone = Arc::clone(&lowest_fitness_arc);
+        let lowest_index_arc_clone = Arc::clone(&lowest_index_arc);
+
         let genes = &population[i]["genes"];
         let mut baby = baby_from_json_baby(genes);
-        baby.fitness = play_game_for_individual(&baby, false);
-        top_individuals[i] = baby;
-        if baby.fitness < lowest_fitness {
-            lowest_fitness = baby.fitness;
-            lowest_index = i;
-        }
-    }
 
-    for i in 3..population.len() {
-        let genes = &population[i]["genes"];
-        let mut baby = baby_from_json_baby(genes);
-        baby.fitness = play_game_for_individual(&baby, false);
-        if baby.fitness > lowest_fitness {
-            top_individuals[lowest_index] = baby;
-            lowest_fitness = usize::max_value();
-            for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
-                if top_individuals[j].fitness < lowest_fitness {
-                    lowest_fitness = top_individuals[j].fitness;
-                    lowest_index = j;
+        let handle = thread::spawn(move || {
+            baby.fitness = play_game_for_individual(&baby, false);
+            let mut lowest_fitness = lowest_fitness_arc_clone.lock().unwrap();
+            if baby.fitness > *lowest_fitness {
+                //replace lowest fitness individual with new individual
+                let mut top_individuals = top_individuals_arc_clone.lock().unwrap();
+                let mut lowest_index = lowest_index_arc_clone.lock().unwrap();
+                println!("fitness: {}, added", baby.fitness);
+                top_individuals[*lowest_index] = baby;
+                //iterate through to find out who's the new lowest
+                *lowest_fitness = usize::max_value();
+                for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
+                    if top_individuals[j].fitness < *lowest_fitness {
+                        *lowest_fitness = top_individuals[j].fitness;
+                        *lowest_index = j;
+                    }
                 }
             }
-        }
+        });
+        handles.push(handle);
     }
 
-    return top_individuals;
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    return top_individuals_origin;
 }
 
 pub fn baby_from_json_baby(genes: &JsonValue) -> Baby {
