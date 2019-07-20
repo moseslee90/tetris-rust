@@ -31,7 +31,7 @@ repopulating.
 
 Current settings make algorithm run 3 times for each individual and return the
 lowest score of 3 runs. Maximum lines cleared wherby assesment for individual
-ends is 700 lines Default population size is 1000 and takes a few hours to
-complete.
+ends is 700 lines Default population size is 1000 and takes approximately
+7-9mins on an ubuntu virtual machine.
 
-Future optimizations would be to multi-thread the process.
+Algorithm is now multi-threaded.
