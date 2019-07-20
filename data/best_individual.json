@@ -3,15 +3,15 @@
 		{
 			"genes": {
 				"consecutive_x": 1.6458635196150886,
-				"one_row_filled": 90.12911787652553,
-				"two_rows_filled": 164.5238712704423,
-				"three_rows_filled": 163.24258090996188,
-				"four_rows_filled": 615.331437329769,
-				"gaps_vertical": -14.117773239529165,
-				"height": 1.9254842660741936,
-				"border": 16.540838721743236
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 142.9844343394311,
+				"three_rows_filled": 76.39319118917439,
+				"four_rows_filled": 435.7671021574872,
+				"gaps_vertical": -27.148349506985924,
+				"height": 1.9076152643385805,
+				"border": 19.81279555842299
 			},
-			"fitness": 1000
+			"fitness": 1483
 		},
 		{
 			"genes": {

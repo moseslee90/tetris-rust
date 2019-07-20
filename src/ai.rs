@@ -466,7 +466,7 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
     let population = &parsed["individuals"];
     //initialise random array of 10 individuals with 0 fitness
     //array is for keeping track of the top 10 individuals in the population during evaluation
-    let mut top_ten: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] =
+    let mut top_individuals: [Baby; primitive_constants::TOP_INDIVIDUALS_SIZE] =
         [Baby::new(); primitive_constants::TOP_INDIVIDUALS_SIZE];
 
     let mut lowest_fitness: usize = usize::max_value();
@@ -476,7 +476,7 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
         let genes = &population[i]["genes"];
         let mut baby = baby_from_json_baby(genes);
         baby.fitness = play_game_for_individual(&baby, false);
-        top_ten[i] = baby;
+        top_individuals[i] = baby;
         if baby.fitness < lowest_fitness {
             lowest_fitness = baby.fitness;
             lowest_index = i;
@@ -488,18 +488,18 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
         let mut baby = baby_from_json_baby(genes);
         baby.fitness = play_game_for_individual(&baby, false);
         if baby.fitness > lowest_fitness {
-            top_ten[lowest_index] = baby;
+            top_individuals[lowest_index] = baby;
             lowest_fitness = usize::max_value();
             for j in 0..primitive_constants::TOP_INDIVIDUALS_SIZE {
-                if top_ten[j].fitness < lowest_fitness {
-                    lowest_fitness = top_ten[j].fitness;
+                if top_individuals[j].fitness < lowest_fitness {
+                    lowest_fitness = top_individuals[j].fitness;
                     lowest_index = j;
                 }
             }
         }
     }
 
-    return top_ten;
+    return top_individuals;
 }
 
 pub fn baby_from_json_baby(genes: &JsonValue) -> Baby {
