@@ -5,7 +5,7 @@ use json::{array, object, JsonValue};
 use rand::Rng;
 use std::{
     cmp, f64, fs,
-    sync::{mpsc, Arc, Mutex},
+    sync::{Arc, Mutex},
     thread, usize,
 };
 
@@ -496,10 +496,9 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
             baby.fitness = play_game_for_individual(&baby, false);
             let mut lowest_fitness = lowest_fitness_arc_clone.lock().unwrap();
             if baby.fitness > *lowest_fitness {
-                //replace lowest fitness individual with new individual
                 let mut top_individuals = top_individuals_arc_clone.lock().unwrap();
                 let mut lowest_index = lowest_index_arc_clone.lock().unwrap();
-                println!("fitness: {}, added", baby.fitness);
+                //replace lowest fitness individual with new individual
                 top_individuals[*lowest_index] = baby;
                 //iterate through to find out who's the new lowest
                 *lowest_fitness = usize::max_value();
@@ -518,7 +517,7 @@ pub fn read_population(file_path: &str) -> [Baby; primitive_constants::TOP_INDIV
         handle.join().unwrap();
     }
 
-    return top_individuals_origin;
+    return *top_individuals_arc.lock().unwrap();
 }
 
 pub fn baby_from_json_baby(genes: &JsonValue) -> Baby {

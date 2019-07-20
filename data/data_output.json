@@ -2,653 +2,653 @@
 	"individuals": [
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.8285875327893029,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 769
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 142.9844343394311,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.956157518064685,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 758
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 19.81279555842299
 			},
-			"fitness": 0
+			"fitness": 998
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.5202233266045878,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 769.1385749568166,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.773469790523124,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 1081
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.956157518064685,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 696
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.956157518064685,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 629
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9076152643385805,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 928
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 76.39319118917439,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -13.74596930259877,
+				"height": 1.9254842660741936,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 633
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9076152643385805,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 777
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.956157518064685,
+				"border": 32.13860081629678
 			},
-			"fitness": 0
+			"fitness": 874
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 721
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -13.74596930259877,
+				"height": 1.9076152643385805,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 1005
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 435.7671021574872,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9076152643385805,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 625
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 18.23416550556692,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.8285875327893029,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 746
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9076152643385805,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 831
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.956157518064685,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 918
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 57.19799501906016,
+				"three_rows_filled": 55.71594485746773,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.956157518064685,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 714
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.3985836662209153,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 183.58888389364209,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.9254842660741936,
+				"border": 32.13860081629678
 			},
-			"fitness": 0
+			"fitness": 1155
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 142.9844343394311,
+				"three_rows_filled": 76.39319118917439,
+				"four_rows_filled": 435.7671021574872,
+				"gaps_vertical": -27.148349506985924,
+				"height": 1.9076152643385805,
+				"border": 19.81279555842299
 			},
-			"fitness": 0
+			"fitness": 933
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 910
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.956157518064685,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 764
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 71.37207031131108,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 710
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.8285875327893029,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 1226
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 810
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.773469790523124,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 639
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.5047793936201697,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 970
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 620
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9076152643385805,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 769
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.9254842660741936,
+				"border": 32.13860081629678
 			},
-			"fitness": 0
+			"fitness": 622
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 18.23416550556692,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 351.077264171769,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.8285875327893029,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 1095
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 752
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 696
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 1056
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.956157518064685,
+				"border": 32.13860081629678
 			},
-			"fitness": 0
+			"fitness": 781
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9076152643385805,
+				"border": 19.81279555842299
 			},
-			"fitness": 0
+			"fitness": 868
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.5202233266045878,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 101.07878446216884,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 769.1385749568166,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.773469790523124,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 685
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 76.39319118917439,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -13.74596930259877,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 647
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 57.19799501906016,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.956157518064685,
+				"border": 32.13860081629678
 			},
-			"fitness": 0
+			"fitness": 907
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9076152643385805,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 630
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -13.74596930259877,
+				"height": 1.9076152643385805,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 728
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 57.19799501906016,
+				"three_rows_filled": 76.39319118917439,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 669
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 57.19799501906016,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.956157518064685,
+				"border": 32.13860081629678
 			},
-			"fitness": 0
+			"fitness": 706
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.3985836662209153,
+				"one_row_filled": 71.37207031131108,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 615.331437329769,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 850
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.5047793936201697,
+				"one_row_filled": 71.37207031131108,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -14.25196729996292,
+				"height": 1.9076152643385805,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 668
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 164.5238712704423,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9254842660741936,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 631
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.5047793936201697,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 351.077264171769,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -6.843654574997005,
+				"height": 1.773469790523124,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 973
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 361.7000069093531,
+				"four_rows_filled": 910.268646901246,
+				"gaps_vertical": -13.74596930259877,
+				"height": 1.9076152643385805,
+				"border": 32.13860081629678
 			},
-			"fitness": 0
+			"fitness": 671
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.598305506939422,
+				"one_row_filled": 65.61030125349099,
+				"two_rows_filled": 142.9844343394311,
+				"three_rows_filled": 163.24258090996188,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.956157518064685,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 657
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.6458635196150886,
+				"one_row_filled": 90.12911787652553,
+				"two_rows_filled": 157.19218493311917,
+				"three_rows_filled": 76.39319118917439,
+				"four_rows_filled": 941.6139817728956,
+				"gaps_vertical": -19.000126446622234,
+				"height": 1.9254842660741936,
+				"border": 16.540838721743236
 			},
-			"fitness": 0
+			"fitness": 947
 		},
 		{
 			"genes": {
-				"consecutive_x": 1.0248523409698112,
-				"one_row_filled": 25.696398134126587,
-				"two_rows_filled": 156.06187090834198,
-				"three_rows_filled": 339.0417181129841,
-				"four_rows_filled": 380.4977726964987,
-				"gaps_vertical": -52.11015807795447,
-				"height": 1.55633066673341,
-				"border": 59.212750916870309
+				"consecutive_x": 1.5047793936201697,
+				"one_row_filled": 72.95692614662323,
+				"two_rows_filled": 125.51286302949684,
+				"three_rows_filled": 262.8888783915948,
+				"four_rows_filled": 568.2250965733194,
+				"gaps_vertical": -14.117773239529165,
+				"height": 1.9076152643385805,
+				"border": 14.287881305586314
 			},
-			"fitness": 0
+			"fitness": 784
 		}
 	]
 }
