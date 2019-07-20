@@ -139,7 +139,7 @@ fn evaluate_game_board(
                 gaps_array[x] += 1.0;
             } else if cell_value == 2 {
                 if y == primitive_constants::SPAWN_Y {
-                    return f64::NEG_INFINITY + 1.0;
+                    return f64::NEG_INFINITY / 2.0;
                 }
                 filled_cell += 1;
             }
@@ -248,7 +248,8 @@ fn evaluate_move<'a>(
     mut game_board: GameBoard,         //copy
     genes: &Genes,
 ) {
-    let mut decision: Decision = Decision::new(direction, moves, rotations, f64::NEG_INFINITY);
+    let mut decision: Decision =
+        Decision::new(direction, moves, rotations, f64::NEG_INFINITY / 3.0);
     move_piece_x_ai(direction, moves, &mut game_variables);
     game_board.move_piece_down_max(&mut game_variables);
     //evaluation of the gameboard happens here
